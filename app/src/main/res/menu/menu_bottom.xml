@@ -12,6 +12,11 @@
         android:title="Shop" />
 
     <item
+        android:id="@+id/custom"
+        android:icon="@drawable/shopping_cart"
+        android:title="Shop" />
+
+    <item
         android:id="@+id/about"
         android:icon="@drawable/info"
         android:title="About"/>

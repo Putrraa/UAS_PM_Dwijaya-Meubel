@@ -55,9 +55,9 @@
                 android:id="@+id/etPassword"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:hint="Password"
-                android:inputType="textPassword"
-                android:layout_marginTop="12dp"/>
+                android:layout_marginTop="16dp"
+                android:background="@android:drawable/edit_text"
+                android:hint="Password" />
 
             <Button
                 android:id="@+id/btnLogin"
@@ -67,6 +67,15 @@
                 android:backgroundTint="#3F5D46"
                 android:textColor="@android:color/white"
                 android:layout_marginTop="20dp"/>
+
+            <Button
+                android:id="@+id/btnRegister"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="20dp"
+                android:backgroundTint="#3F5D46"
+                android:text="Daftar"
+                android:textColor="@android:color/white" />
 
         </LinearLayout>
 

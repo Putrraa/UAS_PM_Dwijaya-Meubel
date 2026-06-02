@@ -1,5 +1,6 @@
 package prasetya.daffa.proyek_uas
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -12,8 +13,8 @@ import prasetya.daffa.proyek_uas.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var b: ActivityMainBinding
-    private lateinit var db: DBOpenHelper
+    lateinit var b: ActivityMainBinding
+    lateinit var db: DBOpenHelper
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,9 +43,21 @@ class MainActivity : AppCompatActivity() {
 
         b.navDrawer.setNavigationItemSelectedListener {
             when (it.itemId) {
-                R.id.menu_login -> loadFragment(LoginFragment())
-                R.id.menu_cart -> loadFragment(CheckoutFragment())
-                R.id.menu_profile -> loadFragment(AboutFragment())
+                R.id.menu_login -> {
+                    val intent = Intent(this, LoginActivity::class.java)
+                    startActivity(intent)
+                }
+                R.id.menu_cart -> {
+                    val intent = Intent(this, LoginActivity::class.java)
+                    startActivity(intent)
+                }
+
+                R.id.menu_profile -> {
+                    val intent = Intent(this, LoginActivity::class.java)
+                    startActivity(intent)
+                    // TODO = "Ini mau jadi activity apa fragment"
+                }
+
             }
             b.drawerLayout.closeDrawers()
             true
@@ -60,6 +73,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.shop -> fragment = ShopFragment()
                 R.id.about -> fragment = AboutFragment()
                 R.id.contact -> fragment = ContactFragment()
+                R.id.custom -> fragment = CustomFragment()
             }
 
             if (fragment != null) {
