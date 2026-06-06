@@ -14,7 +14,7 @@
     <item
         android:id="@+id/custom"
         android:icon="@drawable/shopping_cart"
-        android:title="Shop" />
+        android:title="Custom" />
 
     <item
         android:id="@+id/about"
