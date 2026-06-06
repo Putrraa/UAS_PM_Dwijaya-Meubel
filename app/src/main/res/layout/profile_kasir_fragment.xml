@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F5F5F5"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- ROW: Sidebar + Content -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="top">
+
+            <!-- ===== SIDEBAR KIRI ===== -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.38"
+                android:layout_marginEnd="12dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="2dp"
+                app:cardBackgroundColor="#1F3D0C">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="20dp"
+                    android:gravity="center_horizontal">
+
+                    <!-- Avatar -->
+                    <FrameLayout
+                        android:layout_width="72dp"
+                        android:layout_height="72dp"
+                        android:layout_marginBottom="12dp">
+
+                        <TextView
+                            android:id="@+id/tvKasirAvatarInitial"
+                            android:layout_width="72dp"
+                            android:layout_height="72dp"
+                            android:gravity="center"
+                            android:text="K"
+                            android:textColor="#1F3D0C"
+                            android:textSize="30sp"
+                            android:textStyle="bold"
+                            android:background="@drawable/bg_avatar_yellow" />
+                    </FrameLayout>
+
+                    <!-- Nama Kasir -->
+                    <TextView
+                        android:id="@+id/tvKasirName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Kasir"
+                        android:textColor="@android:color/white"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="4dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Kasir Dwijaya Mebel"
+                        android:textColor="#AAAAAA"
+                        android:textSize="11sp"
+                        android:layout_marginBottom="20dp" />
+
+                    <!-- Divider -->
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#3A5A2A"
+                        android:layout_marginBottom="16dp" />
+
+                    <!-- Tombol Dashboard -->
+                    <Button
+                        android:id="@+id/btnKasirDashboard"
+                        android:layout_width="match_parent"
+                        android:layout_height="44dp"
+                        android:text="Dashboard"
+                        android:textColor="@android:color/white"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        android:background="@drawable/bg_btn_dark_green_outline"
+                        android:stateListAnimator="@null" />
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- ===== CONTENT KANAN ===== -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.62"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="2dp"
+                app:cardBackgroundColor="@android:color/white">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="20dp">
+
+                    <!-- Section: Informasi Akun -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Informasi Akun"
+                        android:textColor="#1A1A1A"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="16dp" />
+
+                    <!-- Row: Username + Email -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="16dp">
+
+                        <!-- Username -->
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:layout_marginEnd="10dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Username"
+                                android:textColor="#555555"
+                                android:textSize="12sp"
+                                android:layout_marginBottom="6dp" />
+
+                            <EditText
+                                android:id="@+id/etKasirUsername"
+                                android:layout_width="match_parent"
+                                android:layout_height="44dp"
+                                android:paddingStart="12dp"
+                                android:paddingEnd="12dp"
+                                android:background="@drawable/bg_input_field"
+                                android:text="Kasir"
+                                android:textColor="#1A1A1A"
+                                android:textSize="13sp"
+                                android:inputType="textPersonName"
+                                android:enabled="false" />
+                        </LinearLayout>
+
+                        <!-- Email Address -->
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Email Address"
+                                android:textColor="#555555"
+                                android:textSize="12sp"
+                                android:layout_marginBottom="6dp" />
+
+                            <EditText
+                                android:id="@+id/etKasirEmail"
+                                android:layout_width="match_parent"
+                                android:layout_height="44dp"
+                                android:paddingStart="12dp"
+                                android:paddingEnd="12dp"
+                                android:background="@drawable/bg_input_field"
+                                android:text="kasir@gmail.com"
+                                android:textColor="#1A1A1A"
+                                android:textSize="13sp"
+                                android:inputType="textEmailAddress"
+                                android:enabled="false" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <!-- Divider -->
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#E8E8E8"
+                        android:layout_marginBottom="16dp" />
+
+                    <!-- Section: Keamanan Akun -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Keamanan Akun"
+                        android:textColor="#1A1A1A"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="16dp" />
+
+                    <!-- Password Lama -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Password Lama"
+                        android:textColor="#555555"
+                        android:textSize="12sp"
+                        android:layout_marginBottom="6dp" />
+
+                    <EditText
+                        android:id="@+id/etKasirPasswordLama"
+                        android:layout_width="match_parent"
+                        android:layout_height="44dp"
+                        android:paddingStart="12dp"
+                        android:paddingEnd="12dp"
+                        android:background="@drawable/bg_input_field"
+                        android:inputType="textPassword"
+                        android:textSize="13sp"
+                        android:layout_marginBottom="14dp" />
+
+                    <!-- Row: Password Baru + Konfirmasi -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="20dp">
+
+                        <!-- Password Baru -->
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:layout_marginEnd="10dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Password Baru"
+                                android:textColor="#555555"
+                                android:textSize="12sp"
+                                android:layout_marginBottom="6dp" />
+
+                            <EditText
+                                android:id="@+id/etKasirPasswordBaru"
+                                android:layout_width="match_parent"
+                                android:layout_height="44dp"
+                                android:paddingStart="12dp"
+                                android:paddingEnd="12dp"
+                                android:background="@drawable/bg_input_field"
+                                android:inputType="textPassword"
+                                android:textSize="13sp" />
+                        </LinearLayout>
+
+                        <!-- Konfirmasi Password Baru -->
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Konfirmasi Password Baru"
+                                android:textColor="#555555"
+                                android:textSize="12sp"
+                                android:layout_marginBottom="6dp" />
+
+                            <EditText
+                                android:id="@+id/etKasirKonfirmasiPassword"
+                                android:layout_width="match_parent"
+                                android:layout_height="44dp"
+                                android:paddingStart="12dp"
+                                android:paddingEnd="12dp"
+                                android:background="@drawable/bg_input_field"
+                                android:inputType="textPassword"
+                                android:textSize="13sp" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <!-- Tombol Perbarui Password -->
+                    <Button
+                        android:id="@+id/btnPerbaruiPassword"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:text="Perbarui Password"
+                        android:textColor="#1F3D0C"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:background="@drawable/bg_btn_yellow"
+                        android:stateListAnimator="@null" />
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:paddingTop="12dp"
+    android:paddingBottom="12dp">
+
+    <!-- No Pesanan -->
+    <TextView
+        android:id="@+id/tvNoPesanan"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1.2"
+        android:text="#DWJ-3"
+        android:textColor="#1A1A1A"
+        android:textSize="12sp"
+        android:textStyle="bold" />
+
+    <!-- Tanggal -->
+    <TextView
+        android:id="@+id/tvTanggal"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="01 Jun 2026"
+        android:textColor="#555555"
+        android:textSize="11sp" />
+
+    <!-- Total -->
+    <TextView
+        android:id="@+id/tvTotal"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1.2"
+        android:text="Rp 4.000.000"
+        android:textColor="#1F7A1F"
+        android:textSize="11sp"
+        android:textStyle="bold" />
+
+    <!-- Status Badge -->
+    <TextView
+        android:id="@+id/tvStatus"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.9"
+        android:text="Diproses"
+        android:textColor="@android:color/white"
+        android:textSize="10sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:paddingStart="6dp"
+        android:paddingEnd="6dp"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
+        android:background="@drawable/bg_status_diproses" />
+
+    <!-- Tombol Detail -->
+    <Button
+        android:id="@+id/btnDetail"
+        android:layout_width="0dp"
+        android:layout_height="32dp"
+        android:layout_weight="0.7"
+        android:text="Detail"
+        android:textColor="@android:color/white"
+        android:textSize="11sp"
+        android:background="@drawable/bg_btn_dark_green"
+        android:stateListAnimator="@null"
+        android:paddingStart="4dp"
+        android:paddingEnd="4dp" />
+
+</LinearLayout>

@@ -1,0 +1,56 @@
+package prasetya.daffa.proyek_uas.adapter
+
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.Button
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
+import prasetya.daffa.proyek_uas.R
+
+data class CustomOrder(
+    val furnitureNama: String,
+    val kayu: String,
+    val ukuran: String,
+    val harga: String,
+    val status: String,
+    val imageUrl: String = ""
+)
+
+class CustomOrderAdapter(
+    private val list: List<CustomOrder>,
+    private val onBayarClick: (CustomOrder) -> Unit
+) : RecyclerView.Adapter<CustomOrderAdapter.ViewHolder>() {
+
+    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val ivThumbnail: ImageView = itemView.findViewById(R.id.ivFurnitureThumbnail)
+        val tvNama: TextView = itemView.findViewById(R.id.tvFurnitureNama)
+        val tvKayu: TextView = itemView.findViewById(R.id.tvKayu)
+        val tvUkuran: TextView = itemView.findViewById(R.id.tvUkuran)
+        val tvHarga: TextView = itemView.findViewById(R.id.tvHarga)
+        val tvStatus: TextView = itemView.findViewById(R.id.tvStatusCustom)
+        val btnBayar: Button = itemView.findViewById(R.id.btnBayarSekarang)
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.item_custom_order, parent, false)
+        return ViewHolder(view)
+    }
+
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val item = list[position]
+        holder.tvNama.text = item.furnitureNama
+        holder.tvKayu.text = item.kayu
+        holder.tvUkuran.text = item.ukuran
+        holder.tvHarga.text = item.harga
+        holder.tvStatus.text = item.status
+
+        // Sembunyikan tombol Bayar jika status bukan Pending
+        holder.btnBayar.visibility = if (item.status == "Pending") View.VISIBLE else View.GONE
+        holder.btnBayar.setOnClickListener { onBayarClick(item) }
+    }
+
+    override fun getItemCount() = list.size
+}
