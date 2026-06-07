@@ -23,11 +23,11 @@ class MainActivity : AppCompatActivity() {
         b = ActivityMainBinding.inflate(layoutInflater)
         setContentView(b.root)
 
-        ViewCompat.setOnApplyWindowInsetsListener(b.root) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
+//        ViewCompat.setOnApplyWindowInsetsListener(b.root) { v, insets ->
+//            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+//            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+//            insets
+//        }
 
         setSupportActionBar(b.toolbar)
 
@@ -55,7 +55,6 @@ class MainActivity : AppCompatActivity() {
                 R.id.menu_profile -> {
                     val intent = Intent(this, LoginActivity::class.java)
                     startActivity(intent)
-                    // TODO = "Ini mau jadi activity apa fragment"
                 }
 
             }
