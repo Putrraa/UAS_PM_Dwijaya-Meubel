@@ -10,6 +10,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 
 import prasetya.daffa.proyek_uas.databinding.ActivityMainBinding
+import kotlin.jvm.java
 
 class MainActivity : AppCompatActivity() {
 
@@ -53,7 +54,7 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 R.id.menu_profile -> {
-                    val intent = Intent(this, LoginActivity::class.java)
+                    val intent = Intent(this, ProfileActivity::class.java)
                     startActivity(intent)
                 }
 
