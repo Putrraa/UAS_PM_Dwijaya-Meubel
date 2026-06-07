@@ -280,6 +280,18 @@
                         android:textSize="14sp"
                         android:inputType="textEmailAddress" />
 
+                    <Button
+                        android:id="@+id/btnBackCustomer"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:layout_marginTop="20dp"
+                        android:text="Kembali"
+                        android:textColor="@android:color/white"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:background="@drawable/bg_btn_dark_green"
+                        android:stateListAnimator="@null" />
+
                 </LinearLayout>
 
                 <!-- === SECTION: Riwayat Pesanan === -->
