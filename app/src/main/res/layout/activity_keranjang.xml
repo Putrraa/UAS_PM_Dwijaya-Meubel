@@ -8,7 +8,7 @@
     android:background="#F2F2F2"
     tools:context=".KeranjangActivity">
 
-    <!-- TOOLBAR / HEADER -->
+    <!-- TOOLBAR -->
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
@@ -29,70 +29,92 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp">
+            android:orientation="vertical">
 
-            <!-- TABEL HEADER -->
+            <!--
+                TABEL HEADER
+                PENTING: weight dan padding HARUS identik dengan item_keranjang.xml
+                item_keranjang structure:
+                  paddingHorizontal=12dp
+                  imgProduk: 56dp width + 10dp marginEnd  => total spacer = 66dp
+                  tvNamaBrand: weight=2.2
+                  tvHarga:     weight=1.8
+                  layoutQty:   weight=1.6
+                  tvSubtotal:  weight=2.0
+                  btnHapus:    weight=1.4
+            -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:background="#FFFFFF"
-                android:paddingHorizontal="12dp"
-                android:paddingVertical="10dp"
-                android:elevation="2dp">
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp">
+
+                <!-- Spacer sejajar imgProduk (56dp) + marginEnd (10dp) -->
+                <View
+                    android:layout_width="66dp"
+                    android:layout_height="1dp" />
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="3"
+                    android:layout_weight="2.2"
                     android:text="PRODUK"
-                    android:textSize="12sp"
+                    android:textSize="11sp"
                     android:textStyle="bold"
-                    android:textColor="#333333" />
+                    android:textColor="#555555" />
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="2"
+                    android:layout_weight="1.8"
                     android:text="HARGA"
-                    android:textSize="12sp"
+                    android:textSize="11sp"
                     android:textStyle="bold"
-                    android:textColor="#333333"
+                    android:textColor="#555555"
                     android:gravity="center" />
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="2"
+                    android:layout_weight="1.6"
                     android:text="JUMLAH"
-                    android:textSize="12sp"
+                    android:textSize="11sp"
                     android:textStyle="bold"
-                    android:textColor="#333333"
+                    android:textColor="#555555"
                     android:gravity="center" />
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="2"
+                    android:layout_weight="2.0"
                     android:text="SUBTOTAL"
-                    android:textSize="12sp"
+                    android:textSize="11sp"
                     android:textStyle="bold"
-                    android:textColor="#333333"
+                    android:textColor="#555555"
                     android:gravity="center" />
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_weight="1.4"
                     android:text="AKSI"
-                    android:textSize="12sp"
+                    android:textSize="11sp"
                     android:textStyle="bold"
-                    android:textColor="#333333"
+                    android:textColor="#555555"
                     android:gravity="center" />
             </LinearLayout>
 
-            <!-- DAFTAR ITEM KERANJANG (RecyclerView) -->
+            <!-- Garis pemisah header -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#E0E0E0" />
+
+            <!-- DAFTAR ITEM KERANJANG -->
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerViewKeranjang"
                 android:layout_width="match_parent"
@@ -109,21 +131,22 @@
                 android:layout_height="200dp"
                 android:orientation="vertical"
                 android:gravity="center"
+                android:background="#FFFFFF"
                 android:visibility="gone">
 
                 <ImageView
                     android:layout_width="64dp"
                     android:layout_height="64dp"
-                    android:src="@drawable/ic_cart_empty"
-                    android:alpha="0.4" />
+                    android:src="@drawable/ic_shopping_cart"
+                    android:alpha="0.3" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Keranjang belanja kosong"
-                    android:textColor="#999999"
+                    android:textColor="#AAAAAA"
                     android:textSize="14sp"
-                    android:layout_marginTop="8dp" />
+                    android:layout_marginTop="10dp" />
             </LinearLayout>
 
         </LinearLayout>
@@ -136,7 +159,9 @@
         android:orientation="vertical"
         android:background="#FFFFFF"
         android:elevation="8dp"
-        android:padding="16dp">
+        android:paddingHorizontal="16dp"
+        android:paddingTop="12dp"
+        android:paddingBottom="16dp">
 
         <!-- Total Pembayaran -->
         <LinearLayout
@@ -150,14 +175,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Total Pembayaran:"
-                android:textColor="#333333"
-                android:textSize="14sp" />
+                android:textColor="#555555"
+                android:textSize="13sp" />
 
             <TextView
                 android:id="@+id/tvTotalPembayaran"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Rp 4.000.000"
                 android:textColor="#D32F2F"
                 android:textSize="20sp"
                 android:textStyle="bold"
@@ -169,33 +193,37 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="space_between">
+            android:orientation="horizontal">
 
             <!-- Kembali Belanja -->
             <Button
                 android:id="@+id/btnKembaliBlanja"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="0dp"
                 android:layout_height="48dp"
                 android:layout_weight="1"
                 android:layout_marginEnd="8dp"
                 android:text="← Kembali Belanja"
-                android:textSize="13sp"
-                android:textColor="#FFFFFF"
-                android:background="@drawable/bg_btn_dark_rounded"
-                style="@style/Widget.MaterialComponents.Button.UnelevatedButton" />
+                android:textSize="12sp"
+                android:textColor="#1A1A1A"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                app:strokeColor="#1A1A1A"
+                app:strokeWidth="1dp" />
 
             <!-- Bayar Sekarang -->
             <Button
                 android:id="@+id/btnBayarSekarang"
+                style="@style/Widget.MaterialComponents.Button"
                 android:layout_width="0dp"
                 android:layout_height="48dp"
                 android:layout_weight="1"
                 android:text="BAYAR SEKARANG"
-                android:textSize="13sp"
+                android:textSize="12sp"
                 android:textColor="#FFFFFF"
                 android:backgroundTint="#2D5A3D"
-                style="@style/Widget.MaterialComponents.Button" />
+                android:insetTop="0dp"
+                android:insetBottom="0dp" />
         </LinearLayout>
     </LinearLayout>
 
