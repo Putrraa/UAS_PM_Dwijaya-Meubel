@@ -15,16 +15,17 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import prasetya.daffa.proyek_uas.R
+
 import prasetya.daffa.proyek_uas.adapter.CustomOrder
 import prasetya.daffa.proyek_uas.adapter.CustomOrderAdapter
 import prasetya.daffa.proyek_uas.adapter.RiwayatPesanan
 import prasetya.daffa.proyek_uas.adapter.RiwayatPesananAdapter
-import prasetya.daffa.proyek_uas.databinding.ProfileActivityBinding
+import prasetya.daffa.proyek_uas.databinding.ActivityProfileBinding
+
 
 class ProfileActivity : AppCompatActivity(), View.OnClickListener {
 
-    private lateinit var b: ProfileActivityBinding
+    private lateinit var b: ActivityProfileBinding
 
     // Sidebar nav items
     private lateinit var navProfilSaya: LinearLayout
@@ -61,7 +62,7 @@ class ProfileActivity : AppCompatActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        b = ProfileActivityBinding.inflate(layoutInflater)
+        b = ActivityProfileBinding.inflate(layoutInflater)
         setContentView(b.root)
 
         // Biar status bar tidak ungu dan layar tidak kepotong

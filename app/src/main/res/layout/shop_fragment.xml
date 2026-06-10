@@ -10,27 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-        
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="153dp"
-            android:background="#3F5F45"
-            android:orientation="vertical"
-            android:padding="20dp">
-
-            <TextView
-                android:id="@+id/titleShop"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
-                android:text="Shop"
-                android:textColor="#FFFFFF"
-                android:textSize="32sp"
-                android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="@+id/brandName"
-                app:layout_constraintTop_toBottomOf="@+id/brandName" />
-        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"

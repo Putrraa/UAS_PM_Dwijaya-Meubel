@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F5F5F5"
+    android:background="#EEF2EA"
     android:fillViewport="true">
 
     <LinearLayout
@@ -12,23 +12,78 @@
         android:orientation="vertical"
         android:padding="16dp">
 
+        <!-- ===== HEADER ATAS ===== -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="14dp"
+            app:cardBackgroundColor="#3E5C45"
+            app:cardCornerRadius="18dp"
+            app:cardElevation="4dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="72dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingStart="12dp"
+                android:paddingEnd="18dp">
+
+                <ImageButton
+                    android:id="@+id/btnBack"
+                    android:layout_width="42dp"
+                    android:layout_height="42dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="Kembali"
+                    android:padding="9dp"
+                    android:src="@drawable/ic_arrow_back"
+                    app:tint="@android:color/white" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Akun Saya"
+                        android:textColor="@android:color/white"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:text="Kelola profil, pesanan, dan keamanan akun"
+                        android:textColor="#DDE8D8"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
         <!-- ROW: Sidebar + Content -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="top">
+            android:gravity="top"
+            android:orientation="horizontal">
 
             <!-- ===== SIDEBAR KIRI ===== -->
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardSidebar"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.38"
                 android:layout_marginEnd="12dp"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="2dp"
-                app:cardBackgroundColor="@android:color/white">
+                android:layout_marginBottom="12dp"
+                android:layout_weight="0.38"
+                app:cardBackgroundColor="@android:color/white"
+                app:cardCornerRadius="18dp"
+                app:cardElevation="4dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -47,62 +102,59 @@
                             android:id="@+id/tvAvatarInitial"
                             android:layout_width="64dp"
                             android:layout_height="64dp"
+                            android:background="@drawable/bg_avatar_yellow"
                             android:gravity="center"
                             android:text="C"
                             android:textColor="#1F3D0C"
                             android:textSize="28sp"
-                            android:textStyle="bold"
-                            android:background="@drawable/bg_avatar_yellow" />
+                            android:textStyle="bold" />
                     </FrameLayout>
 
-                    <!-- Nama -->
                     <TextView
                         android:id="@+id/tvProfileName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="2dp"
                         android:gravity="center"
                         android:text="Customer"
                         android:textColor="#1A1A1A"
                         android:textSize="15sp"
-                        android:textStyle="bold"
-                        android:layout_marginBottom="2dp" />
+                        android:textStyle="bold" />
 
-                    <!-- Email -->
                     <TextView
                         android:id="@+id/tvProfileEmail"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
                         android:gravity="center"
                         android:text="customer@gmail.com"
                         android:textColor="#888888"
-                        android:textSize="11sp"
-                        android:layout_marginBottom="16dp" />
+                        android:textSize="11sp" />
 
-                    <!-- Divider -->
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:background="#E8E8E8"
-                        android:layout_marginBottom="12dp" />
+                        android:layout_marginBottom="12dp"
+                        android:background="#E8E8E8" />
 
                     <!-- Nav: Profil Saya -->
                     <LinearLayout
                         android:id="@+id/navProfilSaya"
                         android:layout_width="match_parent"
                         android:layout_height="48dp"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical"
-                        android:paddingStart="12dp"
-                        android:paddingEnd="8dp"
+                        android:layout_marginBottom="4dp"
                         android:background="@drawable/bg_nav_item_active"
-                        android:layout_marginBottom="4dp">
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingStart="12dp"
+                        android:paddingEnd="8dp">
 
                         <ImageView
                             android:layout_width="18dp"
                             android:layout_height="18dp"
+                            android:layout_marginEnd="8dp"
                             android:src="@drawable/ic_person"
-                            app:tint="@android:color/white"
-                            android:layout_marginEnd="8dp" />
+                            app:tint="@android:color/white" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -118,19 +170,19 @@
                         android:id="@+id/navRiwayatPesanan"
                         android:layout_width="match_parent"
                         android:layout_height="48dp"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical"
-                        android:paddingStart="12dp"
-                        android:paddingEnd="8dp"
+                        android:layout_marginBottom="4dp"
                         android:background="@drawable/bg_nav_item_inactive"
-                        android:layout_marginBottom="4dp">
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingStart="12dp"
+                        android:paddingEnd="8dp">
 
                         <ImageView
                             android:layout_width="18dp"
                             android:layout_height="18dp"
+                            android:layout_marginEnd="8dp"
                             android:src="@drawable/ic_history"
-                            app:tint="#555555"
-                            android:layout_marginEnd="8dp" />
+                            app:tint="#555555" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -145,19 +197,19 @@
                         android:id="@+id/navCustomOrder"
                         android:layout_width="match_parent"
                         android:layout_height="48dp"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical"
-                        android:paddingStart="12dp"
-                        android:paddingEnd="8dp"
+                        android:layout_marginBottom="4dp"
                         android:background="@drawable/bg_nav_item_inactive"
-                        android:layout_marginBottom="4dp">
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingStart="12dp"
+                        android:paddingEnd="8dp">
 
                         <ImageView
                             android:layout_width="18dp"
                             android:layout_height="18dp"
+                            android:layout_marginEnd="8dp"
                             android:src="@drawable/ic_build"
-                            app:tint="#555555"
-                            android:layout_marginEnd="8dp" />
+                            app:tint="#555555" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -172,18 +224,18 @@
                         android:id="@+id/navKeamananAkun"
                         android:layout_width="match_parent"
                         android:layout_height="48dp"
-                        android:orientation="horizontal"
+                        android:background="@drawable/bg_nav_item_inactive"
                         android:gravity="center_vertical"
+                        android:orientation="horizontal"
                         android:paddingStart="12dp"
-                        android:paddingEnd="8dp"
-                        android:background="@drawable/bg_nav_item_inactive">
+                        android:paddingEnd="8dp">
 
                         <ImageView
                             android:layout_width="18dp"
                             android:layout_height="18dp"
+                            android:layout_marginEnd="8dp"
                             android:src="@drawable/ic_shield"
-                            app:tint="#555555"
-                            android:layout_marginEnd="8dp" />
+                            app:tint="#555555" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -201,9 +253,9 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.62"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="2dp"
-                app:cardBackgroundColor="@android:color/white">
+                app:cardBackgroundColor="@android:color/white"
+                app:cardCornerRadius="18dp"
+                app:cardElevation="4dp">
 
                 <!-- === SECTION: Profil Saya === -->
                 <LinearLayout
@@ -217,80 +269,68 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="4dp"
                         android:text="Detail Akun"
                         android:textColor="#1A1A1A"
                         android:textSize="18sp"
-                        android:textStyle="bold"
-                        android:layout_marginBottom="4dp" />
+                        android:textStyle="bold" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
                         android:text="Kelola informasi data diri Anda."
                         android:textColor="#888888"
-                        android:textSize="12sp"
-                        android:layout_marginBottom="16dp" />
+                        android:textSize="12sp" />
 
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:background="#E8E8E8"
-                        android:layout_marginBottom="16dp" />
+                        android:layout_marginBottom="16dp"
+                        android:background="#E8E8E8" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="6dp"
                         android:text="Nama Lengkap"
                         android:textColor="#555555"
                         android:textSize="13sp"
-                        android:textStyle="bold"
-                        android:layout_marginBottom="6dp" />
+                        android:textStyle="bold" />
 
                     <EditText
                         android:id="@+id/etNamaLengkap"
                         android:layout_width="match_parent"
                         android:layout_height="48dp"
+                        android:layout_marginBottom="16dp"
+                        android:background="@drawable/bg_input_field"
+                        android:inputType="textPersonName"
                         android:paddingStart="14dp"
                         android:paddingEnd="14dp"
-                        android:background="@drawable/bg_input_field"
                         android:text="Customer"
                         android:textColor="#1A1A1A"
-                        android:textSize="14sp"
-                        android:inputType="textPersonName"
-                        android:layout_marginBottom="16dp" />
+                        android:textSize="14sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="6dp"
                         android:text="Email"
                         android:textColor="#555555"
                         android:textSize="13sp"
-                        android:textStyle="bold"
-                        android:layout_marginBottom="6dp" />
+                        android:textStyle="bold" />
 
                     <EditText
                         android:id="@+id/etEmail"
                         android:layout_width="match_parent"
                         android:layout_height="48dp"
+                        android:background="@drawable/bg_input_field"
+                        android:inputType="textEmailAddress"
                         android:paddingStart="14dp"
                         android:paddingEnd="14dp"
-                        android:background="@drawable/bg_input_field"
                         android:text="customer@gmail.com"
                         android:textColor="#1A1A1A"
-                        android:textSize="14sp"
-                        android:inputType="textEmailAddress" />
-
-                    <Button
-                        android:id="@+id/btnBackCustomer"
-                        android:layout_width="match_parent"
-                        android:layout_height="48dp"
-                        android:layout_marginTop="20dp"
-                        android:text="Kembali"
-                        android:textColor="@android:color/white"
-                        android:textSize="14sp"
-                        android:textStyle="bold"
-                        android:background="@drawable/bg_btn_dark_green"
-                        android:stateListAnimator="@null" />
+                        android:textSize="14sp" />
 
                 </LinearLayout>
 
@@ -306,34 +346,34 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="4dp"
                         android:text="Riwayat Pesanan"
                         android:textColor="#1A1A1A"
                         android:textSize="18sp"
-                        android:textStyle="bold"
-                        android:layout_marginBottom="4dp" />
+                        android:textStyle="bold" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
                         android:text="Riwayat transaksi produk Anda."
                         android:textColor="#888888"
-                        android:textSize="12sp"
-                        android:layout_marginBottom="16dp" />
+                        android:textSize="12sp" />
 
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:background="#E8E8E8"
-                        android:layout_marginBottom="8dp" />
+                        android:layout_marginBottom="8dp"
+                        android:background="#E8E8E8" />
 
                     <!-- Header Tabel -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="4dp"
                         android:orientation="horizontal"
                         android:paddingTop="8dp"
-                        android:paddingBottom="8dp"
-                        android:layout_marginBottom="4dp">
+                        android:paddingBottom="8dp">
 
                         <TextView
                             android:layout_width="0dp"
@@ -384,10 +424,9 @@
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:background="#E8E8E8"
-                        android:layout_marginBottom="4dp" />
+                        android:layout_marginBottom="4dp"
+                        android:background="#E8E8E8" />
 
-                    <!-- RecyclerView untuk daftar pesanan -->
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rvRiwayatPesanan"
                         android:layout_width="match_parent"
@@ -408,25 +447,25 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="4dp"
                         android:text="Riwayat Custom Order"
                         android:textColor="#1A1A1A"
                         android:textSize="18sp"
-                        android:textStyle="bold"
-                        android:layout_marginBottom="4dp" />
+                        android:textStyle="bold" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
                         android:text="Daftar pesanan custom furniture Anda."
                         android:textColor="#888888"
-                        android:textSize="12sp"
-                        android:layout_marginBottom="16dp" />
+                        android:textSize="12sp" />
 
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:background="#E8E8E8"
-                        android:layout_marginBottom="8dp" />
+                        android:layout_marginBottom="8dp"
+                        android:background="#E8E8E8" />
 
                     <!-- Header Tabel Custom Order -->
                     <LinearLayout
@@ -485,8 +524,8 @@
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:background="#E8E8E8"
-                        android:layout_marginBottom="4dp" />
+                        android:layout_marginBottom="4dp"
+                        android:background="#E8E8E8" />
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rvCustomOrder"
@@ -508,103 +547,104 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="4dp"
                         android:text="Ganti Password"
                         android:textColor="#1A1A1A"
                         android:textSize="18sp"
-                        android:textStyle="bold"
-                        android:layout_marginBottom="4dp" />
+                        android:textStyle="bold" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
                         android:text="Pastikan password baru aman."
                         android:textColor="#888888"
-                        android:textSize="12sp"
-                        android:layout_marginBottom="16dp" />
+                        android:textSize="12sp" />
 
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:background="#E8E8E8"
-                        android:layout_marginBottom="16dp" />
+                        android:layout_marginBottom="16dp"
+                        android:background="#E8E8E8" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="6dp"
                         android:text="Password Lama"
                         android:textColor="#555555"
                         android:textSize="13sp"
-                        android:textStyle="bold"
-                        android:layout_marginBottom="6dp" />
+                        android:textStyle="bold" />
 
                     <EditText
                         android:id="@+id/etPasswordLama"
                         android:layout_width="match_parent"
                         android:layout_height="48dp"
-                        android:paddingStart="14dp"
-                        android:paddingEnd="14dp"
+                        android:layout_marginBottom="16dp"
                         android:background="@drawable/bg_input_field"
                         android:hint=""
                         android:inputType="textPassword"
-                        android:textSize="14sp"
-                        android:layout_marginBottom="16dp" />
+                        android:paddingStart="14dp"
+                        android:paddingEnd="14dp"
+                        android:textSize="14sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="6dp"
                         android:text="Password Baru"
                         android:textColor="#555555"
                         android:textSize="13sp"
-                        android:textStyle="bold"
-                        android:layout_marginBottom="6dp" />
+                        android:textStyle="bold" />
 
                     <EditText
                         android:id="@+id/etPasswordBaru"
                         android:layout_width="match_parent"
                         android:layout_height="48dp"
-                        android:paddingStart="14dp"
-                        android:paddingEnd="14dp"
+                        android:layout_marginBottom="16dp"
                         android:background="@drawable/bg_input_field"
                         android:hint=""
                         android:inputType="textPassword"
-                        android:textSize="14sp"
-                        android:layout_marginBottom="16dp" />
+                        android:paddingStart="14dp"
+                        android:paddingEnd="14dp"
+                        android:textSize="14sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="6dp"
                         android:text="Konfirmasi Password"
                         android:textColor="#555555"
                         android:textSize="13sp"
-                        android:textStyle="bold"
-                        android:layout_marginBottom="6dp" />
+                        android:textStyle="bold" />
 
                     <EditText
                         android:id="@+id/etKonfirmasiPassword"
                         android:layout_width="match_parent"
                         android:layout_height="48dp"
-                        android:paddingStart="14dp"
-                        android:paddingEnd="14dp"
+                        android:layout_marginBottom="20dp"
                         android:background="@drawable/bg_input_field"
                         android:hint=""
                         android:inputType="textPassword"
-                        android:textSize="14sp"
-                        android:layout_marginBottom="20dp" />
+                        android:paddingStart="14dp"
+                        android:paddingEnd="14dp"
+                        android:textSize="14sp" />
 
                     <Button
                         android:id="@+id/btnUpdatePassword"
                         android:layout_width="match_parent"
                         android:layout_height="48dp"
+                        android:background="@drawable/bg_btn_dark_green"
+                        android:stateListAnimator="@null"
                         android:text="Update Password"
                         android:textColor="@android:color/white"
                         android:textSize="14sp"
-                        android:textStyle="bold"
-                        android:background="@drawable/bg_btn_dark_green"
-                        android:stateListAnimator="@null" />
+                        android:textStyle="bold" />
 
                 </LinearLayout>
 
             </androidx.cardview.widget.CardView>
+
         </LinearLayout>
 
     </LinearLayout>

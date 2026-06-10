@@ -127,26 +127,26 @@
             <!-- STATE KOSONG -->
             <LinearLayout
                 android:id="@+id/layoutKeranjangKosong"
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:orientation="vertical"
-                android:gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:background="#FFFFFF"
+                android:gravity="center"
+                android:orientation="vertical"
                 android:visibility="gone">
 
                 <ImageView
                     android:layout_width="64dp"
                     android:layout_height="64dp"
-                    android:src="@drawable/ic_shopping_cart"
-                    android:alpha="0.3" />
+                    android:alpha="0.3"
+                    android:src="@drawable/shopping_cart" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
                     android:text="Keranjang belanja kosong"
                     android:textColor="#AAAAAA"
-                    android:textSize="14sp"
-                    android:layout_marginTop="10dp" />
+                    android:textSize="14sp" />
             </LinearLayout>
 
         </LinearLayout>

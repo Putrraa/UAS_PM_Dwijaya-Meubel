@@ -6,18 +6,9 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="#F5F5F5"
-    tools:context=".CustomOrderActivity">
+    tools:context="CustomFragment">
 
     <!-- TOOLBAR -->
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="#2D5A3D"
-        app:title="Custom Furniture"
-        app:titleTextColor="#FFFFFF"
-        app:navigationIcon="@drawable/ic_arrow_back"
-        app:navigationContentDescription="Kembali" />
 
     <ScrollView
         android:layout_width="match_parent"
