@@ -54,7 +54,7 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 R.id.menu_profile -> {
-                    val intent = Intent(this, ProfileActivity::class.java)
+                    val intent = Intent(this, TambahBarangAdminActivity::class.java)
                     startActivity(intent)
                 }
 
