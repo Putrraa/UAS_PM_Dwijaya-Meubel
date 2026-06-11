@@ -9,7 +9,8 @@ data class KategoriResponse(
 data class Kategori(
     val id: Int,
     val nama_kategori: String,
-    val gambar: String?
+    val gambar: String?,
+    val gambar_url: String?
 )
 
 data class BahanResponse(

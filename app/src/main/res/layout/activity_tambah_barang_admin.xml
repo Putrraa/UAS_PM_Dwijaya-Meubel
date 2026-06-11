@@ -12,7 +12,6 @@
         android:padding="20dp">
 
         <TextView
-            android:id="@+id/tvJudul"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Tambah Barang"
@@ -22,10 +21,9 @@
             android:layout_marginBottom="4dp" />
 
         <TextView
-            android:id="@+id/tvSubJudul"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Test ambil kategori dan bahan dari web Dwijaya Meubel"
+            android:text="Tambah data barang ke database web Dwijaya Meubel"
             android:textColor="#6E6259"
             android:textSize="14sp"
             android:layout_marginBottom="20dp" />
@@ -49,9 +47,9 @@
                 android:id="@+id/edtNamaBarang"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:background="@android:drawable/edit_text"
                 android:hint="Contoh: Meja Kayu"
                 android:padding="12dp"
+                android:background="@android:drawable/edit_text"
                 android:inputType="text" />
 
             <TextView
@@ -97,9 +95,9 @@
                 android:id="@+id/edtHarga"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:background="@android:drawable/edit_text"
                 android:hint="Contoh: 500000"
                 android:padding="12dp"
+                android:background="@android:drawable/edit_text"
                 android:inputType="number" />
 
             <TextView
@@ -115,9 +113,9 @@
                 android:id="@+id/edtStok"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:background="@android:drawable/edit_text"
                 android:hint="Contoh: 10"
                 android:padding="12dp"
+                android:background="@android:drawable/edit_text"
                 android:inputType="number" />
 
             <TextView
@@ -133,9 +131,9 @@
                 android:id="@+id/edtUkuran"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:background="@android:drawable/edit_text"
                 android:hint="Contoh: 120 x 60 cm"
                 android:padding="12dp"
+                android:background="@android:drawable/edit_text"
                 android:inputType="text" />
 
             <TextView
@@ -151,11 +149,37 @@
                 android:id="@+id/edtDeskripsi"
                 android:layout_width="match_parent"
                 android:layout_height="90dp"
-                android:background="@android:drawable/edit_text"
                 android:hint="Deskripsi barang"
                 android:gravity="top"
                 android:padding="12dp"
+                android:background="@android:drawable/edit_text"
                 android:inputType="textMultiLine" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Gambar Barang"
+                android:textColor="#3B2A1A"
+                android:textStyle="bold"
+                android:layout_marginTop="14dp"
+                android:layout_marginBottom="6dp" />
+
+            <ImageView
+                android:id="@+id/imgPreview"
+                android:layout_width="match_parent"
+                android:layout_height="180dp"
+                android:background="#EFEFEF"
+                android:scaleType="centerCrop"
+                android:src="@android:drawable/ic_menu_gallery" />
+
+            <Button
+                android:id="@+id/btnPilihGambar"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:text="PILIH GAMBAR"
+                android:textColor="#FFFFFF"
+                android:backgroundTint="#6B4F3A"
+                android:layout_marginTop="10dp" />
 
             <ProgressBar
                 android:id="@+id/progressBar"
@@ -166,22 +190,13 @@
                 android:visibility="gone" />
 
             <Button
-                android:id="@+id/btnReload"
-                android:layout_width="match_parent"
-                android:layout_height="52dp"
-                android:text="TEST AMBIL KATEGORI &amp; BAHAN"
-                android:textColor="#FFFFFF"
-                android:backgroundTint="#6B4F3A"
-                android:layout_marginTop="20dp" />
-
-            <Button
                 android:id="@+id/btnSimpan"
                 android:layout_width="match_parent"
                 android:layout_height="52dp"
                 android:text="SIMPAN BARANG"
                 android:textColor="#FFFFFF"
                 android:backgroundTint="#3B5D50"
-                android:layout_marginTop="10dp" />
+                android:layout_marginTop="20dp" />
 
         </LinearLayout>
 
