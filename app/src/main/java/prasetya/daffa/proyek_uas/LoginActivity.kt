@@ -98,10 +98,29 @@ class LoginActivity : AppCompatActivity() {
                         Toast.LENGTH_LONG
                     ).show()
 
-                    val intent = Intent(this@LoginActivity, AdminActivity::class.java)
+                    val role = user.role.trim().lowercase()
+
+                    val intent = when (role) {
+                        "admin" -> Intent(this@LoginActivity, AdminActivity::class.java)
+                        "customer" -> Intent(this@LoginActivity, MainActivity::class.java)
+
+                        // Kalau nanti sudah ada KasirActivity:
+                        // "kasir" -> Intent(this@LoginActivity, KasirActivity::class.java)
+
+                        else -> {
+                            Toast.makeText(
+                                this@LoginActivity,
+                                "Role tidak dikenali: ${user.role}",
+                                Toast.LENGTH_LONG
+                            ).show()
+                            return
+                        }
+                    }
+
                     intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                     startActivity(intent)
                     finish()
+
                 } else {
                     Toast.makeText(
                         this@LoginActivity,

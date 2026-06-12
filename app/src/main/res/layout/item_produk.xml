@@ -1,70 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cardProduk"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="6dp"
-    app:cardCornerRadius="12dp"
-    app:cardElevation="2dp"
-    app:cardBackgroundColor="@android:color/white">
+    app:cardCornerRadius="16dp"
+    app:cardElevation="3dp"
+    app:cardBackgroundColor="#FFFFFF">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="10dp">
 
-        <!-- Gambar Produk -->
-        <ImageView
-            android:id="@+id/ivProdukGambar"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="180dp"
-            android:scaleType="centerCrop"
-            android:background="#EEEEEE" />
+            android:layout_height="135dp"
+            android:background="#F8F3EF">
 
-        <!-- Info Produk -->
-        <LinearLayout
+            <ImageView
+                android:id="@+id/imgProduk"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:padding="8dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/home" />
+
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/tvNamaProduk"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="12dp">
+            android:layout_marginTop="10dp"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:maxLines="2"
+            android:minHeight="38dp"
+            android:text="KURSI KAYU"
+            android:textColor="#2B1A12"
+            android:textSize="13sp"
+            android:textStyle="bold" />
 
-            <!-- Nama Produk -->
-            <TextView
-                android:id="@+id/tvProdukNama"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="LEMARI"
-                android:textColor="#1A1A1A"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                android:gravity="center"
-                android:layout_marginBottom="8dp" />
+        <TextView
+            android:id="@+id/tvHargaProduk"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:gravity="center"
+            android:text="Rp 500.000"
+            android:textColor="#C0392B"
+            android:textSize="13sp"
+            android:textStyle="bold" />
 
-            <!-- Harga Produk -->
-            <TextView
-                android:id="@+id/tvProdukHarga"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Rp 2.000.000"
-                android:textColor="#C0392B"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                android:gravity="center"
-                android:layout_marginBottom="12dp" />
+        <TextView
+            android:id="@+id/tvStokProduk"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:gravity="center"
+            android:text="Stok: 10"
+            android:textColor="#777777"
+            android:textSize="11sp" />
 
-            <!-- Tombol ADD TO CART -->
-            <Button
-                android:id="@+id/btnAddToCart"
-                android:layout_width="match_parent"
-                android:layout_height="44dp"
-                android:text="ADD TO CART"
-                android:textColor="@android:color/white"
-                android:textSize="13sp"
-                android:textStyle="bold"
-                android:background="@drawable/bg_btn_dark_green"
-                android:stateListAnimator="@null" />
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnAddCart"
+            android:layout_width="match_parent"
+            android:layout_height="42dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/bg_button_green"
+            android:backgroundTint="@null"
+            android:text="ADD TO CART"
+            android:textAllCaps="false"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp"
+            android:textStyle="bold" />
 
-        </LinearLayout>
     </LinearLayout>
 
 </androidx.cardview.widget.CardView>

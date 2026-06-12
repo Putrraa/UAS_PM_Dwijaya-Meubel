@@ -2,6 +2,7 @@ package prasetya.daffa.proyek_uas.admin
 
 import android.os.Bundle
 import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -20,6 +21,7 @@ class AdminActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         b = ActivityAdminBinding.inflate(layoutInflater)
         setContentView(b.root)
+        enableEdgeToEdge()
 
         setSupportActionBar(b.toolbarAdmin)
 

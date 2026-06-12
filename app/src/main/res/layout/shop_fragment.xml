@@ -1,133 +1,263 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<androidx.core.widget.NestedScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F0F0F0">
+    android:background="#F4F3F1"
+    android:fillViewport="true"
+    tools:context=".ShopFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingBottom="24dp">
 
+        <!-- ===== SLIDER / BANNER ===== -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            app:cardCornerRadius="18dp"
+            app:cardElevation="3dp">
 
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <androidx.viewpager2.widget.ViewPager2
+                    android:id="@+id/vpSlider"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+                <!-- Dots slider -->
+                <LinearLayout
+                    android:id="@+id/layoutDots"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|center_horizontal"
+                    android:layout_marginBottom="12dp"
+                    android:gravity="center"
+                    android:orientation="horizontal" />
+
+            </FrameLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <!-- ===== TITLE CATEGORIES ===== -->
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="902dp"
-            android:background="#FFFFFF"
-            android:orientation="vertical"
-            android:padding="20dp">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="22dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp">
 
-            <GridLayout
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1"
+                android:background="#D8D1C8" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_marginEnd="12dp"
+                android:text="Categories"
+                android:textColor="#3E5C45"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1"
+                android:background="#D8D1C8" />
+
+        </LinearLayout>
+
+        <!-- ===== LIST KATEGORI ===== -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvKategori"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:clipToPadding="false"
+            android:nestedScrollingEnabled="false"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            tools:itemCount="4"
+            tools:listitem="@layout/item_kategori" />
+
+        <!-- ===== TITLE ALL PRODUCTS ===== -->
+        <LinearLayout
+            android:id="@+id/sectionAllProducts"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="26dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp">
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1"
+                android:background="#D8D1C8" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_marginEnd="12dp"
+                android:text="All Products"
+                android:textColor="#3E5C45"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1"
+                android:background="#D8D1C8" />
+
+        </LinearLayout>
+
+        <!-- ===== SEARCH & SORT CARD ===== -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="14dp"
+            android:layout_marginEnd="16dp"
+            app:cardBackgroundColor="#FFFFFF"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="2dp">
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:alignmentMode="alignMargins"
-                android:columnCount="2"
-                android:padding="8dp">
+                android:orientation="vertical"
+                android:padding="14dp">
 
-                <androidx.cardview.widget.CardView
-                    android:layout_width="0dp"
+                <TextView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_columnWeight="1"
-                    android:layout_margin="8dp"
-                    app:cardCornerRadius="12dp"
-                    app:cardElevation="2dp">
+                    android:text="Find Your Favourite Products"
+                    android:textColor="#3E2A1E"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:padding="12dp">
+                <!-- Search -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="46dp"
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/bg_input"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingStart="14dp"
+                    android:paddingEnd="8dp">
 
-                        <ImageView
-                            android:id="@+id/img_produk_1"
-                            android:layout_width="match_parent"
-                            android:layout_height="120dp"
-                            android:background="#E0E0E0"
-                            android:scaleType="centerCrop"
-                            android:src="@drawable/sofa" />
+                    <EditText
+                        android:id="@+id/etSearchProduk"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@android:color/transparent"
+                        android:hint="Search products..."
+                        android:inputType="text"
+                        android:singleLine="true"
+                        android:textColor="#222222"
+                        android:textColorHint="#9B9B9B"
+                        android:textSize="14sp" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:text="Sofa Minimalis"
-                            android:textColor="#000000"
-                            android:textStyle="bold" />
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/btnSearchProduk"
+                        android:layout_width="88dp"
+                        android:layout_height="36dp"
+                        android:background="@drawable/bg_button_green"
+                        android:backgroundTint="@null"
+                        android:text="Search"
+                        android:textAllCaps="false"
+                        android:textColor="#FFFFFF"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Rp 3.500.000"
-                            android:textColor="#2D5240"
-                            android:textStyle="bold" />
+                </LinearLayout>
 
-                        <Button
-                            android:layout_width="match_parent"
-                            android:layout_height="40dp"
-                            android:layout_marginTop="8dp"
-                            android:backgroundTint="#2D5240"
-                            android:text="Beli Sekarang"
-                            android:textAllCaps="false"
-                            android:textColor="#FFFFFF"
-                            android:textSize="10sp" />
-                    </LinearLayout>
-
-                </androidx.cardview.widget.CardView>
-
-                <androidx.cardview.widget.CardView
-                    android:layout_width="0dp"
+                <!-- Info dan Sort -->
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_columnWeight="1"
-                    android:layout_margin="8dp"
-                    app:cardCornerRadius="12dp"
-                    app:cardElevation="2dp">
+                    android:layout_marginTop="12dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
+                    <TextView
+                        android:id="@+id/tvResultInfo"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:padding="12dp">
+                        android:layout_weight="1"
+                        android:text="Showing products"
+                        android:textColor="#888888"
+                        android:textSize="12sp" />
 
-                        <ImageView
-                            android:id="@+id/img_produk_2"
-                            android:layout_width="match_parent"
-                            android:layout_height="120dp"
-                            android:background="#E0E0E0"
-                            android:scaleType="centerCrop"
-                            android:src="@drawable/meja_makan" />
+                    <Spinner
+                        android:id="@+id/spinnerSortProduk"
+                        android:layout_width="150dp"
+                        android:layout_height="42dp"
+                        android:background="@drawable/bg_input"
+                        android:paddingStart="8dp"
+                        android:paddingEnd="8dp" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:text="Kursi Makan"
-                            android:textColor="#000000"
-                            android:textStyle="bold" />
+                </LinearLayout>
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Rp 850.000"
-                            android:textColor="#2D5240"
-                            android:textStyle="bold" />
+            </LinearLayout>
 
-                        <Button
-                            android:layout_width="match_parent"
-                            android:layout_height="40dp"
-                            android:layout_marginTop="8dp"
-                            android:backgroundTint="#2D5240"
-                            android:text="Beli Sekarang"
-                            android:textAllCaps="false"
-                            android:textColor="#FFFFFF"
-                            android:textSize="10sp" />
-                    </LinearLayout>
+        </androidx.cardview.widget.CardView>
 
-                </androidx.cardview.widget.CardView>
+        <!-- ===== LOADING ===== -->
+        <ProgressBar
+            android:id="@+id/progressProduk"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20dp"
+            android:visibility="gone" />
 
-            </GridLayout>
-        </LinearLayout>
+        <!-- ===== EMPTY STATE ===== -->
+        <TextView
+            android:id="@+id/tvProdukKosong"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="22dp"
+            android:gravity="center"
+            android:text="No products found."
+            android:textColor="#888888"
+            android:textSize="14sp"
+            android:visibility="gone" />
+
+        <!-- ===== GRID PRODUK ===== -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvProduk"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:clipToPadding="false"
+            android:nestedScrollingEnabled="false"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            tools:itemCount="6"
+            tools:listitem="@layout/item_produk" />
+
     </LinearLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>
