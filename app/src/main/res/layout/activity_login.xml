@@ -207,16 +207,6 @@
             </LinearLayout>
 
             <!-- Lupa Password -->
-            <TextView
-                android:id="@+id/tvLupaPassword"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:layout_marginTop="8dp"
-                android:text="Lupa password?"
-                android:textColor="#3D6148"
-                android:textSize="12sp"
-                android:textStyle="bold" />
 
             <!-- Button Masuk -->
             <androidx.appcompat.widget.AppCompatButton

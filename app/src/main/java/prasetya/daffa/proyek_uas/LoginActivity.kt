@@ -1,72 +1,110 @@
 package prasetya.daffa.proyek_uas
 
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
-import android.view.View
+import android.widget.EditText
+import android.widget.LinearLayout
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.WindowCompat
-import prasetya.daffa.proyek_uas.databinding.ActivityLoginBinding
+import androidx.appcompat.widget.AppCompatButton
+import prasetya.daffa.proyek_uas.api.ApiClient
+import prasetya.daffa.proyek_uas.api.AuthResponse
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
-class LoginActivity : AppCompatActivity(), View.OnClickListener {
+class LoginActivity : AppCompatActivity() {
 
-    lateinit var b: ActivityLoginBinding
-    lateinit var db: DBOpenHelper
+    private lateinit var btnBack: LinearLayout
+    private lateinit var etEmail: EditText
+    private lateinit var etPassword: EditText
+    private lateinit var btnLogin: AppCompatButton
+    private lateinit var tvDaftar: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        setContentView(R.layout.activity_login)
 
-        b = ActivityLoginBinding.inflate(layoutInflater)
-        setContentView(b.root)
+        btnBack = findViewById(R.id.btnBack)
+        etEmail = findViewById(R.id.etEmail)
+        etPassword = findViewById(R.id.etPassword)
+        btnLogin = findViewById(R.id.btnLogin)
+        tvDaftar = findViewById(R.id.tvDaftar)
 
+        btnBack.setOnClickListener {
+            finish()
+        }
 
+        tvDaftar.setOnClickListener {
+            startActivity(Intent(this, RegisterActivity::class.java))
+        }
 
-        db = DBOpenHelper(this)
-
-        b.btnLogin.setOnClickListener(this)
-        b.tvDaftar.setOnClickListener(this)
-        b.btnBack.setOnClickListener(this)
+        btnLogin.setOnClickListener {
+            loginUser()
+        }
     }
 
-    override fun onClick(v: View?) {
-        when (v?.id) {
-            R.id.btnBack -> {
-                val intent = Intent(this, MainActivity::class.java)
-                startActivity(intent)
-            }
-            R.id.btnLogin -> {
-                val email = b.etEmail.text.toString()
-                val pass = b.etPassword.text.toString()
+    private fun loginUser() {
+        val email = etEmail.text.toString().trim()
+        val password = etPassword.text.toString().trim()
 
-                if (email.isEmpty() || pass.isEmpty()) {
-                    Toast.makeText(this, "Email & Password harus diisi", Toast.LENGTH_SHORT).show()
-                    return
-                }
-
-                val role = db.checkLogin(email, pass)
-
-                if (role != null) {
-                    Toast.makeText(this, "Login sebagai $role", Toast.LENGTH_SHORT).show()
-
-                    if (role == "admin") {
-                        Toast.makeText(this, "Masuk Admin Page", Toast.LENGTH_SHORT).show()
-                    } else {
-                        val intent = Intent(this, MainActivity::class.java)
-                        startActivity(intent)
-                    }
-
-                } else {
-                    Toast.makeText(this, "Login gagal", Toast.LENGTH_SHORT).show()
-                }
-            }
-
-            R.id.tvDaftar -> {
-                val intent = Intent(this, RegisterActivity::class.java)
-                startActivity(intent)
-            }
+        if (email.isEmpty()) {
+            etEmail.error = "Email wajib diisi"
+            etEmail.requestFocus()
+            return
         }
+
+        if (password.isEmpty()) {
+            etPassword.error = "Password wajib diisi"
+            etPassword.requestFocus()
+            return
+        }
+
+        btnLogin.isEnabled = false
+        btnLogin.text = "Memproses..."
+
+        ApiClient.instance.login(email, password).enqueue(object : Callback<AuthResponse> {
+
+            override fun onResponse(
+                call: Call<AuthResponse>,
+                response: Response<AuthResponse>
+            ) {
+                btnLogin.isEnabled = true
+                btnLogin.text = "Masuk"
+
+                val body = response.body()
+
+                if (response.isSuccessful && body?.status == true && body.user != null) {
+                    val namaUser = body.user.name
+                    val roleUser = body.user.role
+
+                    Toast.makeText(
+                        this@LoginActivity,
+                        "Login berhasil, selamat datang $namaUser sebagai $roleUser",
+                        Toast.LENGTH_LONG
+                    ).show()
+                } else {
+                    Toast.makeText(
+                        this@LoginActivity,
+                        body?.message ?: "Login gagal. Email atau password salah.",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+            }
+
+            override fun onFailure(call: Call<AuthResponse>, t: Throwable) {
+                btnLogin.isEnabled = true
+                btnLogin.text = "Masuk"
+
+                Toast.makeText(
+                    this@LoginActivity,
+                    "Koneksi gagal: ${t.message}",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+        })
     }
 }
