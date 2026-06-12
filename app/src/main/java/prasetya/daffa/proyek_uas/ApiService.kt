@@ -11,6 +11,7 @@ import retrofit2.http.POST
 import retrofit2.http.Part
 import retrofit2.http.Path
 
+
 interface ApiService {
 
     @FormUrlEncoded
@@ -69,4 +70,19 @@ interface ApiService {
 
     @POST("api/barang/delete/{id}")
     fun deleteBarang(@Path("id") id: Int): Call<BarangResponse>
+
+    @GET("api/profile/{id}")
+    fun getProfile(
+        @Path("id") id: Int
+    ): Call<ProfileResponse>
+
+    @GET("api/riwayat-pesanan/{userId}")
+    fun getRiwayatPesanan(
+        @Path("userId") userId: Int
+    ): Call<RiwayatPesananResponse>
+
+    @GET("api/custom-order/{userId}")
+    fun getCustomOrder(
+        @Path("userId") userId: Int
+    ): Call<CustomOrderResponse>
 }

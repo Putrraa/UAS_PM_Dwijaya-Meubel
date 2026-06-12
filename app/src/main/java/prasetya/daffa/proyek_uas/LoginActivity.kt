@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
 import prasetya.daffa.proyek_uas.api.ApiClient
 import prasetya.daffa.proyek_uas.api.AuthResponse
+import prasetya.daffa.proyek_uas.helper.SessionManager
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -22,11 +23,14 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var etPassword: EditText
     private lateinit var btnLogin: AppCompatButton
     private lateinit var tvDaftar: TextView
+    private lateinit var session: SessionManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_login)
+
+        session = SessionManager(this)
 
         btnBack = findViewById(R.id.btnBack)
         etEmail = findViewById(R.id.etEmail)
@@ -78,14 +82,25 @@ class LoginActivity : AppCompatActivity() {
                 val body = response.body()
 
                 if (response.isSuccessful && body?.status == true && body.user != null) {
-                    val namaUser = body.user.name
-                    val roleUser = body.user.role
+                    val user = body.user
+
+                    session.saveUser(
+                        id = user.id,
+                        name = user.name,
+                        email = user.email,
+                        role = user.role
+                    )
 
                     Toast.makeText(
                         this@LoginActivity,
-                        "Login berhasil, selamat datang $namaUser sebagai $roleUser",
+                        "Login berhasil, selamat datang ${user.name}",
                         Toast.LENGTH_LONG
                     ).show()
+
+                    val intent = Intent(this@LoginActivity, MainActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    startActivity(intent)
+                    finish()
                 } else {
                     Toast.makeText(
                         this@LoginActivity,
