@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
+import prasetya.daffa.proyek_uas.admin.AdminActivity
 import prasetya.daffa.proyek_uas.api.ApiClient
 import prasetya.daffa.proyek_uas.api.AuthResponse
 import prasetya.daffa.proyek_uas.helper.SessionManager
@@ -97,7 +98,7 @@ class LoginActivity : AppCompatActivity() {
                         Toast.LENGTH_LONG
                     ).show()
 
-                    val intent = Intent(this@LoginActivity, MainActivity::class.java)
+                    val intent = Intent(this@LoginActivity, AdminActivity::class.java)
                     intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                     startActivity(intent)
                     finish()

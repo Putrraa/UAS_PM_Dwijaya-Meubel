@@ -11,7 +11,6 @@ import retrofit2.http.POST
 import retrofit2.http.Part
 import retrofit2.http.Path
 
-
 interface ApiService {
 
     @FormUrlEncoded
@@ -39,7 +38,9 @@ interface ApiService {
     fun getBarang(): Call<BarangListResponse>
 
     @GET("api/barang/{id}")
-    fun getDetailBarang(@Path("id") id: Int): Call<BarangResponse>
+    fun getDetailBarang(
+        @Path("id") id: Int
+    ): Call<BarangResponse>
 
     @Multipart
     @POST("api/barang/store")
@@ -69,7 +70,9 @@ interface ApiService {
     ): Call<BarangResponse>
 
     @POST("api/barang/delete/{id}")
-    fun deleteBarang(@Path("id") id: Int): Call<BarangResponse>
+    fun deleteBarang(
+        @Path("id") id: Int
+    ): Call<ResponseDefault>
 
     @GET("api/profile/{id}")
     fun getProfile(
@@ -85,4 +88,34 @@ interface ApiService {
     fun getCustomOrder(
         @Path("userId") userId: Int
     ): Call<CustomOrderResponse>
+
+    @GET("api/laporan")
+    fun getLaporan(): Call<LaporanResponse>
+
+    @GET("api/pengguna")
+    fun getPengguna(): Call<PenggunaResponse>
+
+    @FormUrlEncoded
+    @POST("api/pengguna/store")
+    fun tambahPengguna(
+        @Field("name") name: String,
+        @Field("email") email: String,
+        @Field("role") role: String,
+        @Field("password") password: String
+    ): Call<ResponseDefault>
+
+    @FormUrlEncoded
+    @POST("api/pengguna/update/{id}")
+    fun updatePengguna(
+        @Path("id") id: Int,
+        @Field("name") name: String,
+        @Field("email") email: String,
+        @Field("role") role: String,
+        @Field("password") password: String?
+    ): Call<ResponseDefault>
+
+    @POST("api/pengguna/delete/{id}")
+    fun deletePengguna(
+        @Path("id") id: Int
+    ): Call<ResponseDefault>
 }
