@@ -51,6 +51,15 @@
                     android:textStyle="bold"
                     android:backgroundTint="#3E5C45" />
 
+                <Button
+                    android:id="@+id/btnTambahBarang2"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:backgroundTint="#3E5C45"
+                    android:text="+ Tambah Kategori"
+                    android:textColor="#FFFFFF"
+                    android:textStyle="bold" />
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

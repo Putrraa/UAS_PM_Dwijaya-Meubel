@@ -58,18 +58,24 @@ data class Barang(
 )
 data class LaporanResponse(
     val status: Boolean,
-    val message: String,
+    val message: String?,
     val data: List<Laporan>
 )
 
 data class Laporan(
     val id: Int?,
-    val jenis: String?,
+
+    @com.google.gson.annotations.SerializedName("jenis_pesanan")
+    val jenisPesanan: String?,
+
     val kode: String?,
-    val nama_customer: String?,
+
     val tanggal: String?,
-    val total: String?,
-    val status: String?
+
+    val pembeli: String?,
+
+    @com.google.gson.annotations.SerializedName("total_harga")
+    val totalHarga: Int?
 )
 
 data class PenggunaResponse(
