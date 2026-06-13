@@ -84,3 +84,20 @@ data class Pengguna(
     val email: String?,
     val role: String?
 )
+
+data class KeranjangResponse(
+    val status: Boolean,
+    val message: String?,
+    val data: List<KeranjangItem>
+)
+
+data class KeranjangItem(
+    val id: Int,
+    val barang_id: Int?,
+    val nama_barang: String?,
+    val harga: String?,
+    val jumlah: Int?,
+    val subtotal: String?,
+    val gambar_url: String?
+)
+

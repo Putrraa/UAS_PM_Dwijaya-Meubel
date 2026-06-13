@@ -1,31 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- item_keranjang.xml -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:background="#FFFFFF">
+    android:background="#FFFFFF"
+    android:orientation="vertical">
 
     <!-- ROW UTAMA -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:paddingHorizontal="12dp"
-        android:paddingVertical="14dp"
-        android:gravity="center_vertical">
+        android:paddingStart="12dp"
+        android:paddingTop="14dp"
+        android:paddingEnd="12dp"
+        android:paddingBottom="14dp">
 
-        <!-- Gambar Produk -->
-        <ImageView
-            android:id="@+id/imgProduk"
+        <!-- GAMBAR PRODUK -->
+        <androidx.cardview.widget.CardView
             android:layout_width="56dp"
             android:layout_height="56dp"
-            android:scaleType="centerCrop"
-            android:background="#FFCCCC"
-            android:layout_marginEnd="10dp" />
+            android:layout_marginEnd="10dp"
+            app:cardBackgroundColor="#F8F3EF"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="0dp">
 
-        <!-- Nama & Brand -->
+            <ImageView
+                android:id="@+id/imgProduk"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="5dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/home" />
+
+        </androidx.cardview.widget.CardView>
+
+        <!-- NAMA PRODUK -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -36,105 +48,117 @@
                 android:id="@+id/tvNamaProduk"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:textColor="#1A1A1A"
                 android:textSize="13sp"
                 android:textStyle="bold"
-                android:textColor="#1A1A1A"
-                android:maxLines="2"
-                android:ellipsize="end"
-                tools:text="Lemari" />
+                tools:text="Lemari Kayu Jati" />
 
             <TextView
                 android:id="@+id/tvBrandProduk"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="11sp"
-                android:textColor="#888888"
-                android:maxLines="1"
+                android:layout_marginTop="3dp"
                 android:ellipsize="end"
-                tools:text="Dwijaya Mebel Original" />
+                android:maxLines="1"
+                android:text="Dwijaya Meubel"
+                android:textColor="#888888"
+                android:textSize="11sp"
+                tools:text="Dwijaya Meubel Original" />
+
         </LinearLayout>
 
-        <!-- Harga Satuan -->
+        <!-- HARGA SATUAN -->
         <TextView
             android:id="@+id/tvHargaSatuan"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1.8"
-            android:textSize="12sp"
-            android:textColor="#333333"
             android:gravity="center"
+            android:textColor="#333333"
+            android:textSize="12sp"
             tools:text="Rp 2.000.000" />
 
-        <!-- Kontrol Jumlah: - qty + -->
+        <!-- QTY CONTROL -->
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="30dp"
+            android:layout_height="32dp"
             android:layout_weight="1.6"
-            android:orientation="horizontal"
+            android:background="@drawable/bg_qty_control"
             android:gravity="center"
-            android:background="@drawable/bg_qty_control">
+            android:orientation="horizontal"
+            android:paddingStart="2dp"
+            android:paddingEnd="2dp">
 
             <TextView
                 android:id="@+id/btnKurang"
                 android:layout_width="26dp"
                 android:layout_height="match_parent"
-                android:text="&#8722;"
-                android:textSize="18sp"
-                android:textColor="#333333"
+                android:background="?attr/selectableItemBackgroundBorderless"
                 android:gravity="center"
-                android:background="?attr/selectableItemBackgroundBorderless" />
+                android:text="−"
+                android:textColor="#333333"
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tvJumlah"
                 android:layout_width="28dp"
                 android:layout_height="match_parent"
+                android:gravity="center"
+                android:textColor="#1A1A1A"
                 android:textSize="13sp"
                 android:textStyle="bold"
-                android:textColor="#1A1A1A"
-                android:gravity="center"
                 tools:text="2" />
 
             <TextView
                 android:id="@+id/btnTambah"
                 android:layout_width="26dp"
                 android:layout_height="match_parent"
-                android:text="+"
-                android:textSize="18sp"
-                android:textColor="#333333"
+                android:background="?attr/selectableItemBackgroundBorderless"
                 android:gravity="center"
-                android:background="?attr/selectableItemBackgroundBorderless" />
+                android:text="+"
+                android:textColor="#333333"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
         </LinearLayout>
 
-        <!-- Subtotal -->
+        <!-- SUBTOTAL -->
         <TextView
             android:id="@+id/tvSubtotal"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="2.0"
+            android:gravity="center"
+            android:textColor="#D32F2F"
             android:textSize="12sp"
             android:textStyle="bold"
-            android:textColor="#D32F2F"
-            android:gravity="center"
             tools:text="Rp 4.000.000" />
 
-        <!-- Tombol Hapus -->
+        <!-- HAPUS -->
         <Button
             android:id="@+id/btnHapus"
             style="@style/Widget.MaterialComponents.Button"
             android:layout_width="0dp"
             android:layout_height="34dp"
             android:layout_weight="1.4"
-            android:backgroundTint="#1A1A1A"
-            android:text="Hapus"
-            android:textColor="#FFFFFF"
-            android:textSize="11sp"
+            android:backgroundTint="#2B1A12"
             android:insetTop="0dp"
             android:insetBottom="0dp"
-            android:paddingHorizontal="4dp" />
+            android:minHeight="0dp"
+            android:paddingStart="4dp"
+            android:paddingEnd="4dp"
+            android:text="Hapus"
+            android:textAllCaps="false"
+            android:textColor="#FFFFFF"
+            android:textSize="11sp"
+            app:cornerRadius="8dp" />
 
     </LinearLayout>
 
-    <!-- Divider bawah -->
+    <!-- DIVIDER -->
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"

@@ -75,7 +75,7 @@
                 android:layout_height="wrap_content"/>
 
             <TextView
-                android:text="Combong, Wanengpaten, Gampengrejo, Kab. Kediri"
+                android:text="Combong, Wanengpaten, Kec. Gampengrejo, Kabupaten Kediri"
                 android:layout_marginBottom="12dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
@@ -101,7 +101,7 @@
                 android:layout_height="wrap_content"/>
 
             <TextView
-                android:text="+62 897 242 916 52"
+                android:text="+62 812 390 756 37"
                 android:layout_marginBottom="16dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>

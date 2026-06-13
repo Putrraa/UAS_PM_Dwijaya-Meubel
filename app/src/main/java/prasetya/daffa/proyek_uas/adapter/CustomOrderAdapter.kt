@@ -8,6 +8,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import prasetya.daffa.proyek_uas.R
+import com.bumptech.glide.Glide
 
 data class CustomOrder(
     val furnitureNama: String,
@@ -41,15 +42,29 @@ class CustomOrderAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = list[position]
+
         holder.tvNama.text = item.furnitureNama
         holder.tvKayu.text = item.kayu
         holder.tvUkuran.text = item.ukuran
         holder.tvHarga.text = item.harga
         holder.tvStatus.text = item.status
 
-        // Sembunyikan tombol Bayar jika status bukan Pending
-        holder.btnBayar.visibility = if (item.status == "Pending") View.VISIBLE else View.GONE
-        holder.btnBayar.setOnClickListener { onBayarClick(item) }
+        val gambarUrl = item.imageUrl
+            .replace("\\/", "/")
+            .replace(" ", "%20")
+
+        Glide.with(holder.itemView.context)
+            .load(gambarUrl.ifEmpty { null })
+            .placeholder(R.drawable.home)
+            .error(R.drawable.home)
+            .into(holder.ivThumbnail)
+
+        holder.btnBayar.visibility =
+            if (item.status.equals("Pending", ignoreCase = true)) View.VISIBLE else View.GONE
+
+        holder.btnBayar.setOnClickListener {
+            onBayarClick(item)
+        }
     }
 
     override fun getItemCount() = list.size

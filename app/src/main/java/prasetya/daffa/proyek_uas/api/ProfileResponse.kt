@@ -47,5 +47,8 @@ data class CustomOrderApiItem(
     val kayu: String,
     val ukuran: String,
     val harga: String,
-    val status: String
+    val status: String,
+
+    @SerializedName("gambar_url")
+    val gambarUrl: String?
 )

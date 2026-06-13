@@ -278,7 +278,8 @@ class ProfileActivity : AppCompatActivity(), View.OnClickListener {
                                 kayu = item.kayu,
                                 ukuran = item.ukuran,
                                 harga = item.harga,
-                                status = item.status
+                                status = item.status,
+                                imageUrl = item.gambarUrl ?: ""
                             )
                         }
 

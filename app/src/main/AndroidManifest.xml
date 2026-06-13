@@ -16,6 +16,7 @@
         <activity android:name=".LoginActivity"></activity>
         <activity android:name=".RegisterActivity"></activity>
         <activity android:name=".ProfileActivity"></activity>
+        <activity android:name=".KeranjangActivity"></activity>
         <activity
             android:name=".admin.AdminActivity"
             android:exported="false" />

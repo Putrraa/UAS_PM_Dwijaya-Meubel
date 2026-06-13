@@ -118,4 +118,37 @@ interface ApiService {
     fun deletePengguna(
         @Path("id") id: Int
     ): Call<ResponseDefault>
+
+    @Multipart
+    @POST("api/custom-order/store")
+    fun tambahCustomOrder(
+        @Part("user_id") userId: RequestBody,
+        @Part("jenis_furniture") jenisFurniture: RequestBody,
+        @Part("jenis_kayu") jenisKayu: RequestBody,
+        @Part("ukuran") ukuran: RequestBody,
+        @Part("catatan") catatan: RequestBody,
+        @Part gambar: MultipartBody.Part?
+    ): Call<ResponseDefault>
+
+    @GET("api/keranjang/{userId}")
+    fun getKeranjang(
+        @Path("userId") userId: Int
+    ): Call<KeranjangResponse>
+
+    @FormUrlEncoded
+    @POST("api/keranjang/update/{id}")
+    fun updateJumlahKeranjang(
+        @Path("id") id: Int,
+        @Field("jumlah") jumlah: Int
+    ): Call<ResponseDefault>
+
+    @POST("api/keranjang/delete/{id}")
+    fun hapusKeranjang(
+        @Path("id") id: Int
+    ): Call<ResponseDefault>
+
+    @POST("api/keranjang/bayar/{userId}")
+    fun bayarKeranjang(
+        @Path("userId") userId: Int
+    ): Call<ResponseDefault>
 }
