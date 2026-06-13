@@ -1,140 +1,347 @@
 package prasetya.daffa.proyek_uas.fragment
 
-import android.content.Intent
-import android.net.Uri
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import prasetya.daffa.proyek_uas.admin.LaporanAdapter
+import prasetya.daffa.proyek_uas.adapter.PenggunaAdapter
 import prasetya.daffa.proyek_uas.api.ApiClient
-import prasetya.daffa.proyek_uas.api.Laporan
-import prasetya.daffa.proyek_uas.api.LaporanResponse
-import prasetya.daffa.proyek_uas.databinding.LaporanAdminFragmentBinding
+import prasetya.daffa.proyek_uas.api.Pengguna
+import prasetya.daffa.proyek_uas.api.PenggunaResponse
+import prasetya.daffa.proyek_uas.api.ResponseDefault
+import prasetya.daffa.proyek_uas.databinding.DialogPenggunaBinding
+import prasetya.daffa.proyek_uas.databinding.PenggunaAdminFragmentBinding
+import prasetya.daffa.proyek_uas.helper.SessionManager
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.text.NumberFormat
-import java.util.Locale
 
-class LaporanAdminFragment : Fragment() {
+class PenggunaAdminFragment : Fragment() {
 
-    private var _b: LaporanAdminFragmentBinding? = null
+    private var _b: PenggunaAdminFragmentBinding? = null
     private val b get() = _b!!
 
-    private lateinit var laporanAdapter: LaporanAdapter
-    private val listLaporan = mutableListOf<Laporan>()
+    private lateinit var session: SessionManager
+    private lateinit var penggunaAdapter: PenggunaAdapter
+    private val listPengguna = mutableListOf<Pengguna>()
 
-    private val baseUrl = "https://www.dwijayameubel.my.id/"
+    private val roleList = listOf("admin", "kasir", "customer")
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _b = LaporanAdminFragmentBinding.inflate(inflater, container, false)
+        _b = PenggunaAdminFragmentBinding.inflate(inflater, container, false)
         return b.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        session = SessionManager(requireContext())
+
         setupRecyclerView()
         setupButton()
-        loadLaporan()
+        loadPengguna()
     }
 
     private fun setupRecyclerView() {
-        laporanAdapter = LaporanAdapter(listLaporan)
+        penggunaAdapter = PenggunaAdapter(
+            listPengguna = listPengguna,
+            currentUserId = session.getUserId(),
+            onEdit = { pengguna ->
+                showDialogPengguna(isEdit = true, pengguna = pengguna)
+            },
+            onDelete = { pengguna ->
+                confirmDelete(pengguna)
+            }
+        )
 
-        b.rvLaporan.layoutManager = LinearLayoutManager(requireContext())
-        b.rvLaporan.adapter = laporanAdapter
+        b.rvPengguna.layoutManager = LinearLayoutManager(requireContext())
+        b.rvPengguna.adapter = penggunaAdapter
     }
 
     private fun setupButton() {
-        b.btnExportExcel.setOnClickListener {
-            val intent = Intent(Intent.ACTION_VIEW)
-            intent.data = Uri.parse(baseUrl + "laporan/export-excel")
-            startActivity(intent)
-        }
-
-        b.btnCetakPdf.setOnClickListener {
-            val intent = Intent(Intent.ACTION_VIEW)
-            intent.data = Uri.parse(baseUrl + "laporan")
-            startActivity(intent)
+        b.btnTambahPengguna.setOnClickListener {
+            showDialogPengguna(isEdit = false, pengguna = null)
         }
     }
 
-    private fun loadLaporan() {
+    private fun loadPengguna() {
         showLoading(true)
 
-        ApiClient.instance.getLaporan().enqueue(object : Callback<LaporanResponse> {
+        ApiClient.instance.getPengguna().enqueue(object : Callback<PenggunaResponse> {
             override fun onResponse(
-                call: Call<LaporanResponse>,
-                response: Response<LaporanResponse>
+                call: Call<PenggunaResponse>,
+                response: Response<PenggunaResponse>
             ) {
                 showLoading(false)
 
                 val body = response.body()
 
                 if (response.isSuccessful && body?.status == true) {
-                    laporanAdapter.setData(body.data)
-                    updateTotal(body.data)
+                    penggunaAdapter.setData(body.data)
                     updateEmptyState(body.data)
+                    b.tvJumlahPengguna.text = "${body.data.size} Pengguna"
                 } else {
+                    updateEmptyState(emptyList())
+                    b.tvJumlahPengguna.text = "0 Pengguna"
+
                     Toast.makeText(
                         requireContext(),
-                        body?.message ?: "Gagal mengambil data laporan",
+                        body?.message ?: "Gagal mengambil data pengguna",
                         Toast.LENGTH_SHORT
                     ).show()
-
-                    updateTotal(emptyList())
-                    updateEmptyState(emptyList())
                 }
             }
 
-            override fun onFailure(call: Call<LaporanResponse>, t: Throwable) {
+            override fun onFailure(call: Call<PenggunaResponse>, t: Throwable) {
                 showLoading(false)
+                updateEmptyState(emptyList())
+                b.tvJumlahPengguna.text = "0 Pengguna"
 
                 Toast.makeText(
                     requireContext(),
                     "Koneksi gagal: ${t.message}",
                     Toast.LENGTH_LONG
                 ).show()
-
-                updateTotal(emptyList())
-                updateEmptyState(emptyList())
             }
         })
     }
 
-    private fun updateTotal(data: List<Laporan>) {
-        val grandTotal = data.sumOf { it.totalHarga ?: 0 }
+    private fun showDialogPengguna(isEdit: Boolean, pengguna: Pengguna?) {
+        val dialogBinding = DialogPenggunaBinding.inflate(layoutInflater)
 
-        b.tvGrandTotal.text = formatRupiah(grandTotal)
-        b.tvJumlahData.text = "${data.size} Data"
+        dialogBinding.tvTitleDialogPengguna.text =
+            if (isEdit) "Edit Pengguna" else "Tambah Pengguna"
+
+        val adapterRole = ArrayAdapter(
+            requireContext(),
+            android.R.layout.simple_spinner_dropdown_item,
+            roleList
+        )
+
+        dialogBinding.spinnerRolePengguna.adapter = adapterRole
+
+        if (isEdit && pengguna != null) {
+            dialogBinding.etNamaPengguna.setText(pengguna.name ?: "")
+            dialogBinding.etEmailPengguna.setText(pengguna.email ?: "")
+            dialogBinding.etPasswordPengguna.hint = "Password baru (kosongkan jika tidak diganti)"
+
+            val indexRole = roleList.indexOf(pengguna.role ?: "customer")
+            dialogBinding.spinnerRolePengguna.setSelection(if (indexRole >= 0) indexRole else 2)
+        } else {
+            dialogBinding.spinnerRolePengguna.setSelection(2)
+        }
+
+        val dialog = AlertDialog.Builder(requireContext())
+            .setView(dialogBinding.root)
+            .setNegativeButton("Batal", null)
+            .setPositiveButton(if (isEdit) "Simpan" else "Tambah", null)
+            .create()
+
+        dialog.setOnShowListener {
+            val btnSimpan = dialog.getButton(AlertDialog.BUTTON_POSITIVE)
+
+            btnSimpan.setOnClickListener {
+                val name = dialogBinding.etNamaPengguna.text.toString().trim()
+                val email = dialogBinding.etEmailPengguna.text.toString().trim()
+                val password = dialogBinding.etPasswordPengguna.text.toString().trim()
+                val role = dialogBinding.spinnerRolePengguna.selectedItem.toString()
+
+                if (name.isEmpty()) {
+                    dialogBinding.etNamaPengguna.error = "Nama wajib diisi"
+                    return@setOnClickListener
+                }
+
+                if (email.isEmpty()) {
+                    dialogBinding.etEmailPengguna.error = "Email wajib diisi"
+                    return@setOnClickListener
+                }
+
+                if (!isEdit && password.isEmpty()) {
+                    dialogBinding.etPasswordPengguna.error = "Password wajib diisi"
+                    return@setOnClickListener
+                }
+
+                if (!isEdit && password.length < 6) {
+                    dialogBinding.etPasswordPengguna.error = "Password minimal 6 karakter"
+                    return@setOnClickListener
+                }
+
+                if (isEdit) {
+                    val id = pengguna?.id
+                    if (id == null) {
+                        Toast.makeText(requireContext(), "ID pengguna tidak valid", Toast.LENGTH_SHORT).show()
+                        return@setOnClickListener
+                    }
+
+                    updatePengguna(
+                        id = id,
+                        name = name,
+                        email = email,
+                        password = password,
+                        role = role,
+                        dialog = dialog
+                    )
+                } else {
+                    tambahPengguna(
+                        name = name,
+                        email = email,
+                        password = password,
+                        role = role,
+                        dialog = dialog
+                    )
+                }
+            }
+        }
+
+        dialog.show()
     }
 
-    private fun updateEmptyState(data: List<Laporan>) {
+    private fun tambahPengguna(
+        name: String,
+        email: String,
+        password: String,
+        role: String,
+        dialog: AlertDialog
+    ) {
+        ApiClient.instance.tambahPengguna(name, email, password, role)
+            .enqueue(object : Callback<ResponseDefault> {
+                override fun onResponse(
+                    call: Call<ResponseDefault>,
+                    response: Response<ResponseDefault>
+                ) {
+                    val body = response.body()
+
+                    if (response.isSuccessful && body?.status == true) {
+                        Toast.makeText(requireContext(), body.message, Toast.LENGTH_SHORT).show()
+                        dialog.dismiss()
+                        loadPengguna()
+                    } else {
+                        Toast.makeText(
+                            requireContext(),
+                            body?.message ?: "Gagal menambah pengguna",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<ResponseDefault>, t: Throwable) {
+                    Toast.makeText(
+                        requireContext(),
+                        "Koneksi gagal: ${t.message}",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+            })
+    }
+
+    private fun updatePengguna(
+        id: Int,
+        name: String,
+        email: String,
+        password: String,
+        role: String,
+        dialog: AlertDialog
+    ) {
+        ApiClient.instance.updatePengguna(id, name, email, password, role)
+            .enqueue(object : Callback<ResponseDefault> {
+                override fun onResponse(
+                    call: Call<ResponseDefault>,
+                    response: Response<ResponseDefault>
+                ) {
+                    val body = response.body()
+
+                    if (response.isSuccessful && body?.status == true) {
+                        Toast.makeText(requireContext(), body.message, Toast.LENGTH_SHORT).show()
+                        dialog.dismiss()
+                        loadPengguna()
+                    } else {
+                        Toast.makeText(
+                            requireContext(),
+                            body?.message ?: "Gagal mengubah pengguna",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<ResponseDefault>, t: Throwable) {
+                    Toast.makeText(
+                        requireContext(),
+                        "Koneksi gagal: ${t.message}",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+            })
+    }
+
+    private fun confirmDelete(pengguna: Pengguna) {
+        val id = pengguna.id
+
+        if (id == null) {
+            Toast.makeText(requireContext(), "ID pengguna tidak valid", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        AlertDialog.Builder(requireContext())
+            .setTitle("Hapus Pengguna")
+            .setMessage("Yakin ingin menghapus ${pengguna.name ?: "pengguna ini"}?")
+            .setNegativeButton("Batal", null)
+            .setPositiveButton("Hapus") { _, _ ->
+                deletePengguna(id)
+            }
+            .show()
+    }
+
+    private fun deletePengguna(id: Int) {
+        ApiClient.instance.deletePengguna(id).enqueue(object : Callback<ResponseDefault> {
+            override fun onResponse(
+                call: Call<ResponseDefault>,
+                response: Response<ResponseDefault>
+            ) {
+                val body = response.body()
+
+                if (response.isSuccessful && body?.status == true) {
+                    Toast.makeText(requireContext(), body.message, Toast.LENGTH_SHORT).show()
+                    loadPengguna()
+                } else {
+                    Toast.makeText(
+                        requireContext(),
+                        body?.message ?: "Gagal menghapus pengguna",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseDefault>, t: Throwable) {
+                Toast.makeText(
+                    requireContext(),
+                    "Koneksi gagal: ${t.message}",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+        })
+    }
+
+    private fun updateEmptyState(data: List<Pengguna>) {
         if (data.isEmpty()) {
-            b.layoutLaporanKosong.visibility = View.VISIBLE
-            b.rvLaporan.visibility = View.GONE
+            b.layoutPenggunaKosong.visibility = View.VISIBLE
+            b.rvPengguna.visibility = View.GONE
         } else {
-            b.layoutLaporanKosong.visibility = View.GONE
-            b.rvLaporan.visibility = View.VISIBLE
+            b.layoutPenggunaKosong.visibility = View.GONE
+            b.rvPengguna.visibility = View.VISIBLE
         }
     }
 
     private fun showLoading(isLoading: Boolean) {
-        b.progressLaporan.visibility = if (isLoading) View.VISIBLE else View.GONE
-    }
-
-    private fun formatRupiah(value: Int): String {
-        val formatter = NumberFormat.getCurrencyInstance(Locale("id", "ID"))
-        return formatter.format(value).replace(",00", "")
+        b.progressPengguna.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 
     override fun onDestroyView() {

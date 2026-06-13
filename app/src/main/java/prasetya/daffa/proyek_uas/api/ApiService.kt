@@ -100,8 +100,8 @@ interface ApiService {
     fun tambahPengguna(
         @Field("name") name: String,
         @Field("email") email: String,
-        @Field("role") role: String,
-        @Field("password") password: String
+        @Field("password") password: String,
+        @Field("role") role: String
     ): Call<ResponseDefault>
 
     @FormUrlEncoded
@@ -110,8 +110,8 @@ interface ApiService {
         @Path("id") id: Int,
         @Field("name") name: String,
         @Field("email") email: String,
-        @Field("role") role: String,
-        @Field("password") password: String?
+        @Field("password") password: String,
+        @Field("role") role: String
     ): Call<ResponseDefault>
 
     @POST("api/pengguna/delete/{id}")
@@ -151,5 +151,6 @@ interface ApiService {
     fun bayarKeranjang(
         @Path("userId") userId: Int
     ): Call<ResponseDefault>
+
 
 }

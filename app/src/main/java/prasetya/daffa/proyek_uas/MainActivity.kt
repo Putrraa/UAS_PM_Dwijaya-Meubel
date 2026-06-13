@@ -49,9 +49,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.menu_cart -> {
                     if (session.isLogin()) {
                         // Kalau nanti sudah ada CartActivity, ganti ke sini:
-                         startActivity(Intent(this, KeranjangActivity::class.java))
-
-                        Toast.makeText(this, "Halaman keranjang belum tersedia", Toast.LENGTH_SHORT).show()
+                        startActivity(Intent(this, KeranjangActivity::class.java))
                     } else {
                         Toast.makeText(this, "Silakan login terlebih dahulu", Toast.LENGTH_SHORT).show()
                         startActivity(Intent(this, LoginActivity::class.java))

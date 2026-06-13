@@ -16,6 +16,7 @@ import prasetya.daffa.proyek_uas.databinding.ActivityAdminBinding
 import prasetya.daffa.proyek_uas.fragment.KelolaBarangFragment
 import prasetya.daffa.proyek_uas.helper.SessionManager
 import prasetya.daffa.proyek_uas.fragment.LaporanAdminFragment
+import prasetya.daffa.proyek_uas.fragment.PenggunaAdminFragment
 
 class AdminActivity : AppCompatActivity() {
 
@@ -61,6 +62,11 @@ class AdminActivity : AppCompatActivity() {
                 R.id.laporan -> {
                     replaceFragment(LaporanAdminFragment())
                     supportActionBar?.title = "Laporan"
+                    true
+                }
+                R.id.pengguna -> {
+                    replaceFragment(PenggunaAdminFragment())
+                    supportActionBar?.title = "Data Pengguna"
                     true
                 }
 

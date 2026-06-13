@@ -80,7 +80,7 @@ data class Laporan(
 
 data class PenggunaResponse(
     val status: Boolean,
-    val message: String,
+    val message: String?,
     val data: List<Pengguna>
 )
 
@@ -88,7 +88,10 @@ data class Pengguna(
     val id: Int?,
     val name: String?,
     val email: String?,
-    val role: String?
+    val role: String?,
+
+    @com.google.gson.annotations.SerializedName("created_at")
+    val createdAt: String?
 )
 
 data class KeranjangResponse(

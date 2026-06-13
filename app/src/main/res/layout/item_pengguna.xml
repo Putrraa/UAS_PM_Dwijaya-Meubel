@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="12dp"
+    app:cardBackgroundColor="#FFFFFF"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="2dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="14dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <!-- AVATAR -->
+            <TextView
+                android:id="@+id/tvInitialPengguna"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:background="#EAF1EC"
+                android:gravity="center"
+                android:text="D"
+                android:textColor="#3D5A4A"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tvNamaPengguna"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="#2B1A12"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    tools:text="Daffa Putra" />
+
+                <TextView
+                    android:id="@+id/tvEmailPengguna"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:textColor="#777777"
+                    android:textSize="12sp"
+                    tools:text="daffa@gmail.com" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tvRolePengguna"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#EAF1EC"
+                android:paddingStart="10dp"
+                android:paddingTop="5dp"
+                android:paddingEnd="10dp"
+                android:paddingBottom="5dp"
+                android:textColor="#3D5A4A"
+                android:textSize="11sp"
+                android:textStyle="bold"
+                tools:text="Admin" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tvTanggalPengguna"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:textColor="#999999"
+            android:textSize="12sp"
+            tools:text="Terdaftar: 13 Jun 2026" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="12dp"
+            android:background="#EEEEEE" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnEditPengguna"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:layout_marginEnd="8dp"
+                android:backgroundTint="#EAF1EC"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:text="Edit"
+                android:textAllCaps="false"
+                android:textColor="#3D5A4A"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/btnHapusPengguna"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:backgroundTint="#FDECEC"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:text="Hapus"
+                android:textAllCaps="false"
+                android:textColor="#D32F2F"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>
