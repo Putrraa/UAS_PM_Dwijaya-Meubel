@@ -152,5 +152,26 @@ interface ApiService {
         @Path("userId") userId: Int
     ): Call<ResponseDefault>
 
+    @GET("api/kasir/custom-order")
+    fun getKasirCustomOrder(): Call<KasirCustomOrderResponse>
+
+    @FormUrlEncoded
+    @POST("api/kasir/custom-order/update/{id}")
+    fun updateKasirCustomOrder(
+        @Path("id") id: Int,
+        @Field("estimasi_harga") estimasiHarga: String,
+        @Field("status") status: String
+    ): Call<ResponseDefault>
+
+    @GET("api/kasir/pesanan")
+    fun getKasirPesanan(): Call<KasirPesananResponse>
+
+    @FormUrlEncoded
+    @POST("api/kasir/pesanan/update-status/{id}")
+    fun updateStatusPesananKasir(
+        @Path("id") id: Int,
+        @Field("status") status: Int
+    ): Call<ResponseDefault>
+
 
 }

@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import prasetya.daffa.proyek_uas.admin.LaporanAdapter
+import prasetya.daffa.proyek_uas.admin.DataLaporanAdapter
 import prasetya.daffa.proyek_uas.api.ApiClient
 import prasetya.daffa.proyek_uas.api.Laporan
 import prasetya.daffa.proyek_uas.api.LaporanResponse
@@ -25,7 +25,7 @@ class LaporanAdminFragment : Fragment() {
     private var _b: LaporanAdminFragmentBinding? = null
     private val b get() = _b!!
 
-    private lateinit var laporanAdapter: LaporanAdapter
+    private lateinit var laporanAdapter: DataLaporanAdapter
     private val listLaporan = mutableListOf<Laporan>()
 
     private val baseUrl = "https://www.dwijayameubel.my.id/"
@@ -48,7 +48,7 @@ class LaporanAdminFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        laporanAdapter = LaporanAdapter(listLaporan)
+        laporanAdapter = DataLaporanAdapter(listLaporan)
 
         b.rvLaporan.layoutManager = LinearLayoutManager(requireContext())
         b.rvLaporan.adapter = laporanAdapter

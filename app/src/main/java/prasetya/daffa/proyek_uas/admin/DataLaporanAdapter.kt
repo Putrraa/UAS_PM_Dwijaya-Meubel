@@ -9,9 +9,9 @@ import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class LaporanAdapter(
+class DataLaporanAdapter(
     private val listLaporan: MutableList<Laporan>
-) : RecyclerView.Adapter<LaporanAdapter.LaporanViewHolder>() {
+) : RecyclerView.Adapter<DataLaporanAdapter.LaporanViewHolder>() {
 
     inner class LaporanViewHolder(val b: ItemLaporanBinding) :
         RecyclerView.ViewHolder(b.root)

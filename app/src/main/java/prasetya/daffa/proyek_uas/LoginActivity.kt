@@ -10,6 +10,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
 import prasetya.daffa.proyek_uas.admin.AdminActivity
+import prasetya.daffa.proyek_uas.kasir.KasirActivity
 import prasetya.daffa.proyek_uas.api.ApiClient
 import prasetya.daffa.proyek_uas.api.AuthResponse
 import prasetya.daffa.proyek_uas.helper.SessionManager
@@ -103,9 +104,9 @@ class LoginActivity : AppCompatActivity() {
                     val intent = when (role) {
                         "admin" -> Intent(this@LoginActivity, AdminActivity::class.java)
                         "customer" -> Intent(this@LoginActivity, MainActivity::class.java)
-
+                        "kasir" -> Intent(this@LoginActivity, KasirActivity::class.java)
                         // Kalau nanti sudah ada KasirActivity:
-                        // "kasir" -> Intent(this@LoginActivity, KasirActivity::class.java)
+
 
                         else -> {
                             Toast.makeText(
