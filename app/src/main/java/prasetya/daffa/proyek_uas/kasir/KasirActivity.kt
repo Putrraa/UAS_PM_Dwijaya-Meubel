@@ -18,6 +18,7 @@ import prasetya.daffa.proyek_uas.R
 import prasetya.daffa.proyek_uas.databinding.ActivityKasirBinding
 import prasetya.daffa.proyek_uas.fragment.CustomOrderKasirFragment
 import prasetya.daffa.proyek_uas.helper.SessionManager
+import kotlin.jvm.java
 
 class KasirActivity : AppCompatActivity() {
 
@@ -82,37 +83,8 @@ class KasirActivity : AppCompatActivity() {
     private fun setupNavDrawer() {
         b.navDrawerKasir.setNavigationItemSelectedListener { item ->
             when (item.itemId) {
-
-                R.id.menu_login -> {
-                    startActivity(Intent(this, LoginActivity::class.java))
-                }
-
-                R.id.menu_cart -> {
-                    if (session.isLogin()) {
-                        startActivity(Intent(this, KeranjangActivity::class.java))
-                    } else {
-                        Toast.makeText(
-                            this,
-                            "Silakan login terlebih dahulu",
-                            Toast.LENGTH_SHORT
-                        ).show()
-
-                        startActivity(Intent(this, LoginActivity::class.java))
-                    }
-                }
-
                 R.id.menu_profile -> {
-                    if (session.isLogin()) {
-                        startActivity(Intent(this, ProfileActivity::class.java))
-                    } else {
-                        Toast.makeText(
-                            this,
-                            "Silakan login terlebih dahulu",
-                            Toast.LENGTH_SHORT
-                        ).show()
-
-                        startActivity(Intent(this, LoginActivity::class.java))
-                    }
+                    startActivity(Intent(this, KasirProfileActivity::class.java))
                 }
 
                 R.id.menu_logout -> {

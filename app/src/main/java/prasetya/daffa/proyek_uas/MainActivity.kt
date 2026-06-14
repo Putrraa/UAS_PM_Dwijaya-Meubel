@@ -47,22 +47,11 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 R.id.menu_cart -> {
-                    if (session.isLogin()) {
-                        // Kalau nanti sudah ada CartActivity, ganti ke sini:
-                        startActivity(Intent(this, KeranjangActivity::class.java))
-                    } else {
-                        Toast.makeText(this, "Silakan login terlebih dahulu", Toast.LENGTH_SHORT).show()
-                        startActivity(Intent(this, LoginActivity::class.java))
-                    }
+                    startActivity(Intent(this, KeranjangActivity::class.java))
                 }
 
                 R.id.menu_profile -> {
-                    if (session.isLogin()) {
-                        startActivity(Intent(this, ProfileActivity::class.java))
-                    } else {
-                        Toast.makeText(this, "Silakan login terlebih dahulu", Toast.LENGTH_SHORT).show()
-                        startActivity(Intent(this, LoginActivity::class.java))
-                    }
+                    startActivity(Intent(this, ProfileActivity::class.java))
                 }
 
                 R.id.menu_logout -> {
@@ -112,6 +101,7 @@ class MainActivity : AppCompatActivity() {
         val isLogin = session.isLogin()
 
         menu.findItem(R.id.menu_login)?.isVisible = !isLogin
+        menu.findItem(R.id.menu_cart)?.isVisible = isLogin
         menu.findItem(R.id.menu_profile)?.isVisible = isLogin
         menu.findItem(R.id.menu_logout)?.isVisible = isLogin
     }

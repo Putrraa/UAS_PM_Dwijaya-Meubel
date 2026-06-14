@@ -7,10 +7,8 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import prasetya.daffa.proyek_uas.KeranjangActivity
-import prasetya.daffa.proyek_uas.LoginActivity
 import prasetya.daffa.proyek_uas.MainActivity
-import prasetya.daffa.proyek_uas.ProfileActivity
+import prasetya.daffa.proyek_uas.admin.AdminProfileActivity
 import prasetya.daffa.proyek_uas.R
 import prasetya.daffa.proyek_uas.databinding.ActivityAdminBinding
 import prasetya.daffa.proyek_uas.fragment.KelolaBarangFragment
@@ -81,12 +79,7 @@ class AdminActivity : AppCompatActivity() {
         b.navDrawerAdmin.setNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.menu_profile -> {
-//                    if (session.isLogin()) {
-//                        startActivity(Intent(this, ProfileActivity::class.java))
-//                    } else {
-//                        Toast.makeText(this, "Silakan login terlebih dahulu", Toast.LENGTH_SHORT).show()
-//                        startActivity(Intent(this, LoginActivity::class.java))
-//                    }
+                    startActivity(Intent(this, AdminProfileActivity::class.java))
                 }
 
                 R.id.menu_logout -> {

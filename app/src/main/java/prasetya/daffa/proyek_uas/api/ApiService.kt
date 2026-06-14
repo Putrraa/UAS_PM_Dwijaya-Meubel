@@ -105,6 +105,14 @@ interface ApiService {
     ): Call<ResponseDefault>
 
     @FormUrlEncoded
+    @POST("api/pengguna/update-password/{id}")
+    fun updatePasswordPengguna(
+        @Path("id") id: Int,
+        @Field("password_lama") passwordLama: String,
+        @Field("password_baru") passwordBaru: String,
+        @Field("konfirmasi_password") konfirmasiPassword: String
+    ): Call<ResponseDefault>
+    @FormUrlEncoded
     @POST("api/pengguna/update/{id}")
     fun updatePengguna(
         @Path("id") id: Int,
@@ -118,6 +126,8 @@ interface ApiService {
     fun deletePengguna(
         @Path("id") id: Int
     ): Call<ResponseDefault>
+
+
 
     @Multipart
     @POST("api/custom-order/store")

@@ -18,6 +18,8 @@
         <activity android:name=".ProfileActivity"></activity>
         <activity android:name=".KeranjangActivity"></activity>
         <activity android:name=".kasir.KasirActivity"></activity>
+        <activity android:name=".admin.AdminProfileActivity"></activity>
+        <activity android:name=".kasir.KasirProfileActivity" />
         <activity
             android:name=".admin.AdminActivity"
             android:exported="false" />
