@@ -42,7 +42,7 @@ class ProdukAdapter(
             .error(R.drawable.home)
             .into(holder.b.imgProduk)
 
-        holder.b.btnAddCart.setOnClickListener {
+        holder.b.layoutProduk.setOnClickListener {
             onAddCart(item)
         }
     }

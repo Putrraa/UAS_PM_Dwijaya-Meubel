@@ -1,16 +1,21 @@
 package prasetya.daffa.proyek_uas
 
+import android.app.AlertDialog
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
+import com.bumptech.glide.Glide
 import prasetya.daffa.proyek_uas.adapter.KategoriAdapter
 import prasetya.daffa.proyek_uas.adapter.ProdukAdapter
 import prasetya.daffa.proyek_uas.adapter.SliderAdapter
@@ -19,10 +24,15 @@ import prasetya.daffa.proyek_uas.api.Barang
 import prasetya.daffa.proyek_uas.api.BarangListResponse
 import prasetya.daffa.proyek_uas.api.Kategori
 import prasetya.daffa.proyek_uas.api.KategoriResponse
+import prasetya.daffa.proyek_uas.api.ResponseDefault
+import prasetya.daffa.proyek_uas.databinding.DialogDetailProdukBinding
 import prasetya.daffa.proyek_uas.databinding.ShopFragmentBinding
+import prasetya.daffa.proyek_uas.helper.SessionManager
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.text.NumberFormat
+import java.util.Locale
 
 class ShopFragment : Fragment() {
 
@@ -30,6 +40,7 @@ class ShopFragment : Fragment() {
     private val b get() = _b!!
 
     private lateinit var kategoriAdapter: KategoriAdapter
+    private lateinit var session: SessionManager
     private lateinit var produkAdapter: ProdukAdapter
 
     private val semuaBarang = mutableListOf<Barang>()
@@ -47,6 +58,8 @@ class ShopFragment : Fragment() {
         "Stok Terbanyak"
     )
 
+
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -58,7 +71,7 @@ class ShopFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        session = SessionManager(requireContext())
         setupSlider()
         setupRecyclerView()
         setupSort()
@@ -82,16 +95,16 @@ class ShopFragment : Fragment() {
 
     private fun setupRecyclerView() {
         kategoriAdapter = KategoriAdapter(mutableListOf()) { kategori ->
-            kategoriTerpilih = kategori
-            applyFilterAndSort()
+            val slug = kategori.nama_kategori.toSlug()
+
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.frame_container, KategoriProdukFragment.newInstance(slug))
+                .addToBackStack(null)
+                .commit()
         }
 
         produkAdapter = ProdukAdapter(mutableListOf()) { barang ->
-            Toast.makeText(
-                requireContext(),
-                "${barang.nama_barang ?: "Produk"} ditambahkan ke keranjang",
-                Toast.LENGTH_SHORT
-            ).show()
+            showDialogDetailProduk(barang)
         }
 
         b.rvKategori.layoutManager = GridLayoutManager(requireContext(), 2)
@@ -124,6 +137,119 @@ class ShopFragment : Fragment() {
 
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
+    }
+
+    private fun showDialogDetailProduk(barang: Barang) {
+        val dialogBinding = DialogDetailProdukBinding.inflate(layoutInflater)
+
+        val dialog = AlertDialog.Builder(requireContext())
+            .setView(dialogBinding.root)
+            .create()
+
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        val nama = barang.nama_barang ?: "-"
+        val harga = parseHarga(barang.harga)
+        val stok = barang.stok ?: 0
+        val gambarUrl = barang.gambar_url?.replace("\\/", "/")?.replace(" ", "%20")
+
+        var qty = if (stok > 0) 1 else 0
+
+        dialogBinding.tvDetailNamaProduk.text = nama.uppercase()
+        dialogBinding.tvDetailHargaProduk.text = formatRupiah(harga)
+        dialogBinding.tvDetailKategori.text = "Kategori: ${barang.kategori?.nama_kategori ?: "-"}"
+        dialogBinding.tvDetailBahan.text = "Bahan: ${barang.bahan?.nama_bahan ?: "-"}"
+        dialogBinding.tvDetailUkuran.text = "Ukuran: ${barang.ukuran ?: "-"}"
+        dialogBinding.tvDetailDeskripsi.text = barang.deskripsi ?: "-"
+        dialogBinding.etQtyProduk.setText(qty.toString())
+
+        Glide.with(requireContext())
+            .load(gambarUrl)
+            .placeholder(R.drawable.home)
+            .error(R.drawable.home)
+            .into(dialogBinding.imgDetailProduk)
+
+        fun updateTotal() {
+            dialogBinding.etQtyProduk.setText(qty.toString())
+            dialogBinding.tvTotalProduk.text = "Total: ${formatRupiah(harga * qty)}"
+        }
+
+        if (stok > 0) {
+            dialogBinding.tvDetailStok.text = "✔ Tersedia ($stok)"
+            dialogBinding.tvDetailStok.setTextColor(Color.parseColor("#1F7A1F"))
+            dialogBinding.btnAddCartDialog.isEnabled = true
+            dialogBinding.btnAddCartDialog.alpha = 1f
+            dialogBinding.btnAddCartDialog.text = "ADD TO CART"
+        } else {
+            dialogBinding.tvDetailStok.text = "✘ Stok Habis"
+            dialogBinding.tvDetailStok.setTextColor(Color.parseColor("#C0392B"))
+            dialogBinding.btnAddCartDialog.isEnabled = false
+            dialogBinding.btnAddCartDialog.alpha = 0.5f
+            dialogBinding.btnAddCartDialog.text = "STOK HABIS"
+        }
+
+        updateTotal()
+
+        dialogBinding.btnCloseDialog.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialogBinding.btnMinusQty.setOnClickListener {
+            if (stok <= 0) return@setOnClickListener
+
+            if (qty > 1) {
+                qty--
+                updateTotal()
+            }
+        }
+
+        dialogBinding.btnPlusQty.setOnClickListener {
+            if (stok <= 0) return@setOnClickListener
+
+            if (qty < stok) {
+                qty++
+                updateTotal()
+            } else {
+                Toast.makeText(requireContext(), "Maksimal stok $stok", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        dialogBinding.etQtyProduk.setOnFocusChangeListener { _, hasFocus ->
+            if (!hasFocus) {
+                val inputQty = dialogBinding.etQtyProduk.text.toString().toIntOrNull() ?: 1
+                qty = when {
+                    stok <= 0 -> 0
+                    inputQty < 1 -> 1
+                    inputQty > stok -> stok
+                    else -> inputQty
+                }
+                updateTotal()
+            }
+        }
+
+        dialogBinding.btnAddCartDialog.setOnClickListener {
+            val barangId = barang.id
+
+            if (!session.isLogin()) {
+                Toast.makeText(requireContext(), "Silakan login terlebih dahulu", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            if (barangId == null) {
+                Toast.makeText(requireContext(), "ID barang tidak valid", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            if (qty <= 0) {
+                Toast.makeText(requireContext(), "Jumlah tidak valid", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            tambahKeKeranjang(barangId, qty, dialog)
+        }
+
+        dialog.show()
     }
 
     private fun setupSearch() {
@@ -270,9 +396,78 @@ class ShopFragment : Fragment() {
     private fun showLoading(isLoading: Boolean) {
         b.progressProduk.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
+    private fun tambahKeKeranjang(barangId: Int, jumlah: Int, dialog: AlertDialog) {
+        val userId = session.getUserId()
+
+        if (userId == 0) {
+            Toast.makeText(requireContext(), "User ID tidak ditemukan", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        ApiClient.instance.tambahKeranjangQty(userId, barangId, jumlah)
+            .enqueue(object : Callback<ResponseDefault> {
+                override fun onResponse(
+                    call: Call<ResponseDefault>,
+                    response: Response<ResponseDefault>
+                ) {
+                    if (_b == null || !isAdded) return
+
+                    val body = response.body()
+
+                    if (response.isSuccessful && body?.status == true) {
+                        Toast.makeText(
+                            requireContext(),
+                            body.message,
+                            Toast.LENGTH_SHORT
+                        ).show()
+
+                        dialog.dismiss()
+                    } else {
+                        Toast.makeText(
+                            requireContext(),
+                            body?.message ?: "Gagal menambahkan ke keranjang",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<ResponseDefault>, t: Throwable) {
+                    if (_b == null || !isAdded) return
+
+                    Toast.makeText(
+                        requireContext(),
+                        "Koneksi gagal: ${t.message}",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+            })
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _b = null
+    }
+
+    private fun String.toSlug(): String {
+        return this
+            .lowercase()
+            .trim()
+            .replace(Regex("\\s+"), "-")
+    }
+
+    private fun parseHarga(value: String?): Int {
+        if (value.isNullOrEmpty()) return 0
+
+        return value
+            .replace("Rp", "")
+            .replace(".", "")
+            .replace(",", "")
+            .trim()
+            .toIntOrNull() ?: 0
+    }
+
+    private fun formatRupiah(value: Int): String {
+        val format = NumberFormat.getCurrencyInstance(Locale("id", "ID"))
+        return format.format(value).replace(",00", "")
     }
 }

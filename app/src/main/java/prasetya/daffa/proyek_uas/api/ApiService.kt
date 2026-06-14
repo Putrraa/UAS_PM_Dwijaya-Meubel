@@ -183,5 +183,12 @@ interface ApiService {
         @Field("status") status: Int
     ): Call<ResponseDefault>
 
+    @FormUrlEncoded
+    @POST("api/keranjang/tambah")
+    fun tambahKeranjangQty(
+        @Field("user_id") userId: Int,
+        @Field("barang_id") barangId: Int,
+        @Field("jumlah") jumlah: Int
+    ): Call<ResponseDefault>
 
 }
