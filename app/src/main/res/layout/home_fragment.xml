@@ -58,11 +58,13 @@
                 android:textStyle="bold" />
         </LinearLayout>
 
-        <View
+        <ImageView
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:layout_margin="20dp"
-            android:background="#4A6D52" />
+            android:src="@drawable/couch"
+            android:scaleType="fitCenter"
+            android:adjustViewBounds="true" />
 
         <LinearLayout
             android:layout_width="match_parent"

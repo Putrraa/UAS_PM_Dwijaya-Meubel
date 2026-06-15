@@ -24,6 +24,7 @@ import retrofit2.Response
 import java.io.File
 import java.io.FileOutputStream
 
+
 class CustomFragment : Fragment() {
 
     private var _b: CustomFragmentBinding? = null
