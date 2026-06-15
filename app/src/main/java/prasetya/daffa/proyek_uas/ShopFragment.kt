@@ -240,17 +240,17 @@ class ShopFragment : Fragment() {
             val barangId = barang.id
 
             if (!session.isLogin()) {
-                showToast("Silakan login terlebih dahulu", Toast.LENGTH_SHORT)
+                Toast.makeText(requireContext(), "Silakan login terlebih dahulu", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
             if (barangId == null) {
-                showToast("ID barang tidak valid", Toast.LENGTH_SHORT)
+                Toast.makeText(requireContext(), "ID barang tidak valid", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
             if (qty <= 0) {
-                showToast("Jumlah tidak valid", Toast.LENGTH_SHORT)
+                Toast.makeText(requireContext(), "Jumlah tidak valid", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
@@ -260,6 +260,52 @@ class ShopFragment : Fragment() {
         dialog.show()
     }
 
+    private fun tambahKeKeranjang(barangId: Int, jumlah: Int, dialog: AlertDialog) {
+        val userId = session.getUserId()
+
+        if (userId == 0) {
+            Toast.makeText(requireContext(), "User ID tidak ditemukan", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        ApiClient.instance.tambahKeranjangQty(userId, barangId, jumlah)
+            .enqueue(object : Callback<ResponseDefault> {
+                override fun onResponse(
+                    call: Call<ResponseDefault>,
+                    response: Response<ResponseDefault>
+                ) {
+                    if (_b == null || !isAdded) return
+
+                    val body = response.body()
+
+                    if (response.isSuccessful && body?.status == true) {
+                        Toast.makeText(
+                            requireContext(),
+                            body.message,
+                            Toast.LENGTH_SHORT
+                        ).show()
+
+                        dialog.dismiss()
+                    } else {
+                        Toast.makeText(
+                            requireContext(),
+                            body?.message ?: "Gagal menambahkan ke keranjang",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<ResponseDefault>, t: Throwable) {
+                    if (_b == null || !isAdded) return
+
+                    Toast.makeText(
+                        requireContext(),
+                        "Koneksi gagal: ${t.message}",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+            })
+    }
     private fun setupSearch() {
         b.btnSearchProduk.setOnClickListener {
             keywordSearch = b.etSearchProduk.text.toString().trim()
@@ -409,42 +455,7 @@ class ShopFragment : Fragment() {
     private fun showLoading(isLoading: Boolean) {
         _b?.progressProduk?.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
-    private fun tambahKeKeranjang(barangId: Int, jumlah: Int, dialog: AlertDialog) {
-        val userId = session.getUserId()
 
-        if (userId == 0) {
-            showToast("User ID tidak ditemukan", Toast.LENGTH_SHORT)
-            return
-        }
-
-        ApiClient.instance.tambahKeranjangQty(userId, barangId, jumlah)
-            .enqueue(object : Callback<ResponseDefault> {
-                override fun onResponse(
-                    call: Call<ResponseDefault>,
-                    response: Response<ResponseDefault>
-                ) {
-                    if (call.isCanceled || !isViewSafe()) return
-
-                    val body = response.body()
-
-                    if (response.isSuccessful && body?.status == true) {
-                        showToast(body.message, Toast.LENGTH_SHORT)
-                        dialog.dismiss()
-                    } else {
-                        showToast(
-                            body?.message ?: "Gagal menambahkan ke keranjang",
-                            Toast.LENGTH_SHORT
-                        )
-                    }
-                }
-
-                override fun onFailure(call: Call<ResponseDefault>, t: Throwable) {
-                    if (call.isCanceled || !isViewSafe()) return
-
-                    showToast("Koneksi gagal: ${t.message}", Toast.LENGTH_LONG)
-                }
-            })
-    }
 
     private fun isViewSafe(): Boolean {
         return _b != null && isAdded
