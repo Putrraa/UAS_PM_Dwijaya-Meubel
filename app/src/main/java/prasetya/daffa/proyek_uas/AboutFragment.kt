@@ -1,10 +1,13 @@
 package prasetya.daffa.proyek_uas
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import org.osmdroid.config.Configuration
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
@@ -27,6 +30,15 @@ class AboutFragment : Fragment(), View.OnClickListener {
 
         b.btnShop.setOnClickListener(this)
 
+        // ✔ FIX: pakai toUri()
+        b.btnMaps.setOnClickListener {
+            val intent = Intent(
+                Intent.ACTION_VIEW,
+                "https://maps.app.goo.gl/4oz86WC9s4QgjCJy9?g_st=aw".toUri()
+            )
+            startActivity(intent)
+        }
+
         Configuration.getInstance().load(
             requireContext(),
             requireContext().getSharedPreferences(
@@ -40,10 +52,23 @@ class AboutFragment : Fragment(), View.OnClickListener {
         map.setTileSource(TileSourceFactory.MAPNIK)
         map.setMultiTouchControls(true)
 
-        // GANTI DENGAN KOORDINAT TOKO KAMU
+        map.setOnTouchListener { v, event ->
+            when (event.action) {
+                MotionEvent.ACTION_DOWN ->
+                    v.parent.requestDisallowInterceptTouchEvent(true)
+
+                MotionEvent.ACTION_UP,
+                MotionEvent.ACTION_CANCEL ->
+                    v.parent.requestDisallowInterceptTouchEvent(false)
+            }
+
+            v.performClick()
+            false
+        }
+
         val lokasiToko = GeoPoint(
-            -7.983908,
-            112.621391
+            -7.745643610925027,
+            112.024023257671
         )
 
         map.controller.setZoom(17.0)

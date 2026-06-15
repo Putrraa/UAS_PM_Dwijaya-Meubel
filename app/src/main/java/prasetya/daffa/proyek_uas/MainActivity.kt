@@ -88,6 +88,7 @@ class MainActivity : AppCompatActivity() {
             true
         }
 
+
         loadFragment(HomeFragment())
 
         b.bottomNav.setOnItemSelectedListener {
