@@ -60,6 +60,7 @@
 
         </LinearLayout>
 
+        <!-- Info Kontak -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -106,8 +107,30 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
+            <!-- ✅ MAP dipindahkan ke sini -->
+            <org.osmdroid.views.MapView
+                android:id="@+id/map"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:layout_marginTop="8dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:focusableInTouchMode="true" />
+
+            <!-- ✅ Tombol Google Maps dipindahkan ke sini -->
+            <Button
+                android:id="@+id/btnMaps"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:backgroundTint="#3F5F45"
+                android:text="Buka di Google Maps"
+                android:textAllCaps="false"
+                android:textColor="#FFFFFF" />
+
         </LinearLayout>
 
+        <!-- Form Pesan -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

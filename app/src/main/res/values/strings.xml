@@ -4,4 +4,17 @@
     <string name="close">Close</string>
     <string name="mengirim">Mengirim...</string>
     <string name="kirim_pesanan">KIRIM PESANAN</string>
+    <string name="about_title">About Us</string>
+    <string name="about_subtitle">Dari keluarga, Eka dari hati dan dari Gamponga.</string>
+    <string name="shop_now">Shop Now</string>
+    <string name="keunggulan">KEUNGGULAN</string>
+    <string name="keunggulan_title">Kenapa harus toko Meubel Dwijaya</string>
+    <string name="keunggulan_desc">Kami berkomitmen memberikan produk terbaik untuk pelanggan kami.</string>
+    <string name="shipping_title">Fast Free Shipping</string>
+    <string name="shipping_desc">Gratis pengiriman untuk order diatas minimal pembelian.</string>
+    <string name="easy_shop_title">Easy to Shop</string>
+    <string name="easy_shop_desc">Kemudahan berbelanja hanya beberapa klik saja.</string>
+    <string name="support_title">24/7 Support</string>
+    <string name="support_desc">Layanan kami tersedia 24 jam untuk anda.</string>
+    <string name="video_toko">Video Toko Kami</string>
 </resources>
