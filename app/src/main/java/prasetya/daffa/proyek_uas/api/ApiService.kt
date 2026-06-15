@@ -13,6 +13,9 @@ import retrofit2.http.Path
 
 interface ApiService {
 
+    // =========================
+    // AUTH
+    // =========================
     @FormUrlEncoded
     @POST("api/login")
     fun login(
@@ -28,12 +31,37 @@ interface ApiService {
         @Field("password") password: String
     ): Call<AuthResponse>
 
+
+    // =========================
+    // KATEGORI
+    // =========================
     @GET("api/kategori")
     fun getKategori(): Call<KategoriResponse>
 
+    @Multipart
+    @POST("api/kategori/store")
+    fun tambahKategori(
+        @Part("nama_kategori") namaKategori: RequestBody,
+        @Part gambar: MultipartBody.Part?
+    ): Call<ResponseDefault>
+
+
+    // =========================
+    // BAHAN
+    // =========================
     @GET("api/bahan")
     fun getBahan(): Call<BahanResponse>
 
+    @FormUrlEncoded
+    @POST("api/bahan/store")
+    fun tambahBahan(
+        @Field("nama_bahan") namaBahan: String
+    ): Call<ResponseDefault>
+
+
+    // =========================
+    // BARANG
+    // =========================
     @GET("api/barang")
     fun getBarang(): Call<BarangListResponse>
 
@@ -52,8 +80,8 @@ interface ApiService {
         @Part("stok") stok: RequestBody,
         @Part("ukuran") ukuran: RequestBody,
         @Part("deskripsi") deskripsi: RequestBody,
-        @Part gambar: MultipartBody.Part
-    ): Call<BarangResponse>
+        @Part gambar: MultipartBody.Part?
+    ): Call<ResponseDefault>
 
     @Multipart
     @POST("api/barang/update/{id}")
@@ -74,6 +102,10 @@ interface ApiService {
         @Path("id") id: Int
     ): Call<ResponseDefault>
 
+
+    // =========================
+    // PROFILE CUSTOMER
+    // =========================
     @GET("api/profile/{id}")
     fun getProfile(
         @Path("id") id: Int
@@ -89,9 +121,17 @@ interface ApiService {
         @Path("userId") userId: Int
     ): Call<CustomOrderResponse>
 
+
+    // =========================
+    // LAPORAN
+    // =========================
     @GET("api/laporan")
     fun getLaporan(): Call<LaporanResponse>
 
+
+    // =========================
+    // PENGGUNA
+    // =========================
     @GET("api/pengguna")
     fun getPengguna(): Call<PenggunaResponse>
 
@@ -104,14 +144,6 @@ interface ApiService {
         @Field("role") role: String
     ): Call<ResponseDefault>
 
-    @FormUrlEncoded
-    @POST("api/pengguna/update-password/{id}")
-    fun updatePasswordPengguna(
-        @Path("id") id: Int,
-        @Field("password_lama") passwordLama: String,
-        @Field("password_baru") passwordBaru: String,
-        @Field("konfirmasi_password") konfirmasiPassword: String
-    ): Call<ResponseDefault>
     @FormUrlEncoded
     @POST("api/pengguna/update/{id}")
     fun updatePengguna(
@@ -127,8 +159,19 @@ interface ApiService {
         @Path("id") id: Int
     ): Call<ResponseDefault>
 
+    @FormUrlEncoded
+    @POST("api/pengguna/update-password/{id}")
+    fun updatePasswordPengguna(
+        @Path("id") id: Int,
+        @Field("password_lama") passwordLama: String,
+        @Field("password_baru") passwordBaru: String,
+        @Field("konfirmasi_password") konfirmasiPassword: String
+    ): Call<ResponseDefault>
 
 
+    // =========================
+    // CUSTOM ORDER CUSTOMER
+    // =========================
     @Multipart
     @POST("api/custom-order/store")
     fun tambahCustomOrder(
@@ -140,10 +183,22 @@ interface ApiService {
         @Part gambar: MultipartBody.Part?
     ): Call<ResponseDefault>
 
+
+    // =========================
+    // KERANJANG
+    // =========================
     @GET("api/keranjang/{userId}")
     fun getKeranjang(
         @Path("userId") userId: Int
     ): Call<KeranjangResponse>
+
+    @FormUrlEncoded
+    @POST("api/keranjang/tambah")
+    fun tambahKeranjangQty(
+        @Field("user_id") userId: Int,
+        @Field("barang_id") barangId: Int,
+        @Field("jumlah") jumlah: Int
+    ): Call<ResponseDefault>
 
     @FormUrlEncoded
     @POST("api/keranjang/update/{id}")
@@ -162,6 +217,10 @@ interface ApiService {
         @Path("userId") userId: Int
     ): Call<ResponseDefault>
 
+
+    // =========================
+    // KASIR CUSTOM ORDER
+    // =========================
     @GET("api/kasir/custom-order")
     fun getKasirCustomOrder(): Call<KasirCustomOrderResponse>
 
@@ -173,6 +232,10 @@ interface ApiService {
         @Field("status") status: String
     ): Call<ResponseDefault>
 
+
+    // =========================
+    // KASIR PESANAN
+    // =========================
     @GET("api/kasir/pesanan")
     fun getKasirPesanan(): Call<KasirPesananResponse>
 
@@ -182,13 +245,4 @@ interface ApiService {
         @Path("id") id: Int,
         @Field("status") status: Int
     ): Call<ResponseDefault>
-
-    @FormUrlEncoded
-    @POST("api/keranjang/tambah")
-    fun tambahKeranjangQty(
-        @Field("user_id") userId: Int,
-        @Field("barang_id") barangId: Int,
-        @Field("jumlah") jumlah: Int
-    ): Call<ResponseDefault>
-
 }

@@ -52,11 +52,20 @@
                     android:backgroundTint="#3E5C45" />
 
                 <Button
-                    android:id="@+id/btnTambahBarang2"
+                    android:id="@+id/btnTambahKategori"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
                     android:backgroundTint="#3E5C45"
                     android:text="+ Tambah Kategori"
+                    android:textColor="#FFFFFF"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/btnTambahBahan"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:backgroundTint="#3E5C45"
+                    android:text="+ Tambah Bahan"
                     android:textColor="#FFFFFF"
                     android:textStyle="bold" />
 
