@@ -9,6 +9,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import prasetya.daffa.proyek_uas.databinding.ActivityMainBinding
 import prasetya.daffa.proyek_uas.helper.SessionManager
+import prasetya.daffa.proyek_uas.admin.AdminActivity
+import prasetya.daffa.proyek_uas.kasir.KasirActivity
 
 class MainActivity : AppCompatActivity() {
 
@@ -17,6 +19,22 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        session = SessionManager(this)
+
+        if (session.isLogin()) {
+            val intent = when (session.getRole().trim().lowercase()) {
+                "admin" -> Intent(this, AdminActivity::class.java)
+                "kasir" -> Intent(this, KasirActivity::class.java)
+                else -> null
+            }
+
+            if (intent != null) {
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                startActivity(intent)
+                finish()
+                return
+            }
+        }
         enableEdgeToEdge()
 
         b = ActivityMainBinding.inflate(layoutInflater)

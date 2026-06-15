@@ -95,7 +95,12 @@ class ShopFragment : Fragment() {
 
     private fun setupRecyclerView() {
         kategoriAdapter = KategoriAdapter(mutableListOf()) { kategori ->
-            val slug = kategori.nama_kategori.toSlug()
+            val slug = kategori.nama_kategori.orEmpty().toSlug()
+
+            if (slug.isEmpty()) {
+                showToast("Nama kategori tidak valid", Toast.LENGTH_SHORT)
+                return@KategoriAdapter
+            }
 
             parentFragmentManager.beginTransaction()
                 .replace(R.id.frame_container, KategoriProdukFragment.newInstance(slug))
@@ -140,9 +145,12 @@ class ShopFragment : Fragment() {
     }
 
     private fun showDialogDetailProduk(barang: Barang) {
+        if (!isViewSafe()) return
+
+        val ctx = context ?: return
         val dialogBinding = DialogDetailProdukBinding.inflate(layoutInflater)
 
-        val dialog = AlertDialog.Builder(requireContext())
+        val dialog = AlertDialog.Builder(ctx)
             .setView(dialogBinding.root)
             .create()
 
@@ -164,7 +172,7 @@ class ShopFragment : Fragment() {
         dialogBinding.tvDetailDeskripsi.text = barang.deskripsi ?: "-"
         dialogBinding.etQtyProduk.setText(qty.toString())
 
-        Glide.with(requireContext())
+        Glide.with(dialogBinding.imgDetailProduk)
             .load(gambarUrl)
             .placeholder(R.drawable.home)
             .error(R.drawable.home)
@@ -211,7 +219,7 @@ class ShopFragment : Fragment() {
                 qty++
                 updateTotal()
             } else {
-                Toast.makeText(requireContext(), "Maksimal stok $stok", Toast.LENGTH_SHORT).show()
+                Toast.makeText(ctx, "Maksimal stok $stok", Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -232,17 +240,17 @@ class ShopFragment : Fragment() {
             val barangId = barang.id
 
             if (!session.isLogin()) {
-                Toast.makeText(requireContext(), "Silakan login terlebih dahulu", Toast.LENGTH_SHORT).show()
+                showToast("Silakan login terlebih dahulu", Toast.LENGTH_SHORT)
                 return@setOnClickListener
             }
 
             if (barangId == null) {
-                Toast.makeText(requireContext(), "ID barang tidak valid", Toast.LENGTH_SHORT).show()
+                showToast("ID barang tidak valid", Toast.LENGTH_SHORT)
                 return@setOnClickListener
             }
 
             if (qty <= 0) {
-                Toast.makeText(requireContext(), "Jumlah tidak valid", Toast.LENGTH_SHORT).show()
+                showToast("Jumlah tidak valid", Toast.LENGTH_SHORT)
                 return@setOnClickListener
             }
 
@@ -271,6 +279,8 @@ class ShopFragment : Fragment() {
     }
 
     private fun loadKategori() {
+        if (!isViewSafe()) return
+
         showLoading(true)
 
         ApiClient.instance.getKategori().enqueue(object : Callback<KategoriResponse> {
@@ -278,34 +288,35 @@ class ShopFragment : Fragment() {
                 call: Call<KategoriResponse>,
                 response: Response<KategoriResponse>
             ) {
+                if (call.isCanceled || !isViewSafe()) return
+
                 showLoading(false)
 
                 val body = response.body()
+                val data = body?.data.orEmpty()
 
                 if (response.isSuccessful && body?.status == true) {
-                    kategoriAdapter.setData(body.data)
+                    kategoriAdapter.setData(data)
                 } else {
-                    Toast.makeText(
-                        requireContext(),
+                    showToast(
                         body?.message ?: "Gagal mengambil data kategori",
                         Toast.LENGTH_SHORT
-                    ).show()
+                    )
                 }
             }
 
             override fun onFailure(call: Call<KategoriResponse>, t: Throwable) {
-                showLoading(false)
+                if (call.isCanceled || !isViewSafe()) return
 
-                Toast.makeText(
-                    requireContext(),
-                    "Koneksi kategori gagal: ${t.message}",
-                    Toast.LENGTH_LONG
-                ).show()
+                showLoading(false)
+                showToast("Koneksi kategori gagal: ${t.message}", Toast.LENGTH_LONG)
             }
         })
     }
 
     private fun loadBarang() {
+        if (!isViewSafe()) return
+
         showLoading(true)
 
         ApiClient.instance.getBarang().enqueue(object : Callback<BarangListResponse> {
@@ -313,36 +324,37 @@ class ShopFragment : Fragment() {
                 call: Call<BarangListResponse>,
                 response: Response<BarangListResponse>
             ) {
+                if (call.isCanceled || !isViewSafe()) return
+
                 showLoading(false)
 
                 val body = response.body()
+                val data = body?.data.orEmpty()
 
                 if (response.isSuccessful && body?.status == true) {
                     semuaBarang.clear()
-                    semuaBarang.addAll(body.data)
+                    semuaBarang.addAll(data)
                     applyFilterAndSort()
                 } else {
-                    Toast.makeText(
-                        requireContext(),
+                    showToast(
                         body?.message ?: "Gagal mengambil data barang",
                         Toast.LENGTH_SHORT
-                    ).show()
+                    )
                 }
             }
 
             override fun onFailure(call: Call<BarangListResponse>, t: Throwable) {
-                showLoading(false)
+                if (call.isCanceled || !isViewSafe()) return
 
-                Toast.makeText(
-                    requireContext(),
-                    "Koneksi barang gagal: ${t.message}",
-                    Toast.LENGTH_LONG
-                ).show()
+                showLoading(false)
+                showToast("Koneksi barang gagal: ${t.message}", Toast.LENGTH_LONG)
             }
         })
     }
 
     private fun applyFilterAndSort() {
+        if (!isViewSafe() || !::produkAdapter.isInitialized) return
+
         var hasil = semuaBarang.toList()
 
         kategoriTerpilih?.let { kategori ->
@@ -371,7 +383,6 @@ class ShopFragment : Fragment() {
         produkAdapter.setData(hasil)
         updateInfo(hasil.size)
     }
-
     private fun String?.toHargaInt(): Int {
         return this
             ?.replace("Rp", "")
@@ -382,6 +393,8 @@ class ShopFragment : Fragment() {
     }
 
     private fun updateInfo(total: Int) {
+        if (!isViewSafe()) return
+
         b.tvResultInfo.text = "Showing $total products"
 
         if (total == 0) {
@@ -394,13 +407,13 @@ class ShopFragment : Fragment() {
     }
 
     private fun showLoading(isLoading: Boolean) {
-        b.progressProduk.visibility = if (isLoading) View.VISIBLE else View.GONE
+        _b?.progressProduk?.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
     private fun tambahKeKeranjang(barangId: Int, jumlah: Int, dialog: AlertDialog) {
         val userId = session.getUserId()
 
         if (userId == 0) {
-            Toast.makeText(requireContext(), "User ID tidak ditemukan", Toast.LENGTH_SHORT).show()
+            showToast("User ID tidak ditemukan", Toast.LENGTH_SHORT)
             return
         }
 
@@ -410,37 +423,36 @@ class ShopFragment : Fragment() {
                     call: Call<ResponseDefault>,
                     response: Response<ResponseDefault>
                 ) {
-                    if (_b == null || !isAdded) return
+                    if (call.isCanceled || !isViewSafe()) return
 
                     val body = response.body()
 
                     if (response.isSuccessful && body?.status == true) {
-                        Toast.makeText(
-                            requireContext(),
-                            body.message,
-                            Toast.LENGTH_SHORT
-                        ).show()
-
+                        showToast(body.message, Toast.LENGTH_SHORT)
                         dialog.dismiss()
                     } else {
-                        Toast.makeText(
-                            requireContext(),
+                        showToast(
                             body?.message ?: "Gagal menambahkan ke keranjang",
                             Toast.LENGTH_SHORT
-                        ).show()
+                        )
                     }
                 }
 
                 override fun onFailure(call: Call<ResponseDefault>, t: Throwable) {
-                    if (_b == null || !isAdded) return
+                    if (call.isCanceled || !isViewSafe()) return
 
-                    Toast.makeText(
-                        requireContext(),
-                        "Koneksi gagal: ${t.message}",
-                        Toast.LENGTH_LONG
-                    ).show()
+                    showToast("Koneksi gagal: ${t.message}", Toast.LENGTH_LONG)
                 }
             })
+    }
+
+    private fun isViewSafe(): Boolean {
+        return _b != null && isAdded
+    }
+
+    private fun showToast(message: String, duration: Int = Toast.LENGTH_SHORT) {
+        val ctx = context ?: return
+        Toast.makeText(ctx, message, duration).show()
     }
 
     override fun onDestroyView() {

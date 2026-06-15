@@ -6,33 +6,33 @@ data class ResponseDefault(
 )
 
 data class KategoriResponse(
-    val status: Boolean,
-    val message: String?,
-    val data: List<Kategori>
+    val status: Boolean = false,
+    val message: String? = null,
+    val data: List<Kategori> = emptyList()
 )
 
 data class Kategori(
-    val id: Int,
-    val nama_kategori: String,
-    val gambar: String?,
-    val gambar_url: String?
+    val id: Int = 0,
+    val nama_kategori: String? = null,
+    val gambar: String? = null,
+    val gambar_url: String? = null
 )
 
 data class BahanResponse(
-    val status: Boolean,
-    val message: String?,
-    val data: List<Bahan>
+    val status: Boolean = false,
+    val message: String? = null,
+    val data: List<Bahan> = emptyList()
 )
 
 data class Bahan(
-    val id: Int,
-    val nama_bahan: String
+    val id: Int = 0,
+    val nama_bahan: String? = null
 )
 
 data class BarangListResponse(
-    val status: Boolean,
-    val message: String,
-    val data: List<Barang>
+    val status: Boolean = false,
+    val message: String? = null,
+    val data: List<Barang> = emptyList()
 )
 
 data class BarangResponse(
@@ -57,9 +57,9 @@ data class Barang(
     val bahan: Bahan?
 )
 data class LaporanResponse(
-    val status: Boolean,
-    val message: String?,
-    val data: List<Laporan>
+    val status: Boolean = false,
+    val message: String? = null,
+    val data: List<Laporan> = emptyList()
 )
 
 data class Laporan(
@@ -79,9 +79,9 @@ data class Laporan(
 )
 
 data class PenggunaResponse(
-    val status: Boolean,
-    val message: String?,
-    val data: List<Pengguna>
+    val status: Boolean = false,
+    val message: String? = null,
+    val data: List<Pengguna> = emptyList()
 )
 
 data class Pengguna(
@@ -95,11 +95,10 @@ data class Pengguna(
 )
 
 data class KeranjangResponse(
-    val status: Boolean,
-    val message: String?,
-    val data: List<KeranjangItem>
+    val status: Boolean = false,
+    val message: String? = null,
+    val data: List<KeranjangItem> = emptyList()
 )
-
 data class KeranjangItem(
     val id: Int,
     val barang_id: Int?,

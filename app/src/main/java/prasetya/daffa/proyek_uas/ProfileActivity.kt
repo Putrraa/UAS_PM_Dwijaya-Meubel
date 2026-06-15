@@ -164,17 +164,22 @@ class ProfileActivity : AppCompatActivity(), View.OnClickListener {
                 call: Call<ProfileResponse>,
                 response: Response<ProfileResponse>
             ) {
+                if (call.isCanceled || !isActivitySafe()) return
+
                 val body = response.body()
 
                 if (response.isSuccessful && body?.status == true && body.data != null) {
                     val user = body.data
 
-                    tvProfileName.text = user.name
-                    tvProfileEmail.text = user.email
-                    etNamaLengkap.setText(user.name)
-                    etEmail.setText(user.email)
+                    val nama = user.name ?: "Customer"
+                    val email = user.email ?: "customer@gmail.com"
 
-                    val initial = user.name.trim().firstOrNull()?.uppercaseChar()?.toString() ?: "C"
+                    tvProfileName.text = nama
+                    tvProfileEmail.text = email
+                    etNamaLengkap.setText(nama)
+                    etEmail.setText(email)
+
+                    val initial = nama.trim().firstOrNull()?.uppercaseChar()?.toString() ?: "C"
                     tvAvatarInitial.text = initial
                 } else {
                     tampilkanDataSession()
@@ -182,12 +187,10 @@ class ProfileActivity : AppCompatActivity(), View.OnClickListener {
             }
 
             override fun onFailure(call: Call<ProfileResponse>, t: Throwable) {
+                if (call.isCanceled || !isActivitySafe()) return
+
                 tampilkanDataSession()
-                Toast.makeText(
-                    this@ProfileActivity,
-                    "Gagal mengambil profile: ${t.message}",
-                    Toast.LENGTH_SHORT
-                ).show()
+                showToast("Gagal mengambil profile: ${t.message}", Toast.LENGTH_SHORT)
             }
         })
     }
@@ -217,45 +220,37 @@ class ProfileActivity : AppCompatActivity(), View.OnClickListener {
                     call: Call<RiwayatPesananResponse>,
                     response: Response<RiwayatPesananResponse>
                 ) {
+                    if (call.isCanceled || !isActivitySafe()) return
+
                     val body = response.body()
+                    val data = body?.data.orEmpty()
 
                     if (response.isSuccessful && body?.status == true) {
-                        val dataPesanan = body.data.map { item ->
+                        val dataPesanan = data.map { item ->
                             RiwayatPesanan(
-                                noPesanan = item.noPesanan,
-                                tanggal = item.tanggal,
-                                total = item.total,
-                                status = item.status
+                                noPesanan = item.noPesanan ?: "-",
+                                tanggal = item.tanggal ?: "-",
+                                total = item.total ?: "Rp 0",
+                                status = item.status ?: "-"
                             )
                         }
 
                         val adapter = RiwayatPesananAdapter(dataPesanan) { pesanan ->
-                            Toast.makeText(
-                                this@ProfileActivity,
-                                "Detail: ${pesanan.noPesanan}",
-                                Toast.LENGTH_SHORT
-                            ).show()
+                            showToast("Detail: ${pesanan.noPesanan}", Toast.LENGTH_SHORT)
                         }
 
                         rvRiwayatPesanan.adapter = adapter
                     } else {
                         rvRiwayatPesanan.adapter = RiwayatPesananAdapter(emptyList()) {}
-                        Toast.makeText(
-                            this@ProfileActivity,
-                            "Riwayat pesanan kosong",
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        showToast("Riwayat pesanan kosong", Toast.LENGTH_SHORT)
                     }
                 }
 
                 override fun onFailure(call: Call<RiwayatPesananResponse>, t: Throwable) {
-                    rvRiwayatPesanan.adapter = RiwayatPesananAdapter(emptyList()) {}
+                    if (call.isCanceled || !isActivitySafe()) return
 
-                    Toast.makeText(
-                        this@ProfileActivity,
-                        "Gagal mengambil riwayat pesanan: ${t.message}",
-                        Toast.LENGTH_LONG
-                    ).show()
+                    rvRiwayatPesanan.adapter = RiwayatPesananAdapter(emptyList()) {}
+                    showToast("Gagal mengambil riwayat pesanan: ${t.message}", Toast.LENGTH_LONG)
                 }
             })
     }
@@ -269,47 +264,39 @@ class ProfileActivity : AppCompatActivity(), View.OnClickListener {
                     call: Call<CustomOrderResponse>,
                     response: Response<CustomOrderResponse>
                 ) {
+                    if (call.isCanceled || !isActivitySafe()) return
+
                     val body = response.body()
+                    val data = body?.data.orEmpty()
 
                     if (response.isSuccessful && body?.status == true) {
-                        val dataCustom = body.data.map { item ->
+                        val dataCustom = data.map { item ->
                             CustomOrder(
-                                furnitureNama = item.furnitureNama,
-                                kayu = item.kayu,
-                                ukuran = item.ukuran,
-                                harga = item.harga,
-                                status = item.status,
+                                furnitureNama = item.furnitureNama ?: "-",
+                                kayu = item.kayu ?: "-",
+                                ukuran = item.ukuran ?: "-",
+                                harga = item.harga ?: "Rp 0",
+                                status = item.status ?: "-",
                                 imageUrl = item.gambarUrl ?: ""
                             )
                         }
 
                         val adapter = CustomOrderAdapter(dataCustom) { order ->
-                            Toast.makeText(
-                                this@ProfileActivity,
-                                "Custom Order: ${order.furnitureNama}",
-                                Toast.LENGTH_SHORT
-                            ).show()
+                            showToast("Custom Order: ${order.furnitureNama}", Toast.LENGTH_SHORT)
                         }
 
                         rvCustomOrder.adapter = adapter
                     } else {
                         rvCustomOrder.adapter = CustomOrderAdapter(emptyList()) {}
-                        Toast.makeText(
-                            this@ProfileActivity,
-                            "Custom order kosong",
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        showToast("Custom order kosong", Toast.LENGTH_SHORT)
                     }
                 }
 
                 override fun onFailure(call: Call<CustomOrderResponse>, t: Throwable) {
-                    rvCustomOrder.adapter = CustomOrderAdapter(emptyList()) {}
+                    if (call.isCanceled || !isActivitySafe()) return
 
-                    Toast.makeText(
-                        this@ProfileActivity,
-                        "Gagal mengambil custom order: ${t.message}",
-                        Toast.LENGTH_LONG
-                    ).show()
+                    rvCustomOrder.adapter = CustomOrderAdapter(emptyList()) {}
+                    showToast("Gagal mengambil custom order: ${t.message}", Toast.LENGTH_LONG)
                 }
             })
     }
@@ -340,7 +327,14 @@ class ProfileActivity : AppCompatActivity(), View.OnClickListener {
     override fun onClick(v: View?) {
         // Belum dipakai
     }
+    private fun isActivitySafe(): Boolean {
+        return !isFinishing && !isDestroyed
+    }
 
+    private fun showToast(message: String, duration: Int = Toast.LENGTH_SHORT) {
+        if (!isActivitySafe()) return
+        Toast.makeText(this, message, duration).show()
+    }
     private fun showSection(index: Int) {
         allSections.forEach {
             it.visibility = View.GONE

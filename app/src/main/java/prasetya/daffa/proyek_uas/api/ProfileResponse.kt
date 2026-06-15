@@ -3,52 +3,52 @@ package prasetya.daffa.proyek_uas.api
 import com.google.gson.annotations.SerializedName
 
 data class ProfileResponse(
-    val status: Boolean,
-    val message: String,
-    val data: ProfileUser?
+    val status: Boolean = false,
+    val message: String? = null,
+    val data: ProfileUser? = null
 )
 
 data class ProfileUser(
-    val id: Int,
-    val name: String,
-    val email: String,
-    val role: String
+    val id: Int = 0,
+    val name: String? = null,
+    val email: String? = null,
+    val role: String? = null
 )
 
 data class RiwayatPesananResponse(
-    val status: Boolean,
-    val message: String,
-    val data: List<RiwayatPesananApiItem>
+    val status: Boolean = false,
+    val message: String? = null,
+    val data: List<RiwayatPesananApiItem> = emptyList()
 )
 
 data class RiwayatPesananApiItem(
-    val id: Int,
+    val id: Int = 0,
 
     @SerializedName("no_pesanan")
-    val noPesanan: String,
+    val noPesanan: String? = null,
 
-    val tanggal: String,
-    val total: String,
-    val status: String
+    val tanggal: String? = null,
+    val total: String? = null,
+    val status: String? = null
 )
 
 data class CustomOrderResponse(
-    val status: Boolean,
-    val message: String,
-    val data: List<CustomOrderApiItem>
+    val status: Boolean = false,
+    val message: String? = null,
+    val data: List<CustomOrderApiItem> = emptyList()
 )
 
 data class CustomOrderApiItem(
-    val id: Int,
+    val id: Int = 0,
 
     @SerializedName("furniture_nama")
-    val furnitureNama: String,
+    val furnitureNama: String? = null,
 
-    val kayu: String,
-    val ukuran: String,
-    val harga: String,
-    val status: String,
+    val kayu: String? = null,
+    val ukuran: String? = null,
+    val harga: String? = null,
+    val status: String? = null,
 
     @SerializedName("gambar_url")
-    val gambarUrl: String?
+    val gambarUrl: String? = null
 )

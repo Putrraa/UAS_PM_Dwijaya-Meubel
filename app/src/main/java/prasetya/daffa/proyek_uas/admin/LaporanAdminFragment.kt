@@ -69,6 +69,8 @@ class LaporanAdminFragment : Fragment() {
     }
 
     private fun loadLaporan() {
+        if (_b == null || !isAdded) return
+
         showLoading(true)
 
         ApiClient.instance.getLaporan().enqueue(object : Callback<LaporanResponse> {
@@ -76,35 +78,44 @@ class LaporanAdminFragment : Fragment() {
                 call: Call<LaporanResponse>,
                 response: Response<LaporanResponse>
             ) {
+                if (_b == null || !isAdded) return
+
+                val ctx = context ?: return
                 showLoading(false)
 
                 val body = response.body()
+                val data = body?.data.orEmpty()
 
                 if (response.isSuccessful && body?.status == true) {
-                    laporanAdapter.setData(body.data)
-                    updateTotal(body.data)
-                    updateEmptyState(body.data)
+                    laporanAdapter.setData(data)
+                    updateTotal(data)
+                    updateEmptyState(data)
                 } else {
                     Toast.makeText(
-                        requireContext(),
+                        ctx,
                         body?.message ?: "Gagal mengambil data laporan",
                         Toast.LENGTH_SHORT
                     ).show()
 
+                    laporanAdapter.setData(emptyList())
                     updateTotal(emptyList())
                     updateEmptyState(emptyList())
                 }
             }
 
             override fun onFailure(call: Call<LaporanResponse>, t: Throwable) {
+                if (_b == null || !isAdded) return
+
+                val ctx = context ?: return
                 showLoading(false)
 
                 Toast.makeText(
-                    requireContext(),
+                    ctx,
                     "Koneksi gagal: ${t.message}",
                     Toast.LENGTH_LONG
                 ).show()
 
+                laporanAdapter.setData(emptyList())
                 updateTotal(emptyList())
                 updateEmptyState(emptyList())
             }

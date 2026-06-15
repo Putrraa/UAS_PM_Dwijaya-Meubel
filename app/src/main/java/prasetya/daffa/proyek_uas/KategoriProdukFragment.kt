@@ -178,16 +178,20 @@ class KategoriProdukFragment : Fragment() {
                 call: Call<KategoriResponse>,
                 response: Response<KategoriResponse>
             ) {
-                if (_b == null || !isAdded) return
+                if (call.isCanceled || !isViewSafe()) return
 
                 val body = response.body()
+                val data = body?.data.orEmpty()
 
                 if (response.isSuccessful && body?.status == true) {
                     val chips = mutableListOf<KategoriChipItem>()
                     chips.add(KategoriChipItem("Semua", "semua"))
 
-                    body.data.forEach { kategori ->
-                        val nama = kategori.nama_kategori
+                    data.forEach { kategori ->
+                        val nama = kategori.nama_kategori.orEmpty()
+
+                        if (nama.isBlank()) return@forEach
+
                         chips.add(
                             KategoriChipItem(
                                 nama = nama,
@@ -196,7 +200,12 @@ class KategoriProdukFragment : Fragment() {
                         )
                     }
 
-                    val selected = if (chips.any { it.slug == selectedSlug }) selectedSlug else "semua"
+                    val selected = if (chips.any { it.slug == selectedSlug }) {
+                        selectedSlug
+                    } else {
+                        "semua"
+                    }
+
                     selectedSlug = selected
                     selectedNamaKategori = chips.find { it.slug == selectedSlug }?.nama ?: "Semua"
 
@@ -204,22 +213,20 @@ class KategoriProdukFragment : Fragment() {
                     updateHeader()
                     applyFilterSort()
                 } else {
-                    Toast.makeText(
-                        requireContext(),
+                    showToast(
                         body?.message ?: "Gagal mengambil kategori",
                         Toast.LENGTH_SHORT
-                    ).show()
+                    )
                 }
             }
 
             override fun onFailure(call: Call<KategoriResponse>, t: Throwable) {
-                if (_b == null || !isAdded) return
+                if (call.isCanceled || !isViewSafe()) return
 
-                Toast.makeText(
-                    requireContext(),
+                showToast(
                     "Koneksi kategori gagal: ${t.message}",
                     Toast.LENGTH_LONG
-                ).show()
+                )
             }
         })
     }
@@ -232,44 +239,46 @@ class KategoriProdukFragment : Fragment() {
                 call: Call<BarangListResponse>,
                 response: Response<BarangListResponse>
             ) {
-                if (_b == null || !isAdded) return
+                if (call.isCanceled || !isViewSafe()) return
 
                 showLoading(false)
 
                 val body = response.body()
+                val data = body?.data.orEmpty()
 
                 if (response.isSuccessful && body?.status == true) {
                     listProdukSemua.clear()
-                    listProdukSemua.addAll(body.data)
-                    android.util.Log.d("CEK_KATEGORI_PRODUK", "Total API: ${body.data.size}")
+                    listProdukSemua.addAll(data)
+
+                    android.util.Log.d("CEK_KATEGORI_PRODUK", "Total API: ${data.size}")
+
                     applyFilterSort()
                 } else {
                     updateEmptyState(emptyList())
-                    Toast.makeText(
-                        requireContext(),
+
+                    showToast(
                         body?.message ?: "Gagal mengambil produk",
                         Toast.LENGTH_SHORT
-                    ).show()
+                    )
                 }
             }
 
             override fun onFailure(call: Call<BarangListResponse>, t: Throwable) {
-                if (_b == null || !isAdded) return
+                if (call.isCanceled || !isViewSafe()) return
 
                 showLoading(false)
                 updateEmptyState(emptyList())
 
-                Toast.makeText(
-                    requireContext(),
+                showToast(
                     "Koneksi produk gagal: ${t.message}",
                     Toast.LENGTH_LONG
-                ).show()
+                )
             }
         })
     }
 
     private fun applyFilterSort() {
-        if (_b == null) return
+        if (!isViewSafe() || !::produkAdapter.isInitialized) return
 
         val keyword = b.etSearchProduk.text.toString().trim().lowercase()
         val sortPosition = b.spinnerSortProduk.selectedItemPosition
@@ -278,7 +287,7 @@ class KategoriProdukFragment : Fragment() {
 
         if (selectedSlug != "semua") {
             result = result.filter { barang ->
-                val kategoriSlug = barang.kategori?.nama_kategori?.toSlug()
+                val kategoriSlug = barang.kategori?.nama_kategori.orEmpty().toSlug()
                 kategoriSlug == selectedSlug
             }
         }
@@ -305,22 +314,32 @@ class KategoriProdukFragment : Fragment() {
         }
 
         produkAdapter.setData(result)
+
         android.util.Log.d(
             "CEK_KATEGORI_PRODUK",
             "Total tampil: ${result.size}, selectedSlug: $selectedSlug, keyword: $keyword"
         )
-        updateEmptyState(result)
 
+        updateEmptyState(result)
         b.tvResultInfo.text = "Showing all ${result.size} results"
     }
 
     private fun updateHeader() {
-        val title = if (selectedSlug == "semua") "Semua Produk" else selectedNamaKategori
+        if (!isViewSafe()) return
+
+        val title = if (selectedSlug == "semua") {
+            "Semua Produk"
+        } else {
+            selectedNamaKategori
+        }
+
         b.tvJudulKategori.text = title
         b.tvSubtitleKategori.text = "$title – Toko Furniture Kami"
     }
 
     private fun updateEmptyState(data: List<Barang>) {
+        if (!isViewSafe()) return
+
         if (data.isEmpty()) {
             b.layoutProdukKosong.visibility = View.VISIBLE
             b.rvProdukKategori.visibility = View.GONE
@@ -335,9 +354,12 @@ class KategoriProdukFragment : Fragment() {
     }
 
     private fun showDialogDetailProduk(barang: Barang) {
+        if (!isViewSafe()) return
+
+        val ctx = context ?: return
         val dialogBinding = DialogDetailProdukBinding.inflate(layoutInflater)
 
-        val dialog = AlertDialog.Builder(requireContext())
+        val dialog = AlertDialog.Builder(ctx)
             .setView(dialogBinding.root)
             .create()
 
@@ -347,7 +369,9 @@ class KategoriProdukFragment : Fragment() {
         val nama = barang.nama_barang ?: "-"
         val harga = parseHarga(barang.harga)
         val stok = barang.stok ?: 0
-        val gambarUrl = barang.gambar_url?.replace("\\/", "/")?.replace(" ", "%20")
+        val gambarUrl = barang.gambar_url
+            ?.replace("\\/", "/")
+            ?.replace(" ", "%20")
 
         var qty = if (stok > 0) 1 else 0
 
@@ -359,7 +383,7 @@ class KategoriProdukFragment : Fragment() {
         dialogBinding.tvDetailDeskripsi.text = barang.deskripsi ?: "-"
         dialogBinding.etQtyProduk.setText(qty.toString())
 
-        Glide.with(requireContext())
+        Glide.with(dialogBinding.imgDetailProduk)
             .load(gambarUrl)
             .placeholder(R.drawable.home)
             .error(R.drawable.home)
@@ -406,19 +430,21 @@ class KategoriProdukFragment : Fragment() {
                 qty++
                 updateTotal()
             } else {
-                Toast.makeText(requireContext(), "Maksimal stok $stok", Toast.LENGTH_SHORT).show()
+                Toast.makeText(ctx, "Maksimal stok $stok", Toast.LENGTH_SHORT).show()
             }
         }
 
         dialogBinding.etQtyProduk.setOnFocusChangeListener { _, hasFocus ->
             if (!hasFocus) {
                 val inputQty = dialogBinding.etQtyProduk.text.toString().toIntOrNull() ?: 1
+
                 qty = when {
                     stok <= 0 -> 0
                     inputQty < 1 -> 1
                     inputQty > stok -> stok
                     else -> inputQty
                 }
+
                 updateTotal()
             }
         }
@@ -427,17 +453,17 @@ class KategoriProdukFragment : Fragment() {
             val barangId = barang.id
 
             if (!session.isLogin()) {
-                Toast.makeText(requireContext(), "Silakan login terlebih dahulu", Toast.LENGTH_SHORT).show()
+                Toast.makeText(ctx, "Silakan login terlebih dahulu", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
             if (barangId == null) {
-                Toast.makeText(requireContext(), "ID barang tidak valid", Toast.LENGTH_SHORT).show()
+                Toast.makeText(ctx, "ID barang tidak valid", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
             if (qty <= 0) {
-                Toast.makeText(requireContext(), "Jumlah tidak valid", Toast.LENGTH_SHORT).show()
+                Toast.makeText(ctx, "Jumlah tidak valid", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
@@ -451,7 +477,7 @@ class KategoriProdukFragment : Fragment() {
         val userId = session.getUserId()
 
         if (userId == 0) {
-            Toast.makeText(requireContext(), "User ID tidak ditemukan", Toast.LENGTH_SHORT).show()
+            showToast("User ID tidak ditemukan", Toast.LENGTH_SHORT)
             return
         }
 
@@ -461,35 +487,28 @@ class KategoriProdukFragment : Fragment() {
                     call: Call<ResponseDefault>,
                     response: Response<ResponseDefault>
                 ) {
-                    if (_b == null || !isAdded) return
+                    if (call.isCanceled || !isViewSafe()) return
 
                     val body = response.body()
 
                     if (response.isSuccessful && body?.status == true) {
-                        Toast.makeText(
-                            requireContext(),
-                            body.message,
-                            Toast.LENGTH_SHORT
-                        ).show()
-
+                        showToast(body.message, Toast.LENGTH_SHORT)
                         dialog.dismiss()
                     } else {
-                        Toast.makeText(
-                            requireContext(),
+                        showToast(
                             body?.message ?: "Gagal menambahkan ke keranjang",
                             Toast.LENGTH_SHORT
-                        ).show()
+                        )
                     }
                 }
 
                 override fun onFailure(call: Call<ResponseDefault>, t: Throwable) {
-                    if (_b == null || !isAdded) return
+                    if (call.isCanceled || !isViewSafe()) return
 
-                    Toast.makeText(
-                        requireContext(),
+                    showToast(
                         "Koneksi gagal: ${t.message}",
                         Toast.LENGTH_LONG
-                    ).show()
+                    )
                 }
             })
     }
@@ -516,7 +535,14 @@ class KategoriProdukFragment : Fragment() {
             .trim()
             .replace(Regex("\\s+"), "-")
     }
+    private fun isViewSafe(): Boolean {
+        return _b != null && isAdded
+    }
 
+    private fun showToast(message: String, duration: Int = Toast.LENGTH_SHORT) {
+        val ctx = context ?: return
+        Toast.makeText(ctx, message, duration).show()
+    }
     override fun onDestroyView() {
         super.onDestroyView()
         _b = null

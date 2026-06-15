@@ -238,13 +238,13 @@ class KelolaBarangFragment : Fragment() {
         val kategoriAdapter = ArrayAdapter(
             requireContext(),
             android.R.layout.simple_spinner_dropdown_item,
-            semuaKategori.map { it.nama_kategori }
+            semuaKategori.map { it.nama_kategori ?: "-" }
         )
 
         val bahanAdapter = ArrayAdapter(
             requireContext(),
             android.R.layout.simple_spinner_dropdown_item,
-            semuaBahan.map { it.nama_bahan }
+            semuaBahan.map { it.nama_bahan ?: "-" }
         )
 
         dialogBinding.spinnerKategoriBarang.adapter = kategoriAdapter

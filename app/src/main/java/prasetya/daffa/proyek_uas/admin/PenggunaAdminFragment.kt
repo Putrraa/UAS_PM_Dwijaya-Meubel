@@ -74,6 +74,8 @@ class PenggunaAdminFragment : Fragment() {
     }
 
     private fun loadPengguna() {
+        if (_b == null || !isAdded) return
+
         showLoading(true)
 
         ApiClient.instance.getPengguna().enqueue(object : Callback<PenggunaResponse> {
@@ -81,20 +83,25 @@ class PenggunaAdminFragment : Fragment() {
                 call: Call<PenggunaResponse>,
                 response: Response<PenggunaResponse>
             ) {
+                if (_b == null || !isAdded) return
+
+                val ctx = context ?: return
                 showLoading(false)
 
                 val body = response.body()
+                val data = body?.data.orEmpty()
 
                 if (response.isSuccessful && body?.status == true) {
-                    penggunaAdapter.setData(body.data)
-                    updateEmptyState(body.data)
-                    b.tvJumlahPengguna.text = "${body.data.size} Pengguna"
+                    penggunaAdapter.setData(data)
+                    updateEmptyState(data)
+                    b.tvJumlahPengguna.text = "${data.size} Pengguna"
                 } else {
+                    penggunaAdapter.setData(emptyList())
                     updateEmptyState(emptyList())
                     b.tvJumlahPengguna.text = "0 Pengguna"
 
                     Toast.makeText(
-                        requireContext(),
+                        ctx,
                         body?.message ?: "Gagal mengambil data pengguna",
                         Toast.LENGTH_SHORT
                     ).show()
@@ -102,12 +109,17 @@ class PenggunaAdminFragment : Fragment() {
             }
 
             override fun onFailure(call: Call<PenggunaResponse>, t: Throwable) {
+                if (_b == null || !isAdded) return
+
+                val ctx = context ?: return
                 showLoading(false)
+
+                penggunaAdapter.setData(emptyList())
                 updateEmptyState(emptyList())
                 b.tvJumlahPengguna.text = "0 Pengguna"
 
                 Toast.makeText(
-                    requireContext(),
+                    ctx,
                     "Koneksi gagal: ${t.message}",
                     Toast.LENGTH_LONG
                 ).show()

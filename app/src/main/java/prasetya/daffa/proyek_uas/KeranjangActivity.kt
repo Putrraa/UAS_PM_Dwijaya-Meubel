@@ -91,7 +91,7 @@ class KeranjangActivity : AppCompatActivity() {
         val userId = session.getUserId()
 
         if (userId == 0) {
-            Toast.makeText(this, "User belum login atau ID user tidak ditemukan", Toast.LENGTH_LONG).show()
+            showToast("User belum login atau ID user tidak ditemukan", Toast.LENGTH_LONG)
             return
         }
 
@@ -100,15 +100,19 @@ class KeranjangActivity : AppCompatActivity() {
                 call: Call<KeranjangResponse>,
                 response: Response<KeranjangResponse>
             ) {
+                if (call.isCanceled || !isActivitySafe()) return
+
                 val body = response.body()
 
                 if (response.isSuccessful && body?.status == true) {
+                    val data = body.data.orEmpty()
+
                     listKeranjang.clear()
-                    listKeranjang.addAll(body.data)
+                    listKeranjang.addAll(data)
 
                     adapter.notifyDataSetChanged()
 
-                    body.data.forEach {
+                    data.forEach {
                         android.util.Log.d("GAMBAR_KERANJANG", "URL: ${it.gambar_url}")
                     }
 
@@ -119,26 +123,16 @@ class KeranjangActivity : AppCompatActivity() {
 
                     android.util.Log.e("KERANJANG_API", "Code: ${response.code()}")
                     android.util.Log.e("KERANJANG_API", "Error body: $error")
-
-                    Toast.makeText(
-                        this@KeranjangActivity,
-                        "Gagal mengambil data. Code: ${response.code()}",
-                        Toast.LENGTH_LONG
-                    ).show()
-
-                    android.util.Log.e("KERANJANG_API", "Code: ${response.code()}")
-                    android.util.Log.e("KERANJANG_API", "Error: $error")
                     android.util.Log.e("KERANJANG_API", "Body: $body")
+
+                    showToast("Gagal mengambil data. Code: ${response.code()}", Toast.LENGTH_LONG)
                 }
             }
 
             override fun onFailure(call: Call<KeranjangResponse>, t: Throwable) {
-                Toast.makeText(
-                    this@KeranjangActivity,
-                    "Koneksi gagal: ${t.message}",
-                    Toast.LENGTH_LONG
-                ).show()
+                if (call.isCanceled || !isActivitySafe()) return
 
+                showToast("Koneksi gagal: ${t.message}", Toast.LENGTH_LONG)
                 android.util.Log.e("KERANJANG_API", "Failure: ${t.message}")
             }
         })
@@ -151,25 +145,24 @@ class KeranjangActivity : AppCompatActivity() {
                     call: Call<ResponseDefault>,
                     response: Response<ResponseDefault>
                 ) {
+                    if (call.isCanceled || !isActivitySafe()) return
+
                     val body = response.body()
 
                     if (response.isSuccessful && body?.status == true) {
                         loadKeranjang()
                     } else {
-                        Toast.makeText(
-                            this@KeranjangActivity,
+                        showToast(
                             body?.message ?: "Gagal update jumlah",
                             Toast.LENGTH_SHORT
-                        ).show()
+                        )
                     }
                 }
 
                 override fun onFailure(call: Call<ResponseDefault>, t: Throwable) {
-                    Toast.makeText(
-                        this@KeranjangActivity,
-                        "Koneksi gagal: ${t.message}",
-                        Toast.LENGTH_LONG
-                    ).show()
+                    if (call.isCanceled || !isActivitySafe()) return
+
+                    showToast("Koneksi gagal: ${t.message}", Toast.LENGTH_LONG)
                 }
             })
     }
@@ -181,31 +174,25 @@ class KeranjangActivity : AppCompatActivity() {
                     call: Call<ResponseDefault>,
                     response: Response<ResponseDefault>
                 ) {
+                    if (call.isCanceled || !isActivitySafe()) return
+
                     val body = response.body()
 
                     if (response.isSuccessful && body?.status == true) {
-                        Toast.makeText(
-                            this@KeranjangActivity,
-                            body.message,
-                            Toast.LENGTH_SHORT
-                        ).show()
-
+                        showToast(body.message, Toast.LENGTH_SHORT)
                         loadKeranjang()
                     } else {
-                        Toast.makeText(
-                            this@KeranjangActivity,
+                        showToast(
                             body?.message ?: "Gagal hapus item",
                             Toast.LENGTH_SHORT
-                        ).show()
+                        )
                     }
                 }
 
                 override fun onFailure(call: Call<ResponseDefault>, t: Throwable) {
-                    Toast.makeText(
-                        this@KeranjangActivity,
-                        "Koneksi gagal: ${t.message}",
-                        Toast.LENGTH_LONG
-                    ).show()
+                    if (call.isCanceled || !isActivitySafe()) return
+
+                    showToast("Koneksi gagal: ${t.message}", Toast.LENGTH_LONG)
                 }
             })
     }
@@ -222,37 +209,31 @@ class KeranjangActivity : AppCompatActivity() {
                     call: Call<ResponseDefault>,
                     response: Response<ResponseDefault>
                 ) {
+                    if (call.isCanceled || !isActivitySafe()) return
+
                     b.btnBayarSekarang.isEnabled = true
                     b.btnBayarSekarang.text = "BAYAR SEKARANG"
 
                     val body = response.body()
 
                     if (response.isSuccessful && body?.status == true) {
-                        Toast.makeText(
-                            this@KeranjangActivity,
-                            body.message,
-                            Toast.LENGTH_LONG
-                        ).show()
-
+                        showToast(body.message, Toast.LENGTH_LONG)
                         loadKeranjang()
                     } else {
-                        Toast.makeText(
-                            this@KeranjangActivity,
+                        showToast(
                             body?.message ?: "Gagal memproses pembayaran",
                             Toast.LENGTH_LONG
-                        ).show()
+                        )
                     }
                 }
 
                 override fun onFailure(call: Call<ResponseDefault>, t: Throwable) {
+                    if (call.isCanceled || !isActivitySafe()) return
+
                     b.btnBayarSekarang.isEnabled = true
                     b.btnBayarSekarang.text = "BAYAR SEKARANG"
 
-                    Toast.makeText(
-                        this@KeranjangActivity,
-                        "Koneksi gagal: ${t.message}",
-                        Toast.LENGTH_LONG
-                    ).show()
+                    showToast("Koneksi gagal: ${t.message}", Toast.LENGTH_LONG)
                 }
             })
     }
@@ -285,7 +266,14 @@ class KeranjangActivity : AppCompatActivity() {
             ?.trim()
             ?.toIntOrNull() ?: 0
     }
+    private fun isActivitySafe(): Boolean {
+        return !isFinishing && !isDestroyed
+    }
 
+    private fun showToast(message: String, duration: Int = Toast.LENGTH_SHORT) {
+        if (!isActivitySafe()) return
+        Toast.makeText(this, message, duration).show()
+    }
     private fun formatRupiah(value: Int): String {
         val localeId = Locale("id", "ID")
         val formatter = NumberFormat.getCurrencyInstance(localeId)

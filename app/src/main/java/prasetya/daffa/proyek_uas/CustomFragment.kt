@@ -35,6 +35,8 @@ class CustomFragment : Fragment() {
 
     private val pilihGambarLauncher =
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+            if (!isViewSafe()) return@registerForActivityResult
+
             if (uri != null) {
                 selectedImageUri = uri
 
@@ -99,11 +101,7 @@ class CustomFragment : Fragment() {
         val userId = session.getUserId()
 
         if (userId == 0) {
-            Toast.makeText(
-                requireContext(),
-                "User belum login. Silakan login ulang.",
-                Toast.LENGTH_LONG
-            ).show()
+            showToast("User belum login. Silakan login ulang.", Toast.LENGTH_LONG)
             return
         }
 
@@ -133,51 +131,45 @@ class CustomFragment : Fragment() {
                 call: Call<ResponseDefault>,
                 response: Response<ResponseDefault>
             ) {
-                b.btnKirimPesanan.isEnabled = true
-                b.btnKirimPesanan.text = "+ KIRIM PESANAN"
+                if (call.isCanceled || !isViewSafe()) return
+
+                setButtonLoading(false)
 
                 val body = response.body()
 
                 if (response.isSuccessful && body?.status == true) {
-                    Toast.makeText(
-                        requireContext(),
-                        body.message,
-                        Toast.LENGTH_LONG
-                    ).show()
-
+                    showToast(body.message, Toast.LENGTH_LONG)
                     resetForm()
                 } else {
-                    Toast.makeText(
-                        requireContext(),
+                    showToast(
                         body?.message ?: "Gagal mengirim pesanan custom",
                         Toast.LENGTH_LONG
-                    ).show()
+                    )
                 }
             }
 
             override fun onFailure(call: Call<ResponseDefault>, t: Throwable) {
-                b.btnKirimPesanan.isEnabled = true
-                b.btnKirimPesanan.text = "+ KIRIM PESANAN"
+                if (call.isCanceled || !isViewSafe()) return
 
-                Toast.makeText(
-                    requireContext(),
-                    "Koneksi gagal: ${t.message}",
-                    Toast.LENGTH_LONG
-                ).show()
+                setButtonLoading(false)
+                showToast("Koneksi gagal: ${t.message}", Toast.LENGTH_LONG)
             }
         })
     }
 
     private fun resetForm() {
+        if (!isViewSafe()) return
+
         b.etJenisFurniture.setText("")
         b.etJenisKayu.setText("")
         b.etUkuran.setText("")
         b.etCatatanTambahan.setText("")
         hapusGambar()
     }
-
     private fun hapusGambar() {
         selectedImageUri = null
+
+        if (!isViewSafe()) return
 
         b.imgReferensiPreview.setImageDrawable(null)
         b.imgReferensiPreview.visibility = View.GONE
@@ -237,7 +229,21 @@ class CustomFragment : Fragment() {
 
         return result
     }
+    private fun isViewSafe(): Boolean {
+        return _b != null && isAdded
+    }
 
+    private fun showToast(message: String, duration: Int = Toast.LENGTH_SHORT) {
+        val ctx = context ?: return
+        Toast.makeText(ctx, message, duration).show()
+    }
+
+    private fun setButtonLoading(isLoading: Boolean) {
+        if (!isViewSafe()) return
+
+        b.btnKirimPesanan.isEnabled = !isLoading
+        b.btnKirimPesanan.text = if (isLoading) "Mengirim..." else "+ KIRIM PESANAN"
+    }
     override fun onDestroyView() {
         super.onDestroyView()
         _b = null
