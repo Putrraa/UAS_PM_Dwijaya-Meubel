@@ -13,19 +13,23 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
+import prasetya.daffa.proyek_uas.R
 import prasetya.daffa.proyek_uas.adapter.DataBarangAdapter
 import prasetya.daffa.proyek_uas.api.ApiClient
 import prasetya.daffa.proyek_uas.api.Bahan
 import prasetya.daffa.proyek_uas.api.BahanResponse
 import prasetya.daffa.proyek_uas.api.Barang
 import prasetya.daffa.proyek_uas.api.BarangListResponse
+import prasetya.daffa.proyek_uas.api.BarangResponse
 import prasetya.daffa.proyek_uas.api.Kategori
 import prasetya.daffa.proyek_uas.api.KategoriResponse
 import prasetya.daffa.proyek_uas.api.ResponseDefault
+import prasetya.daffa.proyek_uas.databinding.DialogEditBarangBinding
 import prasetya.daffa.proyek_uas.databinding.DialogTambahBahanBinding
 import prasetya.daffa.proyek_uas.databinding.DialogTambahBarangBinding
 import prasetya.daffa.proyek_uas.databinding.DialogTambahKategoriBinding
@@ -46,7 +50,12 @@ class KelolaBarangFragment : Fragment() {
     private val semuaBahan = mutableListOf<Bahan>()
 
     private var selectedImageUri: Uri? = null
+    private var selectedEditImageUri: Uri? = null
+    private var selectedKategoriImageUri: Uri? = null
+
     private var dialogBarangBinding: DialogTambahBarangBinding? = null
+    private var dialogEditBarangBinding: DialogEditBarangBinding? = null
+    private var dialogKategoriBinding: DialogTambahKategoriBinding? = null
 
     private val pilihGambarLauncher =
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
@@ -55,8 +64,14 @@ class KelolaBarangFragment : Fragment() {
                 dialogBarangBinding?.imgPreviewBarang?.setImageURI(uri)
             }
         }
-    private var selectedKategoriImageUri: Uri? = null
-    private var dialogKategoriBinding: DialogTambahKategoriBinding? = null
+
+    private val pilihGambarEditLauncher =
+        registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+            if (uri != null) {
+                selectedEditImageUri = uri
+                dialogEditBarangBinding?.imgPreviewEditBarang?.setImageURI(uri)
+            }
+        }
 
     private val pilihGambarKategoriLauncher =
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
@@ -88,11 +103,7 @@ class KelolaBarangFragment : Fragment() {
         adapter = DataBarangAdapter(
             mutableListOf(),
             onEdit = { barang ->
-                Toast.makeText(
-                    requireContext(),
-                    "Edit ${barang.nama_barang}",
-                    Toast.LENGTH_SHORT
-                ).show()
+                showDialogEditBarang(barang)
             },
             onHapus = { barang ->
                 konfirmasiHapus(barang)
@@ -189,7 +200,12 @@ class KelolaBarangFragment : Fragment() {
 
             override fun onFailure(call: Call<KategoriResponse>, t: Throwable) {
                 if (_b == null || !isAdded) return
-                Toast.makeText(requireContext(), "Gagal load kategori: ${t.message}", Toast.LENGTH_SHORT).show()
+
+                Toast.makeText(
+                    requireContext(),
+                    "Gagal load kategori: ${t.message}",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         })
     }
@@ -210,7 +226,12 @@ class KelolaBarangFragment : Fragment() {
 
             override fun onFailure(call: Call<BahanResponse>, t: Throwable) {
                 if (_b == null || !isAdded) return
-                Toast.makeText(requireContext(), "Gagal load bahan: ${t.message}", Toast.LENGTH_SHORT).show()
+
+                Toast.makeText(
+                    requireContext(),
+                    "Gagal load bahan: ${t.message}",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         })
     }
@@ -306,6 +327,135 @@ class KelolaBarangFragment : Fragment() {
         dialog.show()
     }
 
+    private fun showDialogEditBarang(barang: Barang) {
+        if (semuaKategori.isEmpty()) {
+            Toast.makeText(requireContext(), "Kategori belum tersedia", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        if (semuaBahan.isEmpty()) {
+            Toast.makeText(requireContext(), "Bahan belum tersedia", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        val barangId = barang.id
+
+        if (barangId == null) {
+            Toast.makeText(requireContext(), "ID barang tidak valid", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        selectedEditImageUri = null
+
+        val dialogBinding = DialogEditBarangBinding.inflate(layoutInflater)
+        dialogEditBarangBinding = dialogBinding
+
+        val dialog = AlertDialog.Builder(requireContext())
+            .setView(dialogBinding.root)
+            .create()
+
+        val kategoriAdapter = ArrayAdapter(
+            requireContext(),
+            android.R.layout.simple_spinner_dropdown_item,
+            semuaKategori.map { it.nama_kategori ?: "-" }
+        )
+
+        val bahanAdapter = ArrayAdapter(
+            requireContext(),
+            android.R.layout.simple_spinner_dropdown_item,
+            semuaBahan.map { it.nama_bahan ?: "-" }
+        )
+
+        dialogBinding.spinnerEditKategoriBarang.adapter = kategoriAdapter
+        dialogBinding.spinnerEditBahanBarang.adapter = bahanAdapter
+
+        dialogBinding.edtEditNamaBarang.setText(barang.nama_barang.orEmpty())
+        dialogBinding.edtEditHargaBarang.setText(barang.harga.toHargaEdit())
+        dialogBinding.edtEditStokBarang.setText((barang.stok ?: 0).toString())
+        dialogBinding.edtEditUkuranBarang.setText(barang.ukuran.orEmpty())
+        dialogBinding.edtEditDeskripsiBarang.setText(barang.deskripsi.orEmpty())
+
+        val gambarUrl = barang.gambar_url
+            ?.replace("\\/", "/")
+            ?.replace(" ", "%20")
+
+        Glide.with(dialogBinding.imgPreviewEditBarang)
+            .load(gambarUrl)
+            .placeholder(R.drawable.home)
+            .error(R.drawable.home)
+            .into(dialogBinding.imgPreviewEditBarang)
+
+        val kategoriIdLama = barang.kategori_id ?: barang.kategori?.id
+        val kategoriIndex = semuaKategori.indexOfFirst { it.id == kategoriIdLama }
+
+        if (kategoriIndex >= 0) {
+            dialogBinding.spinnerEditKategoriBarang.setSelection(kategoriIndex)
+        }
+
+        val bahanIdLama = barang.bahan_id ?: barang.bahan?.id
+        val bahanIndex = semuaBahan.indexOfFirst { it.id == bahanIdLama }
+
+        if (bahanIndex >= 0) {
+            dialogBinding.spinnerEditBahanBarang.setSelection(bahanIndex)
+        }
+
+        dialogBinding.btnPilihGambarEditBarang.setOnClickListener {
+            pilihGambarEditLauncher.launch("image/*")
+        }
+
+        dialogBinding.btnBatalEditBarang.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialogBinding.btnUpdateBarang.setOnClickListener {
+            val nama = dialogBinding.edtEditNamaBarang.text.toString().trim()
+            val harga = dialogBinding.edtEditHargaBarang.text.toString().trim()
+            val stok = dialogBinding.edtEditStokBarang.text.toString().trim()
+            val ukuran = dialogBinding.edtEditUkuranBarang.text.toString().trim()
+            val deskripsi = dialogBinding.edtEditDeskripsiBarang.text.toString().trim()
+
+            val kategoriPosition = dialogBinding.spinnerEditKategoriBarang.selectedItemPosition
+            val bahanPosition = dialogBinding.spinnerEditBahanBarang.selectedItemPosition
+
+            if (nama.isEmpty()) {
+                dialogBinding.edtEditNamaBarang.error = "Nama barang wajib diisi"
+                return@setOnClickListener
+            }
+
+            if (harga.isEmpty()) {
+                dialogBinding.edtEditHargaBarang.error = "Harga wajib diisi"
+                return@setOnClickListener
+            }
+
+            if (stok.isEmpty()) {
+                dialogBinding.edtEditStokBarang.error = "Stok wajib diisi"
+                return@setOnClickListener
+            }
+
+            val kategoriId = semuaKategori[kategoriPosition].id
+            val bahanId = semuaBahan[bahanPosition].id
+
+            updateBarang(
+                id = barangId,
+                nama = nama,
+                kategoriId = kategoriId,
+                bahanId = bahanId,
+                harga = harga,
+                stok = stok,
+                ukuran = ukuran,
+                deskripsi = deskripsi,
+                dialog = dialog
+            )
+        }
+
+        dialog.setOnDismissListener {
+            dialogEditBarangBinding = null
+            selectedEditImageUri = null
+        }
+
+        dialog.show()
+    }
+
     private fun simpanBarang(
         nama: String,
         kategoriId: Int,
@@ -352,15 +502,89 @@ class KelolaBarangFragment : Fragment() {
                     dialog.dismiss()
                     loadBarang()
                 } else {
+                    val errorText = response.errorBody()?.string()
+
                     Toast.makeText(
                         requireContext(),
-                        body?.message ?: "Gagal menambahkan barang",
-                        Toast.LENGTH_SHORT
+                        body?.message ?: errorText ?: "Gagal menambahkan barang",
+                        Toast.LENGTH_LONG
                     ).show()
                 }
             }
 
             override fun onFailure(call: Call<ResponseDefault>, t: Throwable) {
+                if (_b == null || !isAdded) return
+
+                b.progressBar.visibility = View.GONE
+
+                Toast.makeText(
+                    requireContext(),
+                    "Error: ${t.message}",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+        })
+    }
+
+    private fun updateBarang(
+        id: Int,
+        nama: String,
+        kategoriId: Int,
+        bahanId: Int,
+        harga: String,
+        stok: String,
+        ukuran: String,
+        deskripsi: String,
+        dialog: AlertDialog
+    ) {
+        b.progressBar.visibility = View.VISIBLE
+
+        val gambarPart = selectedEditImageUri?.let {
+            uriToMultipart(it, "gambar")
+        }
+
+        ApiClient.instance.updateBarang(
+            id = id,
+            namaBarang = nama.toTextRequestBody(),
+            kategoriId = kategoriId.toString().toTextRequestBody(),
+            bahanId = bahanId.toString().toTextRequestBody(),
+            harga = harga.toTextRequestBody(),
+            stok = stok.toTextRequestBody(),
+            ukuran = ukuran.toTextRequestBody(),
+            deskripsi = deskripsi.toTextRequestBody(),
+            gambar = gambarPart
+        ).enqueue(object : Callback<BarangResponse> {
+            override fun onResponse(
+                call: Call<BarangResponse>,
+                response: Response<BarangResponse>
+            ) {
+                if (_b == null || !isAdded) return
+
+                b.progressBar.visibility = View.GONE
+
+                val body = response.body()
+
+                if (response.isSuccessful && body?.status == true) {
+                    Toast.makeText(
+                        requireContext(),
+                        body.message,
+                        Toast.LENGTH_SHORT
+                    ).show()
+
+                    dialog.dismiss()
+                    loadBarang()
+                } else {
+                    val errorText = response.errorBody()?.string()
+
+                    Toast.makeText(
+                        requireContext(),
+                        body?.message ?: errorText ?: "Gagal mengupdate barang",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+            }
+
+            override fun onFailure(call: Call<BarangResponse>, t: Throwable) {
                 if (_b == null || !isAdded) return
 
                 b.progressBar.visibility = View.GONE
@@ -437,10 +661,12 @@ class KelolaBarangFragment : Fragment() {
                     dialog.dismiss()
                     loadKategori()
                 } else {
+                    val errorText = response.errorBody()?.string()
+
                     Toast.makeText(
                         requireContext(),
-                        body?.message ?: "Gagal menambah kategori",
-                        Toast.LENGTH_SHORT
+                        body?.message ?: errorText ?: "Gagal menambah kategori",
+                        Toast.LENGTH_LONG
                     ).show()
                 }
             }
@@ -453,6 +679,7 @@ class KelolaBarangFragment : Fragment() {
             }
         })
     }
+
     private fun showDialogTambahBahan() {
         val dialogBinding = DialogTambahBahanBinding.inflate(layoutInflater)
 
@@ -498,10 +725,12 @@ class KelolaBarangFragment : Fragment() {
                         dialog.dismiss()
                         loadBahan()
                     } else {
+                        val errorText = response.errorBody()?.string()
+
                         Toast.makeText(
                             requireContext(),
-                            body?.message ?: "Gagal menambah bahan",
-                            Toast.LENGTH_SHORT
+                            body?.message ?: errorText ?: "Gagal menambah bahan",
+                            Toast.LENGTH_LONG
                         ).show()
                     }
                 }
@@ -568,10 +797,12 @@ class KelolaBarangFragment : Fragment() {
 
                     loadBarang()
                 } else {
+                    val errorText = response.errorBody()?.string()
+
                     Toast.makeText(
                         requireContext(),
-                        response.body()?.message ?: "Gagal menghapus barang",
-                        Toast.LENGTH_SHORT
+                        response.body()?.message ?: errorText ?: "Gagal menghapus barang",
+                        Toast.LENGTH_LONG
                     ).show()
                 }
             }
@@ -599,8 +830,18 @@ class KelolaBarangFragment : Fragment() {
         return this.toRequestBody("text/plain".toMediaTypeOrNull())
     }
 
+    private fun String?.toHargaEdit(): String {
+        return this
+            ?.replace("Rp", "")
+            ?.replace(".", "")
+            ?.replace(",", "")
+            ?.trim()
+            ?: ""
+    }
+
     private fun uriToMultipart(uri: Uri, partName: String): MultipartBody.Part {
         val fileName = getFileName(uri) ?: "gambar_${System.currentTimeMillis()}.jpg"
+
         val inputStream = requireContext().contentResolver.openInputStream(uri)
         val bytes = inputStream?.readBytes() ?: byteArrayOf()
         inputStream?.close()
@@ -619,9 +860,11 @@ class KelolaBarangFragment : Fragment() {
 
         if (uri.scheme == "content") {
             val cursor: Cursor? = requireContext().contentResolver.query(uri, null, null, null, null)
+
             cursor?.use {
                 if (it.moveToFirst()) {
                     val index = it.getColumnIndex(OpenableColumns.DISPLAY_NAME)
+
                     if (index >= 0) {
                         result = it.getString(index)
                     }
@@ -632,6 +875,7 @@ class KelolaBarangFragment : Fragment() {
         if (result == null) {
             result = uri.path
             val cut = result?.lastIndexOf('/')
+
             if (cut != null && cut != -1) {
                 result = result?.substring(cut + 1)
             }
@@ -642,7 +886,15 @@ class KelolaBarangFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+
         dialogBarangBinding = null
+        dialogEditBarangBinding = null
+        dialogKategoriBinding = null
+
+        selectedImageUri = null
+        selectedEditImageUri = null
+        selectedKategoriImageUri = null
+
         _b = null
     }
 }
