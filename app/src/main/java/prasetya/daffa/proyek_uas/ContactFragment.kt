@@ -20,12 +20,22 @@ class ContactFragment : Fragment(), View.OnClickListener {
 
     private lateinit var b: ContactFragmentBinding
 
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         b = ContactFragmentBinding.inflate(inflater, container, false)
+
+
+        b.btnExplore.setOnClickListener {
+            val intent = Intent(
+                Intent.ACTION_VIEW,
+                "https://www.dwijayameubel.my.id/".toUri()
+            )
+            startActivity(intent)
+        }
 
         b.btnShop.setOnClickListener(this)
 
