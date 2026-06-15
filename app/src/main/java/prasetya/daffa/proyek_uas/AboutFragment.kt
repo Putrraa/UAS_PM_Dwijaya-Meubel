@@ -53,8 +53,13 @@ class AboutFragment : Fragment(), View.OnClickListener {
         videoView.setOnPreparedListener { mp ->
             mp.setVideoScalingMode(android.media.MediaPlayer.VIDEO_SCALING_MODE_SCALE_TO_FIT)
             mp.isLooping = true
-            if (startPosition > 0) videoView.seekTo(startPosition)
-            videoView.start()
+            if (startPosition > 0) {
+                videoView.seekTo(startPosition)
+                videoView.start() // lanjut play jika dari fullscreen
+            } else {
+                videoView.seekTo(1) // tampilkan frame pertama sebagai thumbnail
+                // tidak start() agar tidak auto-play
+            }
         }
     }
 
@@ -145,7 +150,6 @@ class AboutFragment : Fragment(), View.OnClickListener {
         super.onResume()
         if (fullscreenDialog?.isShowing != true) {
             b.videoView.seekTo(currentPosition)
-            b.videoView.start()
         }
     }
 
