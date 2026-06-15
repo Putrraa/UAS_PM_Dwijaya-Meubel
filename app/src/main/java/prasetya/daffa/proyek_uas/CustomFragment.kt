@@ -23,6 +23,10 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.io.File
 import java.io.FileOutputStream
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import android.widget.TextView
+import android.widget.Button
+import android.widget.ImageView
 
 
 class CustomFragment : Fragment() {
@@ -31,6 +35,7 @@ class CustomFragment : Fragment() {
     private val b get() = _b!!
 
     private lateinit var session: SessionManager
+    private var cameraImageBitmap: android.graphics.Bitmap? = null
     private var selectedImageUri: Uri? = null
 
     private val pilihGambarLauncher =
@@ -41,6 +46,20 @@ class CustomFragment : Fragment() {
                 selectedImageUri = uri
 
                 b.imgReferensiPreview.setImageURI(uri)
+                b.imgReferensiPreview.visibility = View.VISIBLE
+                b.btnHapusGambar.visibility = View.VISIBLE
+                b.layoutUploadPlaceholder.visibility = View.GONE
+            }
+        }
+    private val kameraLauncher =
+        registerForActivityResult(ActivityResultContracts.TakePicturePreview()) { bitmap ->
+            if (!isViewSafe()) return@registerForActivityResult
+
+            if (bitmap != null) {
+                cameraImageBitmap = bitmap
+                selectedImageUri = null
+
+                b.imgReferensiPreview.setImageBitmap(bitmap)
                 b.imgReferensiPreview.visibility = View.VISIBLE
                 b.btnHapusGambar.visibility = View.VISIBLE
                 b.layoutUploadPlaceholder.visibility = View.GONE
@@ -62,7 +81,7 @@ class CustomFragment : Fragment() {
         session = SessionManager(requireContext())
 
         b.layoutUploadGambar.setOnClickListener {
-            pilihGambarLauncher.launch("image/*")
+            showImagePickerDialog()
         }
 
         b.btnHapusGambar.setOnClickListener {
@@ -106,7 +125,7 @@ class CustomFragment : Fragment() {
         }
 
         b.btnKirimPesanan.isEnabled = false
-        b.btnKirimPesanan.text = "Mengirim..."
+        b.btnKirimPesanan.text = getString(R.string.mengirim)
 
         val userIdBody = userId.toString().toTextRequestBody()
         val jenisFurnitureBody = jenisFurniture.toTextRequestBody()
@@ -114,8 +133,14 @@ class CustomFragment : Fragment() {
         val ukuranBody = ukuran.toTextRequestBody()
         val catatanBody = catatan.toTextRequestBody()
 
-        val gambarPart = selectedImageUri?.let { uri ->
-            uriToMultipart("gambar", uri)
+        val gambarPart = when {
+            selectedImageUri != null -> {
+                uriToMultipart("gambar", selectedImageUri!!)
+            }
+            cameraImageBitmap != null -> {
+                bitmapToMultipart("gambar", cameraImageBitmap!!)
+            }
+            else -> null
         }
 
         ApiClient.instance.tambahCustomOrder(
@@ -164,6 +189,10 @@ class CustomFragment : Fragment() {
         b.etJenisKayu.setText("")
         b.etUkuran.setText("")
         b.etCatatanTambahan.setText("")
+
+        selectedImageUri = null
+        cameraImageBitmap = null
+
         hapusGambar()
     }
     private fun hapusGambar() {
@@ -181,6 +210,22 @@ class CustomFragment : Fragment() {
         return this.toRequestBody("text/plain".toMediaTypeOrNull())
     }
 
+    private fun bitmapToMultipart(partName: String, bitmap: android.graphics.Bitmap): MultipartBody.Part {
+
+        val file = File(requireContext().cacheDir, "camera_${System.currentTimeMillis()}.jpg")
+
+        FileOutputStream(file).use { out ->
+            bitmap.compress(android.graphics.Bitmap.CompressFormat.JPEG, 90, out)
+        }
+
+        val requestFile = file.asRequestBody("image/*".toMediaTypeOrNull())
+
+        return MultipartBody.Part.createFormData(
+            partName,
+            file.name,
+            requestFile
+        )
+    }
     private fun uriToMultipart(partName: String, uri: Uri): MultipartBody.Part {
         val file = uriToFile(uri)
         val requestFile = file.asRequestBody("image/*".toMediaTypeOrNull())
@@ -247,5 +292,31 @@ class CustomFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _b = null
+    }
+    private fun showImagePickerDialog() {
+        val dialog = BottomSheetDialog(requireContext())
+
+        val view = layoutInflater.inflate(R.layout.dialog_image_picker, null)
+
+        val btnKamera = view.findViewById<View>(R.id.btnKamera)
+        val btnGaleri = view.findViewById<View>(R.id.btnGaleri)
+        val btnCancel = view.findViewById<View>(R.id.btnCancel)
+
+        btnKamera.setOnClickListener {
+            kameraLauncher.launch(null)
+            dialog.dismiss()
+        }
+
+        btnGaleri.setOnClickListener {
+            pilihGambarLauncher.launch("image/*")
+            dialog.dismiss()
+        }
+
+        btnCancel.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialog.setContentView(view)
+        dialog.show()
     }
 }

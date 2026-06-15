@@ -2,4 +2,6 @@
     <string name="app_name">Proyek_UAS</string>
     <string name="open">Open</string>
     <string name="close">Close</string>
+    <string name="mengirim">Mengirim...</string>
+    <string name="kirim_pesanan">KIRIM PESANAN</string>
 </resources>
