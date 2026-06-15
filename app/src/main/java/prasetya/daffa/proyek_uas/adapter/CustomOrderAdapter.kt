@@ -3,7 +3,6 @@ package prasetya.daffa.proyek_uas.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -31,7 +30,7 @@ class CustomOrderAdapter(
         val tvUkuran: TextView = itemView.findViewById(R.id.tvUkuran)
         val tvHarga: TextView = itemView.findViewById(R.id.tvHarga)
         val tvStatus: TextView = itemView.findViewById(R.id.tvStatusCustom)
-        val btnBayar: Button = itemView.findViewById(R.id.btnBayarSekarang)
+        val btnBayar: TextView = itemView.findViewById(R.id.btnBayarSekarang)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -46,7 +45,7 @@ class CustomOrderAdapter(
         holder.tvNama.text = item.furnitureNama
         holder.tvKayu.text = item.kayu
         holder.tvUkuran.text = item.ukuran
-        holder.tvHarga.text = item.harga
+        holder.tvHarga.text = formatHarga(item.harga)
         holder.tvStatus.text = item.status
 
         val gambarUrl = item.imageUrl
@@ -68,4 +67,18 @@ class CustomOrderAdapter(
     }
 
     override fun getItemCount() = list.size
+
+    private fun formatHarga(harga: String): String {
+        return try {
+            val angka = harga.replace("[^0-9]".toRegex(), "").toLong()
+            when {
+                angka >= 1_000_000_000 -> "Rp ${angka / 1_000_000_000}M"
+                angka >= 1_000_000 -> "Rp ${angka / 1_000_000}jt"
+                angka >= 1_000 -> "Rp ${angka / 1_000}rb"
+                else -> "Rp $angka"
+            }
+        } catch (e: Exception) {
+            harga
+        }
+    }
 }

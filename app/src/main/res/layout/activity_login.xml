@@ -176,6 +176,7 @@
                 android:textStyle="bold" />
 
             <!-- Input Password -->
+            <!-- Input Password -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
@@ -199,11 +200,17 @@
                     android:textColorHint="#8D8D8D"
                     android:textSize="14sp" />
 
-                <!--                <ImageView-->
-                <!--                    android:layout_width="19dp"-->
-                <!--                    android:layout_height="19dp"-->
-                <!--                    android:src="@drawable/ic_eye"-->
-                <!--                    app:tint="#9B9B9B" />-->
+                <ImageView
+                    android:id="@+id/ivTogglePassword"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_eye_closed"
+                    android:alpha="0.45"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:padding="2dp"
+                    app:tint="#555555" />
+
             </LinearLayout>
 
             <!-- Lupa Password -->
