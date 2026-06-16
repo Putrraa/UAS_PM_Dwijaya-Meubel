@@ -13,17 +13,17 @@
 
     <item
         android:id="@+id/custom"
-        android:icon="@drawable/shopping_cart"
+        android:icon="@drawable/ic_custom_orders"
         android:title="Custom" />
 
     <item
         android:id="@+id/about"
         android:icon="@drawable/info"
-        android:title="About"/>
+        android:title="About" />
 
     <item
         android:id="@+id/contact"
         android:icon="@drawable/phone_flip"
-        android:title="Contact"/>
+        android:title="Contact" />
 
 </menu>
