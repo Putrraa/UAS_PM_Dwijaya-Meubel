@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="170dp"
+    android:background="#3E5C45"
+    android:gravity="bottom"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <TextView
+        android:id="@+id/tvInitialPengguna"
+        android:layout_width="52dp"
+        android:layout_height="52dp"
+        android:background="@drawable/bg_profile_circle"
+        android:gravity="center"
+        android:text="D"
+        android:textColor="#3E5C45"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tvProfileName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:text="Dwijaya Meubel"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tvEmailPengguna"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Dwijaya@gmail.com"
+        android:textColor="#DDE9DD"
+        android:textSize="13sp" />
+
+</LinearLayout>

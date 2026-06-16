@@ -134,4 +134,6 @@ class MainActivity : AppCompatActivity() {
     fun setSelectedNav(itemId: Int) {
         b.bottomNav.selectedItemId = itemId
     }
+
+
 }

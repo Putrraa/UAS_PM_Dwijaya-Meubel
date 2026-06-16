@@ -4,21 +4,34 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#3E5C45"
+    android:fitsSystemWindows="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#3E5C45">
+        android:background="#F4F6F2">
 
-        <androidx.appcompat.widget.Toolbar
+        <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar"
             android:layout_width="0dp"
-            android:layout_height="84dp"
+            android:layout_height="64dp"
+            android:minHeight="64dp"
             android:background="#3E5C45"
-            android:paddingTop="24dp"
+            android:elevation="6dp"
+            android:gravity="center_vertical"
+            android:paddingStart="0dp"
+            android:paddingEnd="16dp"
             app:title="Dwijaya Meubel"
+            app:titleCentered="false"
             app:titleTextColor="#FFFFFF"
+            app:titleTextAppearance="@style/ToolbarTitleStyle"
+            app:navigationIconTint="#FFFFFF"
+            app:contentInsetStart="0dp"
+            app:contentInsetStartWithNavigation="0dp"
+            app:contentInsetLeft="0dp"
+            app:contentInsetEnd="16dp"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
@@ -27,47 +40,65 @@
             android:id="@+id/frame_container"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:background="#F0F0F0"
-            android:paddingBottom="100dp"
+            android:background="@drawable/bg_content_area"
             android:clipToPadding="false"
+            android:paddingStart="0dp"
+            android:paddingTop="0dp"
+            android:paddingEnd="0dp"
+            android:paddingBottom="106dp"
             app:layout_constraintTop_toBottomOf="@id/toolbar"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
-        <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:paddingTop="0dp"
-            android:paddingBottom="0dp"
-            android:id="@+id/bottom_nav"
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/bottom_nav_container"
             android:layout_width="0dp"
-            android:layout_height="76dp"
-
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="16dp"
-
-            android:background="@drawable/bg_floating_nav"
-            android:elevation="8dp"
-
-            app:itemActiveIndicatorStyle="@style/NavIndicator"
-            app:itemIconTint="@color/nav_icon_tint"
-            app:itemIconSize="24dp"
-            app:itemRippleColor="@android:color/transparent"
-            app:labelVisibilityMode="unlabeled"
-
-            app:menu="@menu/menu_bottom"
-
+            android:layout_height="72dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="18dp"
+            app:cardBackgroundColor="#FFFFFF"
+            app:cardCornerRadius="28dp"
+            app:cardElevation="12dp"
+            app:strokeWidth="0dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <com.google.android.material.bottomnavigation.BottomNavigationView
+                android:id="@+id/bottom_nav"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent"
+                android:paddingStart="4dp"
+                android:paddingEnd="4dp"
+                android:paddingTop="0dp"
+                android:paddingBottom="0dp"
+                app:itemPaddingTop="0dp"
+                app:itemPaddingBottom="0dp"
+                app:itemIconSize="24dp"
+                app:itemIconTint="@color/nav_icon_tint"
+                app:itemTextColor="@color/nav_icon_tint"
+                app:itemRippleColor="@android:color/transparent"
+                app:itemActiveIndicatorStyle="@style/NavIndicator"
+                app:labelVisibilityMode="unlabeled"
+                app:menu="@menu/menu_bottom" />
+
+        </com.google.android.material.card.MaterialCardView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/nav_drawer"
-        android:layout_width="wrap_content"
+        android:layout_width="290dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        app:menu="@menu/menu_home"/>
+        android:background="#FFFFFF"
+        app:itemIconTint="#3E5C45"
+        app:itemTextColor="#2F3A32"
+        app:itemRippleColor="#EAF1EA"
+        app:menu="@menu/menu_home"
+        app:headerLayout="@layout/nav_header_main" />
 
 </androidx.drawerlayout.widget.DrawerLayout>
