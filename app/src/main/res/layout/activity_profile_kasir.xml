@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#EEF2EA"
+    android:background="@color/brand_green_surface"
     android:fillViewport="true"
     android:fitsSystemWindows="true">
 
@@ -21,7 +21,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="14dp"
-            app:cardBackgroundColor="#3E5C45"
+            app:cardBackgroundColor="@color/brand_green"
             app:cardCornerRadius="18dp"
             app:cardElevation="4dp">
 
@@ -63,7 +63,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
                         android:text="Kelola akun dan keamanan kasir"
-                        android:textColor="#DDE8D8"
+                        android:textColor="@color/brand_green_soft"
                         android:textSize="12sp" />
 
                 </LinearLayout>
@@ -77,7 +77,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="14dp"
-            app:cardBackgroundColor="#1F3D0C"
+            app:cardBackgroundColor="@color/brand_green_dark"
             app:cardCornerRadius="20dp"
             app:cardElevation="4dp">
 
@@ -100,7 +100,7 @@
                         android:background="@drawable/bg_avatar_yellow"
                         android:gravity="center"
                         android:text="K"
-                        android:textColor="#1F3D0C"
+                        android:textColor="@color/brand_green_dark"
                         android:textSize="36sp"
                         android:textStyle="bold" />
 
@@ -121,7 +121,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
                     android:text="Kasir Dwijaya Meubel"
-                    android:textColor="#C7D5C2"
+                    android:textColor="@color/brand_green_soft"
                     android:textSize="12sp" />
 
                 <LinearLayout
@@ -135,7 +135,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="6dp"
                         android:layout_weight="1"
-                        app:cardBackgroundColor="#2E5220"
+                        app:cardBackgroundColor="@color/brand_green_deep"
                         app:cardCornerRadius="14dp"
                         app:cardElevation="0dp">
 
@@ -150,7 +150,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Status"
-                                android:textColor="#DDE8D8"
+                                android:textColor="@color/brand_green_soft"
                                 android:textSize="11sp" />
 
                             <TextView
@@ -176,7 +176,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="6dp"
                         android:layout_weight="1"
-                        app:cardBackgroundColor="#2E5220"
+                        app:cardBackgroundColor="@color/brand_green_deep"
                         app:cardCornerRadius="14dp"
                         app:cardElevation="0dp">
 
@@ -191,7 +191,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Role"
-                                android:textColor="#DDE8D8"
+                                android:textColor="@color/brand_green_soft"
                                 android:textSize="11sp" />
 
                             <TextView
@@ -232,7 +232,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Informasi Akun"
-                    android:textColor="#1A1A1A"
+                    android:textColor="@color/text_primary"
                     android:textSize="19sp"
                     android:textStyle="bold" />
 
@@ -241,7 +241,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
                     android:text="Data akun kasir yang digunakan untuk masuk ke aplikasi."
-                    android:textColor="#888888"
+                    android:textColor="@color/text_muted"
                     android:textSize="12sp" />
 
                 <View
@@ -249,7 +249,7 @@
                     android:layout_height="1dp"
                     android:layout_marginTop="16dp"
                     android:layout_marginBottom="18dp"
-                    android:background="#E8E8E8" />
+                    android:background="@color/app_divider" />
 
                 <!-- USERNAME -->
                 <TextView
@@ -258,7 +258,7 @@
                     android:layout_marginBottom="7dp"
                     android:letterSpacing="0.05"
                     android:text="USERNAME"
-                    android:textColor="#777777"
+                    android:textColor="@color/text_secondary"
                     android:textSize="11sp"
                     android:textStyle="bold" />
 
@@ -273,7 +273,7 @@
                     android:paddingStart="16dp"
                     android:paddingEnd="16dp"
                     android:text="Kasir"
-                    android:textColor="#1A1A1A"
+                    android:textColor="@color/text_primary"
                     android:textSize="14sp"
                     tools:text="Kasir Dwijaya" />
 
@@ -284,7 +284,7 @@
                     android:layout_marginBottom="7dp"
                     android:letterSpacing="0.05"
                     android:text="EMAIL ADDRESS"
-                    android:textColor="#777777"
+                    android:textColor="@color/text_secondary"
                     android:textSize="11sp"
                     android:textStyle="bold" />
 
@@ -298,7 +298,7 @@
                     android:paddingStart="16dp"
                     android:paddingEnd="16dp"
                     android:text="kasir@gmail.com"
-                    android:textColor="#1A1A1A"
+                    android:textColor="@color/text_primary"
                     android:textSize="14sp"
                     tools:text="kasir@gmail.com" />
 
@@ -312,213 +312,7 @@
             android:layout_height="wrap_content"
             app:cardBackgroundColor="@android:color/white"
             app:cardCornerRadius="20dp"
-            app:cardElevation="4dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="22dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Keamanan Akun"
-                    android:textColor="#1A1A1A"
-                    android:textSize="19sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:text="Perbarui password untuk menjaga keamanan akun kasir."
-                    android:textColor="#888888"
-                    android:textSize="12sp" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginBottom="18dp"
-                    android:background="#E8E8E8" />
-
-                <!-- PASSWORD LAMA -->
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="7dp"
-                    android:text="PASSWORD LAMA"
-                    android:textColor="#777777"
-                    android:textSize="11sp"
-                    android:textStyle="bold" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="52dp"
-                    android:layout_marginBottom="16dp"
-                    android:background="@drawable/bg_input_field"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:paddingStart="16dp"
-                    android:paddingEnd="12dp">
-
-                    <EditText
-                        android:id="@+id/etKasirPasswordLama"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:background="@android:color/transparent"
-                        android:hint="Masukkan password lama"
-                        android:inputType="textPassword"
-                        android:textColor="#1A1A1A"
-                        android:textSize="14sp" />
-
-                    <ImageView
-                        android:id="@+id/ivTogglePasswordLama"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:alpha="0.45"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:padding="2dp"
-                        android:src="@drawable/ic_eye_closed"
-                        app:tint="#555555" />
-                </LinearLayout>
-
-                <!-- PASSWORD BARU -->
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="7dp"
-                    android:text="PASSWORD BARU"
-                    android:textColor="#777777"
-                    android:textSize="11sp"
-                    android:textStyle="bold" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="52dp"
-                    android:layout_marginBottom="16dp"
-                    android:background="@drawable/bg_input_field"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:paddingStart="16dp"
-                    android:paddingEnd="12dp">
-
-                    <EditText
-                        android:id="@+id/etKasirPasswordBaru"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:background="@android:color/transparent"
-                        android:hint="Masukkan password baru"
-                        android:inputType="textPassword"
-                        android:textColor="#1A1A1A"
-                        android:textSize="14sp" />
-
-                    <ImageView
-                        android:id="@+id/ivTogglePasswordBaru"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:alpha="0.45"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:padding="2dp"
-                        android:src="@drawable/ic_eye_closed"
-                        app:tint="#555555" />
-                </LinearLayout>
-
-                <!-- KONFIRMASI PASSWORD -->
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="7dp"
-                    android:text="KONFIRMASI PASSWORD"
-                    android:textColor="#777777"
-                    android:textSize="11sp"
-                    android:textStyle="bold" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="52dp"
-                    android:background="@drawable/bg_input_field"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:paddingStart="16dp"
-                    android:paddingEnd="12dp">
-
-                    <EditText
-                        android:id="@+id/etKasirKonfirmasiPassword"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:background="@android:color/transparent"
-                        android:hint="Ulangi password baru"
-                        android:inputType="textPassword"
-                        android:textColor="#1A1A1A"
-                        android:textSize="14sp" />
-
-                    <ImageView
-                        android:id="@+id/ivToggleKonfirmasi"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:alpha="0.45"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:padding="2dp"
-                        android:src="@drawable/ic_eye_closed"
-                        app:tint="#555555" />
-                </LinearLayout>
-
-                <!-- ✅ Peringatan password tidak cocok -->
-                <TextView
-                    android:id="@+id/tvPasswordWarning"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="6dp"
-                    android:text="⚠ Password tidak cocok"
-                    android:textColor="#E53935"
-                    android:textSize="12sp"
-                    android:visibility="gone" />
-
-                <!-- BUTTON UPDATE -->
-                <Button
-                    android:id="@+id/btnPerbaruiPassword"
-                    android:layout_width="match_parent"
-                    android:layout_height="52dp"
-                    android:layout_marginTop="20dp"
-                    android:background="@drawable/bg_btn_yellow"
-                    android:stateListAnimator="@null"
-                    android:text="Perbarui Password"
-                    android:textColor="#1F3D0C"
-                    android:textSize="14sp"
-                    android:textStyle="bold" />
-
-                <Button
-                    android:id="@+id/btnBackKasir"
-                    android:layout_width="match_parent"
-                    android:layout_height="52dp"
-                    android:layout_marginTop="12dp"
-                    android:background="@drawable/bg_btn_dark_green"
-                    android:stateListAnimator="@null"
-                    android:text="Kembali ke Dashboard"
-                    android:textColor="@android:color/white"
-                    android:textSize="14sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="14dp"
-                    android:text="Dwijaya Meubel • Kasir Panel"
-                    android:textColor="#AAAAAA"
-                    android:textSize="11sp" />
-
-            </LinearLayout>
-
-        </androidx.cardview.widget.CardView>
+            app:cardElevation="4dp"/>
 
     </LinearLayout>
 

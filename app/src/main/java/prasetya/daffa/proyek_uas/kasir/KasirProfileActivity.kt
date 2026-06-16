@@ -56,7 +56,7 @@ class KasirProfileActivity : AppCompatActivity() {
             return
         }
 
-        window.statusBarColor = Color.parseColor("#EEF2EA")
+        window.statusBarColor = Color.parseColor("#F4F6F2")
         WindowCompat.getInsetsController(window, window.decorView)
             .isAppearanceLightStatusBars = true
 
@@ -64,8 +64,8 @@ class KasirProfileActivity : AppCompatActivity() {
 
         setupView()
         setupButton()
-        setupPasswordToggle()
-        setupPasswordWarning()
+//        setupPasswordToggle()
+//        setupPasswordWarning()
         loadKasirFromDatabase()
     }
 
@@ -77,35 +77,33 @@ class KasirProfileActivity : AppCompatActivity() {
 
     private fun setupButton() {
         b.btnBackKasirTop.setOnClickListener { finish() }
-        b.btnBackKasir.setOnClickListener    { finish() }
-        b.btnPerbaruiPassword.setOnClickListener { validasiUpdatePassword() }
     }
 
-    private fun setupPasswordToggle() {
-        b.ivTogglePasswordLama.setOnClickListener {
-            togglePassword(
-                b.etKasirPasswordLama,
-                b.ivTogglePasswordLama,
-                ::isPasswordLamaVisible
-            ) { isPasswordLamaVisible = it }
-        }
-
-        b.ivTogglePasswordBaru.setOnClickListener {
-            togglePassword(
-                b.etKasirPasswordBaru,
-                b.ivTogglePasswordBaru,
-                ::isPasswordBaruVisible
-            ) { isPasswordBaruVisible = it }
-        }
-
-        b.ivToggleKonfirmasi.setOnClickListener {
-            togglePassword(
-                b.etKasirKonfirmasiPassword,
-                b.ivToggleKonfirmasi,
-                ::isKonfirmasiVisible
-            ) { isKonfirmasiVisible = it }
-        }
-    }
+//    private fun setupPasswordToggle() {
+//        b.ivTogglePasswordLama.setOnClickListener {
+//            togglePassword(
+//                b.etKasirPasswordLama,
+//                b.ivTogglePasswordLama,
+//                ::isPasswordLamaVisible
+//            ) { isPasswordLamaVisible = it }
+//        }
+//
+//        b.ivTogglePasswordBaru.setOnClickListener {
+//            togglePassword(
+//                b.etKasirPasswordBaru,
+//                b.ivTogglePasswordBaru,
+//                ::isPasswordBaruVisible
+//            ) { isPasswordBaruVisible = it }
+//        }
+//
+//        b.ivToggleKonfirmasi.setOnClickListener {
+//            togglePassword(
+//                b.etKasirKonfirmasiPassword,
+//                b.ivToggleKonfirmasi,
+//                ::isKonfirmasiVisible
+//            ) { isKonfirmasiVisible = it }
+//        }
+//    }
 
     private fun togglePassword(
         editText: EditText,
@@ -140,42 +138,42 @@ class KasirProfileActivity : AppCompatActivity() {
         editText.setSelection(cursor)
     }
 
-    private fun setupPasswordWarning() {
-        b.etKasirKonfirmasiPassword.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-            override fun afterTextChanged(s: Editable?) { checkPasswordMatch() }
-        })
+//    private fun setupPasswordWarning() {
+//        b.etKasirKonfirmasiPassword.addTextChangedListener(object : TextWatcher {
+//            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+//            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+//            override fun afterTextChanged(s: Editable?) { checkPasswordMatch() }
+//        })
+//
+//        b.etKasirPasswordBaru.addTextChangedListener(object : TextWatcher {
+//            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+//            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+//            override fun afterTextChanged(s: Editable?) {
+//                if (b.etKasirKonfirmasiPassword.text.isNotEmpty()) checkPasswordMatch()
+//            }
+//        })
+//    }
 
-        b.etKasirPasswordBaru.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-            override fun afterTextChanged(s: Editable?) {
-                if (b.etKasirKonfirmasiPassword.text.isNotEmpty()) checkPasswordMatch()
-            }
-        })
-    }
-
-    private fun checkPasswordMatch() {
-        val baru    = b.etKasirPasswordBaru.text.toString()
-        val konfirm = b.etKasirKonfirmasiPassword.text.toString()
-
-        when {
-            konfirm.isEmpty() -> {
-                b.tvPasswordWarning.visibility = View.GONE
-            }
-            baru != konfirm -> {
-                b.tvPasswordWarning.text = "⚠ Password tidak cocok"
-                b.tvPasswordWarning.setTextColor(0xFFE53935.toInt())
-                b.tvPasswordWarning.visibility = View.VISIBLE
-            }
-            else -> {
-                b.tvPasswordWarning.text = "✓ Password cocok"
-                b.tvPasswordWarning.setTextColor(0xFF3D6148.toInt())
-                b.tvPasswordWarning.visibility = View.VISIBLE
-            }
-        }
-    }
+//    private fun checkPasswordMatch() {
+//        val baru    = b.etKasirPasswordBaru.text.toString()
+//        val konfirm = b.etKasirKonfirmasiPassword.text.toString()
+//
+//        when {
+//            konfirm.isEmpty() -> {
+//                b.tvPasswordWarning.visibility = View.GONE
+//            }
+//            baru != konfirm -> {
+//                b.tvPasswordWarning.text = "⚠ Password tidak cocok"
+//                b.tvPasswordWarning.setTextColor(0xFFE53935.toInt())
+//                b.tvPasswordWarning.visibility = View.VISIBLE
+//            }
+//            else -> {
+//                b.tvPasswordWarning.text = "✓ Password cocok"
+//                b.tvPasswordWarning.setTextColor(0xFF3D6148.toInt())
+//                b.tvPasswordWarning.visibility = View.VISIBLE
+//            }
+//        }
+//    }
 
     private fun loadKasirFromDatabase() {
         if (currentUserId == 0) {
@@ -247,107 +245,107 @@ class KasirProfileActivity : AppCompatActivity() {
             currentName.trim().firstOrNull()?.uppercaseChar()?.toString() ?: "K"
     }
 
-    private fun validasiUpdatePassword() {
-        val passwordLama   = b.etKasirPasswordLama.text.toString().trim()
-        val passwordBaru   = b.etKasirPasswordBaru.text.toString().trim()
-        val konfirmasiPass = b.etKasirKonfirmasiPassword.text.toString().trim()
+//    private fun validasiUpdatePassword() {
+//        val passwordLama   = b.etKasirPasswordLama.text.toString().trim()
+//        val passwordBaru   = b.etKasirPasswordBaru.text.toString().trim()
+//        val konfirmasiPass = b.etKasirKonfirmasiPassword.text.toString().trim()
+//
+//        when {
+//            currentUserId == 0 -> {
+//                Toast.makeText(this, "User ID tidak ditemukan", Toast.LENGTH_SHORT).show()
+//            }
+//            passwordLama.isEmpty() -> {
+//                b.etKasirPasswordLama.error = "Password lama wajib diisi"
+//                b.etKasirPasswordLama.requestFocus()
+//            }
+//            passwordBaru.isEmpty() -> {
+//                b.etKasirPasswordBaru.error = "Password baru wajib diisi"
+//                b.etKasirPasswordBaru.requestFocus()
+//            }
+//            passwordBaru.length < 6 -> {
+//                b.etKasirPasswordBaru.error = "Password minimal 6 karakter"
+//                b.etKasirPasswordBaru.requestFocus()
+//            }
+//            konfirmasiPass.isEmpty() -> {
+//                b.etKasirKonfirmasiPassword.error = "Konfirmasi password wajib diisi"
+//                b.etKasirKonfirmasiPassword.requestFocus()
+//            }
+//            passwordBaru != konfirmasiPass -> {
+//                b.tvPasswordWarning.text = "⚠ Password tidak cocok"
+//                b.tvPasswordWarning.setTextColor(0xFFE53935.toInt())
+//                b.tvPasswordWarning.visibility = View.VISIBLE
+//                b.etKasirKonfirmasiPassword.requestFocus()
+//            }
+//            else -> {
+//                updatePassword(passwordLama, passwordBaru, konfirmasiPass)
+//            }
+//        }
+//    }
 
-        when {
-            currentUserId == 0 -> {
-                Toast.makeText(this, "User ID tidak ditemukan", Toast.LENGTH_SHORT).show()
-            }
-            passwordLama.isEmpty() -> {
-                b.etKasirPasswordLama.error = "Password lama wajib diisi"
-                b.etKasirPasswordLama.requestFocus()
-            }
-            passwordBaru.isEmpty() -> {
-                b.etKasirPasswordBaru.error = "Password baru wajib diisi"
-                b.etKasirPasswordBaru.requestFocus()
-            }
-            passwordBaru.length < 6 -> {
-                b.etKasirPasswordBaru.error = "Password minimal 6 karakter"
-                b.etKasirPasswordBaru.requestFocus()
-            }
-            konfirmasiPass.isEmpty() -> {
-                b.etKasirKonfirmasiPassword.error = "Konfirmasi password wajib diisi"
-                b.etKasirKonfirmasiPassword.requestFocus()
-            }
-            passwordBaru != konfirmasiPass -> {
-                b.tvPasswordWarning.text = "⚠ Password tidak cocok"
-                b.tvPasswordWarning.setTextColor(0xFFE53935.toInt())
-                b.tvPasswordWarning.visibility = View.VISIBLE
-                b.etKasirKonfirmasiPassword.requestFocus()
-            }
-            else -> {
-                updatePassword(passwordLama, passwordBaru, konfirmasiPass)
-            }
-        }
-    }
-
-    private fun updatePassword(
-        passwordLama: String,
-        passwordBaru: String,
-        konfirmasiPassword: String
-    ) {
-        b.btnPerbaruiPassword.isEnabled = false
-        b.btnPerbaruiPassword.text      = "Memproses..."
-
-        ApiClient.instance.updatePasswordPengguna(
-            currentUserId,
-            passwordLama,
-            passwordBaru,
-            konfirmasiPassword
-        ).enqueue(object : Callback<ResponseDefault> {
-            override fun onResponse(
-                call: Call<ResponseDefault>,
-                response: Response<ResponseDefault>
-            ) {
-                b.btnPerbaruiPassword.isEnabled = true
-                b.btnPerbaruiPassword.text      = "Perbarui Password"
-
-                val body = response.body()
-
-                if (response.isSuccessful && body?.status == true) {
-                    Toast.makeText(
-                        this@KasirProfileActivity,
-                        body.message,
-                        Toast.LENGTH_SHORT
-                    ).show()
-
-                    b.etKasirPasswordLama.text.clear()
-                    b.etKasirPasswordBaru.text.clear()
-                    b.etKasirKonfirmasiPassword.text.clear()
-                    b.tvPasswordWarning.visibility = View.GONE
-
-                    // Reset icon eye ke closed
-                    isPasswordLamaVisible = false
-                    isPasswordBaruVisible = false
-                    isKonfirmasiVisible   = false
-                    b.ivTogglePasswordLama.setImageResource(R.drawable.ic_eye_closed)
-                    b.ivTogglePasswordBaru.setImageResource(R.drawable.ic_eye_closed)
-                    b.ivToggleKonfirmasi.setImageResource(R.drawable.ic_eye_closed)
-                    b.ivTogglePasswordLama.alpha = 0.45f
-                    b.ivTogglePasswordBaru.alpha = 0.45f
-                    b.ivToggleKonfirmasi.alpha   = 0.45f
-
-                } else {
-                    Toast.makeText(
-                        this@KasirProfileActivity,
-                        body?.message ?: "Gagal memperbarui password",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-            }
-
-            override fun onFailure(call: Call<ResponseDefault>, t: Throwable) {
-                b.btnPerbaruiPassword.isEnabled = true
-                b.btnPerbaruiPassword.text      = "Perbarui Password"
-                Toast.makeText(
-                    this@KasirProfileActivity,
-                    "Koneksi gagal: ${t.message}",
-                    Toast.LENGTH_LONG
-                ).show()
-            }
-        })
-    }
+//    private fun updatePassword(
+//        passwordLama: String,
+//        passwordBaru: String,
+//        konfirmasiPassword: String
+//    ) {
+//        b.btnPerbaruiPassword.isEnabled = false
+//        b.btnPerbaruiPassword.text      = "Memproses..."
+//
+//        ApiClient.instance.updatePasswordPengguna(
+//            currentUserId,
+//            passwordLama,
+//            passwordBaru,
+//            konfirmasiPassword
+//        ).enqueue(object : Callback<ResponseDefault> {
+//            override fun onResponse(
+//                call: Call<ResponseDefault>,
+//                response: Response<ResponseDefault>
+//            ) {
+//                b.btnPerbaruiPassword.isEnabled = true
+//                b.btnPerbaruiPassword.text      = "Perbarui Password"
+//
+//                val body = response.body()
+//
+//                if (response.isSuccessful && body?.status == true) {
+//                    Toast.makeText(
+//                        this@KasirProfileActivity,
+//                        body.message,
+//                        Toast.LENGTH_SHORT
+//                    ).show()
+//
+//                    b.etKasirPasswordLama.text.clear()
+//                    b.etKasirPasswordBaru.text.clear()
+//                    b.etKasirKonfirmasiPassword.text.clear()
+//                    b.tvPasswordWarning.visibility = View.GONE
+//
+//                    // Reset icon eye ke closed
+//                    isPasswordLamaVisible = false
+//                    isPasswordBaruVisible = false
+//                    isKonfirmasiVisible   = false
+//                    b.ivTogglePasswordLama.setImageResource(R.drawable.ic_eye_closed)
+//                    b.ivTogglePasswordBaru.setImageResource(R.drawable.ic_eye_closed)
+//                    b.ivToggleKonfirmasi.setImageResource(R.drawable.ic_eye_closed)
+//                    b.ivTogglePasswordLama.alpha = 0.45f
+//                    b.ivTogglePasswordBaru.alpha = 0.45f
+//                    b.ivToggleKonfirmasi.alpha   = 0.45f
+//
+//                } else {
+//                    Toast.makeText(
+//                        this@KasirProfileActivity,
+//                        body?.message ?: "Gagal memperbarui password",
+//                        Toast.LENGTH_SHORT
+//                    ).show()
+//                }
+//            }
+//
+//            override fun onFailure(call: Call<ResponseDefault>, t: Throwable) {
+//                b.btnPerbaruiPassword.isEnabled = true
+//                b.btnPerbaruiPassword.text      = "Perbarui Password"
+//                Toast.makeText(
+//                    this@KasirProfileActivity,
+//                    "Koneksi gagal: ${t.message}",
+//                    Toast.LENGTH_LONG
+//                ).show()
+//            }
+//        })
+//    }
 }

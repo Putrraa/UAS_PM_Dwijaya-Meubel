@@ -101,7 +101,7 @@ class ProfileActivity : AppCompatActivity() {
             return
         }
 
-        window.statusBarColor = Color.parseColor("#EEF2EA")
+        window.statusBarColor = Color.parseColor("#F4F6F2")
         WindowCompat.getInsetsController(window, window.decorView)
             .isAppearanceLightStatusBars = true
 
@@ -466,10 +466,10 @@ class ProfileActivity : AppCompatActivity() {
             nav.setBackgroundResource(R.drawable.bg_nav_item_inactive)
 
             (nav.getChildAt(0) as? ImageView)?.imageTintList =
-                ColorStateList.valueOf(Color.parseColor("#555555"))
+                ColorStateList.valueOf(Color.parseColor("#69736B"))
 
             (nav.getChildAt(1) as? TextView)?.apply {
-                setTextColor(Color.parseColor("#555555"))
+                setTextColor(Color.parseColor("#69736B"))
                 setTypeface(null, Typeface.NORMAL)
             }
         }

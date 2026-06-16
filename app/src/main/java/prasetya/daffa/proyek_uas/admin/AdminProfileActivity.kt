@@ -36,7 +36,7 @@ class AdminProfileActivity : AppCompatActivity() {
             return
         }
 
-        window.statusBarColor = Color.parseColor("#EEF2EA")
+        window.statusBarColor = Color.parseColor("#F4F6F2")
         WindowCompat.getInsetsController(window, window.decorView).isAppearanceLightStatusBars = true
 
         setupView()

@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F4F3F1"
+    android:background="@color/app_background"
     android:fillViewport="true"
     tools:context=".ShopFragment">
 
@@ -62,7 +62,7 @@
                 android:layout_width="0dp"
                 android:layout_height="1dp"
                 android:layout_weight="1"
-                android:background="#D8D1C8" />
+                android:background="@color/app_divider" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -70,7 +70,7 @@
                 android:layout_marginStart="12dp"
                 android:layout_marginEnd="12dp"
                 android:text="Categories"
-                android:textColor="#3E5C45"
+                android:textColor="@color/brand_green"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
@@ -78,7 +78,7 @@
                 android:layout_width="0dp"
                 android:layout_height="1dp"
                 android:layout_weight="1"
-                android:background="#D8D1C8" />
+                android:background="@color/app_divider" />
 
         </LinearLayout>
 
@@ -110,7 +110,7 @@
                 android:layout_width="0dp"
                 android:layout_height="1dp"
                 android:layout_weight="1"
-                android:background="#D8D1C8" />
+                android:background="@color/app_divider" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -118,7 +118,7 @@
                 android:layout_marginStart="12dp"
                 android:layout_marginEnd="12dp"
                 android:text="All Products"
-                android:textColor="#3E5C45"
+                android:textColor="@color/brand_green"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
@@ -126,7 +126,7 @@
                 android:layout_width="0dp"
                 android:layout_height="1dp"
                 android:layout_weight="1"
-                android:background="#D8D1C8" />
+                android:background="@color/app_divider" />
 
         </LinearLayout>
 
@@ -137,7 +137,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="14dp"
             android:layout_marginEnd="16dp"
-            app:cardBackgroundColor="#FFFFFF"
+            app:cardBackgroundColor="@color/app_surface"
             app:cardCornerRadius="16dp"
             app:cardElevation="2dp">
 
@@ -151,7 +151,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Find Your Favourite Products"
-                    android:textColor="#3E2A1E"
+                    android:textColor="@color/text_primary"
                     android:textSize="15sp"
                     android:textStyle="bold" />
 
@@ -175,8 +175,8 @@
                         android:hint="Search products..."
                         android:inputType="text"
                         android:singleLine="true"
-                        android:textColor="#222222"
-                        android:textColorHint="#9B9B9B"
+                        android:textColor="@color/text_primary"
+                        android:textColorHint="@color/text_muted"
                         android:textSize="14sp" />
 
                     <androidx.appcompat.widget.AppCompatButton
@@ -187,7 +187,7 @@
                         android:backgroundTint="@null"
                         android:text="Search"
                         android:textAllCaps="false"
-                        android:textColor="#FFFFFF"
+                        android:textColor="@color/app_surface"
                         android:textSize="12sp"
                         android:textStyle="bold" />
 
@@ -200,7 +200,7 @@
                         android:backgroundTint="@null"
                         android:text="QR"
                         android:textAllCaps="false"
-                        android:textColor="#FFFFFF"
+                        android:textColor="@color/app_surface"
                         android:textSize="12sp"
                         android:textStyle="bold" />
 
@@ -220,7 +220,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="Showing products"
-                        android:textColor="#888888"
+                        android:textColor="@color/text_muted"
                         android:textSize="12sp" />
 
                     <Spinner
@@ -254,7 +254,7 @@
             android:layout_marginTop="22dp"
             android:gravity="center"
             android:text="No products found."
-            android:textColor="#888888"
+            android:textColor="@color/text_muted"
             android:textSize="14sp"
             android:visibility="gone" />
 

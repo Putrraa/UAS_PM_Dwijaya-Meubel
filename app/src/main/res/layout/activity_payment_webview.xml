@@ -3,20 +3,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
+    android:background="@color/app_surface"
     android:orientation="vertical">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbarPayment"
         android:layout_width="match_parent"
         android:layout_height="80dp"
-        android:background="#2D5A3D"
+        android:background="@color/brand_green_deep"
         android:elevation="4dp"
         android:paddingTop="24dp"
         app:navigationContentDescription="Kembali"
         app:navigationIcon="@drawable/ic_arrow_back"
         app:title="Pembayaran Midtrans"
-        app:titleTextColor="#FFFFFF" />
+        app:titleTextColor="@color/app_surface" />
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -33,7 +33,7 @@
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_gravity="center"
-            android:indeterminateTint="#2D5A3D" />
+            android:indeterminateTint="@color/brand_green_deep" />
 
     </FrameLayout>
 

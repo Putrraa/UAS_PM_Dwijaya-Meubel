@@ -43,7 +43,6 @@ class LaporanAdminFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setupRecyclerView()
-        setupButton()
         loadLaporan()
     }
 
@@ -54,19 +53,6 @@ class LaporanAdminFragment : Fragment() {
         b.rvLaporan.adapter = laporanAdapter
     }
 
-    private fun setupButton() {
-        b.btnExportExcel.setOnClickListener {
-            val intent = Intent(Intent.ACTION_VIEW)
-            intent.data = Uri.parse(baseUrl + "laporan/export-excel")
-            startActivity(intent)
-        }
-
-        b.btnCetakPdf.setOnClickListener {
-            val intent = Intent(Intent.ACTION_VIEW)
-            intent.data = Uri.parse(baseUrl + "laporan")
-            startActivity(intent)
-        }
-    }
 
     private fun loadLaporan() {
         if (_b == null || !isAdded) return

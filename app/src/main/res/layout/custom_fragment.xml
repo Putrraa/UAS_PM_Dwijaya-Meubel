@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#F5F5F5"
+    android:background="@color/app_background"
     tools:context="CustomFragment">
 
     <!-- TOOLBAR -->
@@ -36,7 +36,7 @@
                     android:layout_height="wrap_content"
                     android:text="PESAN SEKARANG"
                     android:textSize="11sp"
-                    android:textColor="#B8860B"
+                    android:textColor="@color/brand_gold"
                     android:background="@drawable/bg_badge_gold"
                     android:paddingHorizontal="12dp"
                     android:paddingVertical="4dp"
@@ -48,7 +48,7 @@
                     android:text="Custom Furniture"
                     android:textSize="24sp"
                     android:textStyle="bold"
-                    android:textColor="#1A1A1A"
+                    android:textColor="@color/text_primary"
                     android:layout_marginBottom="6dp" />
 
                 <TextView
@@ -56,7 +56,7 @@
                     android:layout_height="wrap_content"
                     android:text="Ceritakan furnitur impian Anda — kami wujudkan dengan tangan."
                     android:textSize="13sp"
-                    android:textColor="#777777"
+                    android:textColor="@color/text_secondary"
                     android:gravity="center" />
             </LinearLayout>
 
@@ -68,7 +68,7 @@
                 android:layout_marginBottom="24dp"
                 app:cardCornerRadius="8dp"
                 app:cardElevation="3dp"
-                app:cardBackgroundColor="#FFFFFF">
+                app:cardBackgroundColor="@color/app_surface">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -83,7 +83,7 @@
                         android:text="SPESIFIKASI FURNITURE"
                         android:textSize="11sp"
                         android:textStyle="bold"
-                        android:textColor="#999999"
+                        android:textColor="@color/text_muted"
                         android:letterSpacing="0.1"
                         android:layout_marginBottom="16dp" />
 
@@ -107,7 +107,7 @@
                                 android:layout_height="wrap_content"
                                 android:text="JENIS FURNITURE *"
                                 android:textSize="10sp"
-                                android:textColor="#555555"
+                                android:textColor="@color/text_secondary"
                                 android:textStyle="bold"
                                 android:layout_marginBottom="6dp" />
 
@@ -115,7 +115,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-                                app:boxStrokeColor="#CCCCCC">
+                                app:boxStrokeColor="@color/app_divider">
 
                                 <com.google.android.material.textfield.TextInputEditText
                                     android:id="@+id/etJenisFurniture"
@@ -140,7 +140,7 @@
                                 android:layout_height="wrap_content"
                                 android:text="JENIS KAYU *"
                                 android:textSize="10sp"
-                                android:textColor="#555555"
+                                android:textColor="@color/text_secondary"
                                 android:textStyle="bold"
                                 android:layout_marginBottom="6dp" />
 
@@ -148,7 +148,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-                                app:boxStrokeColor="#CCCCCC">
+                                app:boxStrokeColor="@color/app_divider">
 
                                 <com.google.android.material.textfield.TextInputEditText
                                     android:id="@+id/etJenisKayu"
@@ -174,7 +174,7 @@
                             android:layout_height="wrap_content"
                             android:text="UKURAN *"
                             android:textSize="10sp"
-                            android:textColor="#555555"
+                            android:textColor="@color/text_secondary"
                             android:textStyle="bold"
                             android:layout_marginBottom="6dp" />
 
@@ -182,7 +182,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-                            app:boxStrokeColor="#CCCCCC">
+                            app:boxStrokeColor="@color/app_divider">
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/etUkuran"
@@ -199,7 +199,7 @@
                             android:layout_height="wrap_content"
                             android:text="Gunakan format: Panjang × Lebar × Tinggi dalam cm"
                             android:textSize="11sp"
-                            android:textColor="#AAAAAA"
+                            android:textColor="@color/text_muted"
                             android:layout_marginTop="4dp" />
                     </LinearLayout>
 
@@ -207,7 +207,7 @@
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:background="#EEEEEE"
+                        android:background="@color/app_input"
                         android:layout_marginVertical="16dp" />
 
                     <!-- ===== SEKSI: REFERENSI DESAIN ===== -->
@@ -217,7 +217,7 @@
                         android:text="REFERENSI DESAIN"
                         android:textSize="11sp"
                         android:textStyle="bold"
-                        android:textColor="#999999"
+                        android:textColor="@color/text_muted"
                         android:letterSpacing="0.1"
                         android:layout_marginBottom="16dp" />
 
@@ -227,7 +227,7 @@
                         android:layout_height="wrap_content"
                         android:text="GAMBAR REFERENSI"
                         android:textSize="10sp"
-                        android:textColor="#555555"
+                        android:textColor="@color/text_secondary"
                         android:textStyle="bold"
                         android:layout_marginBottom="8dp" />
 
@@ -260,14 +260,14 @@
                                 android:layout_height="wrap_content"
                                 android:text="Klik untuk unggah gambar referensi"
                                 android:textSize="13sp"
-                                android:textColor="#999999" />
+                                android:textColor="@color/text_muted" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="JPG, PNG, WEBP · Maks 2MB"
                                 android:textSize="11sp"
-                                android:textColor="#BBBBBB"
+                                android:textColor="@color/text_muted"
                                 android:layout_marginTop="4dp" />
                         </LinearLayout>
 
@@ -298,7 +298,7 @@
                         android:layout_height="wrap_content"
                         android:text="CATATAN TAMBAHAN"
                         android:textSize="10sp"
-                        android:textColor="#555555"
+                        android:textColor="@color/text_secondary"
                         android:textStyle="bold"
                         android:layout_marginBottom="8dp" />
 
@@ -306,7 +306,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                        app:boxStrokeColor="#CCCCCC"
+                        app:boxStrokeColor="@color/app_divider"
                         android:layout_marginBottom="20dp">
 
                         <com.google.android.material.textfield.TextInputEditText
@@ -333,7 +333,7 @@
                             android:layout_weight="1"
                             android:text="Tim kami akan menghubungi Anda\nuntuk konfirmasi &amp; estimasi harga."
                             android:textSize="12sp"
-                            android:textColor="#999999"
+                            android:textColor="@color/text_muted"
                             android:layout_marginEnd="12dp" />
 
                         <Button
@@ -342,8 +342,8 @@
                             android:layout_height="48dp"
                             android:text="+ KIRIM PESANAN"
                             android:textSize="13sp"
-                            android:textColor="#FFFFFF"
-                            android:backgroundTint="#2D5A3D"
+                            android:textColor="@color/app_surface"
+                            android:backgroundTint="@color/brand_green_deep"
                             android:paddingHorizontal="20dp"
                             style="@style/Widget.MaterialComponents.Button" />
                     </LinearLayout>

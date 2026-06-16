@@ -2,7 +2,25 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="brand_green">#3E5C45</color>
+    <color name="brand_green_dark">#2F4635</color>
+    <color name="brand_green_deep">#2D5A3D</color>
+    <color name="brand_green_soft">#DDE8DD</color>
+    <color name="brand_green_surface">#EEF2EA</color>
+    <color name="brand_gold">#D9A441</color>
+    <color name="brand_gold_soft">#F0D993</color>
+    <color name="app_background">#F4F6F2</color>
+    <color name="app_surface">#FFFFFF</color>
+    <color name="app_surface_muted">#F8F6F1</color>
+    <color name="app_input">#F4F4F4</color>
+    <color name="app_divider">#D8DED5</color>
+    <color name="text_primary">#24342A</color>
+    <color name="text_secondary">#69736B</color>
+    <color name="text_muted">#8A938C</color>
+    <color name="status_success">#2E7D57</color>
+    <color name="status_danger">#B94A48</color>
+    <color name="status_warning">#D9A441</color>
     <color name="nav_icon_unselected">#9BAFA3</color>
-    <color name="nav_icon_selected">#3E5C45</color>
+    <color name="nav_icon_selected">@color/brand_green</color>
     <color name="nav_indicator_selected">#D9E6DC</color>
 </resources>

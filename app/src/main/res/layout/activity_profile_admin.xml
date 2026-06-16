@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#EEF2EA"
+    android:background="@color/brand_green_surface"
     android:fillViewport="true"
     android:fitsSystemWindows="true">
 
@@ -21,7 +21,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="14dp"
-            app:cardBackgroundColor="#3E5C45"
+            app:cardBackgroundColor="@color/brand_green"
             app:cardCornerRadius="18dp"
             app:cardElevation="4dp">
 
@@ -63,7 +63,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
                         android:text="Kelola informasi akun administrator"
-                        android:textColor="#DDE8D8"
+                        android:textColor="@color/brand_green_soft"
                         android:textSize="12sp" />
 
                 </LinearLayout>
@@ -89,7 +89,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="#3E5C45"
+                    android:background="@color/brand_green"
                     android:gravity="center_horizontal"
                     android:orientation="vertical"
                     android:padding="24dp">
@@ -106,7 +106,7 @@
                             android:background="@drawable/bg_avatar_yellow"
                             android:gravity="center"
                             android:text="A"
-                            android:textColor="#1F3D0C"
+                            android:textColor="@color/brand_green_dark"
                             android:textSize="36sp"
                             android:textStyle="bold" />
 
@@ -127,7 +127,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
                         android:text="Administrator System"
-                        android:textColor="#C7D5C2"
+                        android:textColor="@color/brand_green_soft"
                         android:textSize="12sp" />
 
                     <LinearLayout
@@ -142,7 +142,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="6dp"
                             android:layout_weight="1"
-                            app:cardBackgroundColor="#344d3a"
+                            app:cardBackgroundColor="@color/brand_green_deep"
                             app:cardCornerRadius="14dp"
                             app:cardElevation="0dp">
 
@@ -157,7 +157,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="Status Akun"
-                                    android:textColor="#DDE8D8"
+                                    android:textColor="@color/brand_green_soft"
                                     android:textSize="11sp" />
 
                                 <TextView
@@ -185,7 +185,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="6dp"
                             android:layout_weight="1"
-                            app:cardBackgroundColor="#344d3a"
+                            app:cardBackgroundColor="@color/brand_green_deep"
                             app:cardCornerRadius="14dp"
                             app:cardElevation="0dp">
 
@@ -200,7 +200,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="Role"
-                                    android:textColor="#DDE8D8"
+                                    android:textColor="@color/brand_green_soft"
                                     android:textSize="11sp" />
 
                                 <TextView
@@ -232,7 +232,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Detail Informasi"
-                        android:textColor="#1A1A1A"
+                        android:textColor="@color/text_primary"
                         android:textSize="19sp"
                         android:textStyle="bold" />
 
@@ -241,7 +241,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
                         android:text="Data ini digunakan sebagai identitas admin pada aplikasi."
-                        android:textColor="#888888"
+                        android:textColor="@color/text_muted"
                         android:textSize="12sp" />
 
                     <View
@@ -249,7 +249,7 @@
                         android:layout_height="1dp"
                         android:layout_marginTop="16dp"
                         android:layout_marginBottom="18dp"
-                        android:background="#E8E8E8" />
+                        android:background="@color/app_divider" />
 
                     <!-- NAMA -->
                     <TextView
@@ -258,7 +258,7 @@
                         android:layout_marginBottom="7dp"
                         android:letterSpacing="0.05"
                         android:text="NAMA LENGKAP ADMIN"
-                        android:textColor="#777777"
+                        android:textColor="@color/text_secondary"
                         android:textSize="11sp"
                         android:textStyle="bold" />
 
@@ -272,7 +272,7 @@
                         android:paddingStart="16dp"
                         android:paddingEnd="16dp"
                         android:text="Admin"
-                        android:textColor="#1A1A1A"
+                        android:textColor="@color/text_primary"
                         android:textSize="14sp"
                         tools:text="Daffa Admin" />
 
@@ -283,7 +283,7 @@
                         android:layout_marginBottom="7dp"
                         android:letterSpacing="0.05"
                         android:text="ALAMAT EMAIL RESMI"
-                        android:textColor="#777777"
+                        android:textColor="@color/text_secondary"
                         android:textSize="11sp"
                         android:textStyle="bold" />
 
@@ -297,7 +297,7 @@
                         android:paddingStart="16dp"
                         android:paddingEnd="16dp"
                         android:text="admin@gmail.com"
-                        android:textColor="#1A1A1A"
+                        android:textColor="@color/text_primary"
                         android:textSize="14sp"
                         tools:text="admin@gmail.com" />
 
@@ -306,7 +306,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="18dp"
-                        app:cardBackgroundColor="#F6F8F5"
+                        app:cardBackgroundColor="@color/app_background"
                         app:cardCornerRadius="14dp"
                         app:cardElevation="0dp"/>
 
@@ -318,7 +318,7 @@
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="14dp"
                         android:text="Dwijaya Meubel • Admin Panel"
-                        android:textColor="#AAAAAA"
+                        android:textColor="@color/text_muted"
                         android:textSize="11sp" />
 
                 </LinearLayout>

@@ -8,6 +8,7 @@ import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
 import android.view.View
 import android.view.animation.AnimationUtils
+import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -33,6 +34,7 @@ class RegisterActivity : AppCompatActivity() {
     private lateinit var ivTogglePassword: ImageView
     private lateinit var ivToggleConPassword: ImageView
     private lateinit var tvPasswordWarning: TextView  // ✅ tambah ini
+    private lateinit var cbSetuju: CheckBox
 
     private var isPasswordVisible    = false
     private var isConPasswordVisible = false
@@ -51,6 +53,7 @@ class RegisterActivity : AppCompatActivity() {
         ivTogglePassword    = findViewById(R.id.ivTogglePassword)
         ivToggleConPassword = findViewById(R.id.ivToggleConPassword)
         tvPasswordWarning   = findViewById(R.id.tvPasswordWarning)  // ✅ tambah ini
+        cbSetuju            = findViewById(R.id.cbSetuju)
 
         btnBack.setOnClickListener { finish() }
         tvMasuk.setOnClickListener { finish() }
@@ -67,7 +70,6 @@ class RegisterActivity : AppCompatActivity() {
             }
         }
 
-        // ✅ Validasi real-time saat mengetik konfirmasi password
         etConPassword.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
@@ -76,7 +78,6 @@ class RegisterActivity : AppCompatActivity() {
             }
         })
 
-        // ✅ Re-validasi juga kalau password utama diubah setelah konfirmasi diisi
         etPassword.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
@@ -88,7 +89,7 @@ class RegisterActivity : AppCompatActivity() {
         btnRegister.setOnClickListener { registerUser() }
     }
 
-    // ✅ Fungsi cek kecocokan password
+
     private fun checkPasswordMatch() {
         val password    = etPassword.text.toString()
         val confirmPass = etConPassword.text.toString()
@@ -167,11 +168,19 @@ class RegisterActivity : AppCompatActivity() {
             etConPassword.error = "Konfirmasi password wajib diisi"; etConPassword.requestFocus(); return
         }
         if (password != confirmPassword) {
-            // ✅ Tampilkan peringatan dan scroll fokus ke field
             tvPasswordWarning.text       = "⚠ Password tidak cocok"
             tvPasswordWarning.setTextColor(0xFFE53935.toInt())
             tvPasswordWarning.visibility = View.VISIBLE
             etConPassword.requestFocus()
+            return
+        }
+        if (!cbSetuju.isChecked) {
+            Toast.makeText(
+                this,
+                "Setujui syarat dan ketentuan terlebih dahulu",
+                Toast.LENGTH_SHORT
+            ).show()
+            cbSetuju.requestFocus()
             return
         }
 

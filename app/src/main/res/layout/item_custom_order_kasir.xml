@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="12dp"
-    app:cardBackgroundColor="#FFFFFF"
+    app:cardBackgroundColor="@color/app_surface"
     app:cardCornerRadius="16dp"
     app:cardElevation="2dp">
 
@@ -27,7 +27,7 @@
                 android:layout_height="92dp"
                 app:cardCornerRadius="12dp"
                 app:cardElevation="0dp"
-                app:cardBackgroundColor="#EEEEEE">
+                app:cardBackgroundColor="@color/app_input">
 
                 <ImageView
                     android:id="@+id/imgCustomOrderKasir"
@@ -58,7 +58,7 @@
                         android:layout_weight="1"
                         android:ellipsize="end"
                         android:maxLines="1"
-                        android:textColor="#2B1A12"
+                        android:textColor="@color/text_primary"
                         android:textSize="16sp"
                         android:textStyle="bold"
                         tools:text="Meja Custom" />
@@ -67,12 +67,12 @@
                         android:id="@+id/tvStatusCustomKasir"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="#EAF1EC"
+                        android:background="@color/brand_green_surface"
                         android:paddingStart="10dp"
                         android:paddingTop="5dp"
                         android:paddingEnd="10dp"
                         android:paddingBottom="5dp"
-                        android:textColor="#3D5A4A"
+                        android:textColor="@color/brand_green"
                         android:textSize="10sp"
                         android:textStyle="bold"
                         tools:text="Pending" />
@@ -84,7 +84,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:textColor="#555555"
+                    android:textColor="@color/text_secondary"
                     android:textSize="12sp"
                     tools:text="Customer: Daffa" />
 
@@ -93,7 +93,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="3dp"
-                    android:textColor="#777777"
+                    android:textColor="@color/text_secondary"
                     android:textSize="12sp"
                     tools:text="Kayu: Jati" />
 
@@ -102,7 +102,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="3dp"
-                    android:textColor="#777777"
+                    android:textColor="@color/text_secondary"
                     android:textSize="12sp"
                     tools:text="Ukuran: 120x60x75 cm" />
 
@@ -111,7 +111,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:textColor="#1F7A1F"
+                    android:textColor="@color/status_success"
                     android:textSize="14sp"
                     android:textStyle="bold"
                     tools:text="Rp 2.000.000" />
@@ -126,9 +126,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
-            android:background="#F7F7F7"
+            android:background="@color/app_input"
             android:padding="10dp"
-            android:textColor="#666666"
+            android:textColor="@color/text_secondary"
             android:textSize="12sp"
             tools:text="Catatan: Tolong dibuat warna coklat tua." />
 
@@ -138,12 +138,12 @@
             android:layout_width="match_parent"
             android:layout_height="42dp"
             android:layout_marginTop="12dp"
-            android:backgroundTint="#3D5A4A"
+            android:backgroundTint="@color/brand_green"
             android:insetTop="0dp"
             android:insetBottom="0dp"
             android:text="Update Harga &amp; Status"
             android:textAllCaps="false"
-            android:textColor="#FFFFFF"
+            android:textColor="@color/app_surface"
             android:textSize="13sp"
             android:textStyle="bold" />
 

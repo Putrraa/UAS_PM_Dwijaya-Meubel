@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#EEF2EA"
+    android:background="@color/brand_green_surface"
     android:fillViewport="true">
 
     <LinearLayout
@@ -20,7 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="14dp"
-            app:cardBackgroundColor="#3E5C45"
+            app:cardBackgroundColor="@color/brand_green"
             app:cardCornerRadius="18dp"
             app:cardElevation="4dp">
 
@@ -65,7 +65,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
                         android:text="Toko Furniture Kami"
-                        android:textColor="#DDE8D8"
+                        android:textColor="@color/brand_green_soft"
                         android:textSize="12sp"
                         tools:text="Meja – Toko Furniture Kami" />
 
@@ -101,7 +101,7 @@
                     android:inputType="text"
                     android:paddingStart="14dp"
                     android:paddingEnd="14dp"
-                    android:textColor="#1A1A1A"
+                    android:textColor="@color/text_primary"
                     android:textSize="14sp" />
 
                 <ImageButton
@@ -139,7 +139,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
                     android:text="Product Categories"
-                    android:textColor="#1A1A1A"
+                    android:textColor="@color/text_primary"
                     android:textSize="15sp"
                     android:textStyle="bold" />
 
@@ -179,7 +179,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Showing all 0 results"
-                    android:textColor="#777777"
+                    android:textColor="@color/text_secondary"
                     android:textSize="13sp"
                     tools:text="Showing all 12 results" />
 
@@ -234,7 +234,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:text="Tidak ada produk"
-                    android:textColor="#1A1A1A"
+                    android:textColor="@color/text_primary"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
@@ -244,7 +244,7 @@
                     android:layout_marginTop="4dp"
                     android:gravity="center"
                     android:text="Produk di kategori ini belum tersedia."
-                    android:textColor="#888888"
+                    android:textColor="@color/text_muted"
                     android:textSize="12sp" />
 
             </LinearLayout>

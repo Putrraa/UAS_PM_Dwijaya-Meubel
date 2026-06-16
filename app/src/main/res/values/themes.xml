@@ -1,10 +1,10 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <style name="Base.Theme.Proyek_UAS" parent="Theme.Material3.DayNight.NoActionBar">
-        <item name="colorPrimary">#3E5C45</item>
-        <item name="colorSecondary">#3E5C45</item>
-        <item name="android:statusBarColor">#3E5C45</item>
-        <item name="android:navigationBarColor">#F4F6F2</item>
+        <item name="colorPrimary">@color/brand_green</item>
+        <item name="colorSecondary">@color/brand_green</item>
+        <item name="android:statusBarColor">@color/brand_green</item>
+        <item name="android:navigationBarColor">@color/app_background</item>
         <item name="android:windowLightStatusBar">false</item>
         <item name="android:windowLightNavigationBar">true</item>
     </style>

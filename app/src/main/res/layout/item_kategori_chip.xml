@@ -12,7 +12,7 @@
     android:paddingStart="14dp"
     android:paddingEnd="14dp"
     android:text="Meja"
-    android:textColor="#3E5C45"
+    android:textColor="@color/brand_green"
     android:textSize="13sp"
     android:textStyle="bold"
     tools:text="Meja" />

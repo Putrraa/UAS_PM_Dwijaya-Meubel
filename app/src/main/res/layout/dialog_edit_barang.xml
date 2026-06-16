@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#FFFFFF">
+    android:background="@color/app_surface">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,7 +15,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Edit Barang"
-            android:textColor="#2F4635"
+            android:textColor="@color/brand_green_dark"
             android:textSize="20sp"
             android:textStyle="bold" />
 
@@ -25,7 +25,7 @@
             android:layout_marginTop="4dp"
             android:layout_marginBottom="14dp"
             android:text="Ubah data produk yang sudah tersimpan"
-            android:textColor="#777777"
+            android:textColor="@color/text_secondary"
             android:textSize="12sp" />
 
         <ImageView
@@ -33,7 +33,7 @@
             android:layout_width="match_parent"
             android:layout_height="160dp"
             android:layout_marginBottom="10dp"
-            android:background="#F4F3F1"
+            android:background="@color/app_background"
             android:contentDescription="Preview gambar barang"
             android:padding="14dp"
             android:scaleType="centerInside"
@@ -44,9 +44,9 @@
             android:layout_width="match_parent"
             android:layout_height="46dp"
             android:layout_marginBottom="12dp"
-            android:backgroundTint="#DDE8DD"
+            android:backgroundTint="@color/brand_green_soft"
             android:text="Ganti Gambar"
-            android:textColor="#3E5C45"
+            android:textColor="@color/brand_green"
             android:textStyle="bold" />
 
         <com.google.android.material.textfield.TextInputLayout
@@ -67,7 +67,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:text="Kategori"
-            android:textColor="#555555"
+            android:textColor="@color/text_secondary"
             android:textSize="12sp"
             android:textStyle="bold" />
 
@@ -85,7 +85,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:text="Bahan"
-            android:textColor="#555555"
+            android:textColor="@color/text_secondary"
             android:textSize="12sp"
             android:textStyle="bold" />
 
@@ -168,9 +168,9 @@
                 android:layout_height="48dp"
                 android:layout_marginEnd="6dp"
                 android:layout_weight="1"
-                android:backgroundTint="#DDE8DD"
+                android:backgroundTint="@color/brand_green_soft"
                 android:text="Batal"
-                android:textColor="#3E5C45"
+                android:textColor="@color/brand_green"
                 android:textStyle="bold" />
 
             <Button
@@ -179,9 +179,9 @@
                 android:layout_height="48dp"
                 android:layout_marginStart="6dp"
                 android:layout_weight="1"
-                android:backgroundTint="#3E5C45"
+                android:backgroundTint="@color/brand_green"
                 android:text="Update"
-                android:textColor="#FFFFFF"
+                android:textColor="@color/app_surface"
                 android:textStyle="bold" />
 
         </LinearLayout>

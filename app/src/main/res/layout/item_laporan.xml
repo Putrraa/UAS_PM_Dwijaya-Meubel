@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="12dp"
-    app:cardBackgroundColor="#FFFFFF"
+    app:cardBackgroundColor="@color/app_surface"
     app:cardCornerRadius="16dp"
     app:cardElevation="2dp">
 
@@ -26,12 +26,12 @@
                 android:id="@+id/tvJenisPesanan"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="#EAF1EC"
+                android:background="@color/brand_green_surface"
                 android:paddingStart="10dp"
                 android:paddingTop="5dp"
                 android:paddingEnd="10dp"
                 android:paddingBottom="5dp"
-                android:textColor="#2D5A3D"
+                android:textColor="@color/brand_green_deep"
                 android:textSize="11sp"
                 android:textStyle="bold"
                 tools:text="Reguler" />
@@ -44,7 +44,7 @@
                 android:layout_weight="1"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:textColor="#555555"
+                android:textColor="@color/text_secondary"
                 android:textSize="13sp"
                 android:textStyle="bold"
                 tools:text="ORD-123456789" />
@@ -57,7 +57,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
-            android:textColor="#2B1A12"
+            android:textColor="@color/text_primary"
             android:textSize="15sp"
             android:textStyle="bold"
             tools:text="Daffa Putra" />
@@ -68,7 +68,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:textColor="#888888"
+            android:textColor="@color/text_muted"
             android:textSize="12sp"
             tools:text="12 Jun 2026, 18:30" />
 
@@ -78,7 +78,7 @@
             android:layout_height="1dp"
             android:layout_marginTop="12dp"
             android:layout_marginBottom="12dp"
-            android:background="#EEEEEE" />
+            android:background="@color/app_input" />
 
         <!-- TOTAL -->
         <LinearLayout
@@ -92,14 +92,14 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Total Harga"
-                android:textColor="#777777"
+                android:textColor="@color/text_secondary"
                 android:textSize="12sp" />
 
             <TextView
                 android:id="@+id/tvTotalHarga"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="#D32F2F"
+                android:textColor="@color/status_danger"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 tools:text="Rp 2.500.000" />

@@ -8,7 +8,7 @@
     android:layout_margin="6dp"
     app:cardCornerRadius="16dp"
     app:cardElevation="3dp"
-    app:cardBackgroundColor="#FFFFFF">
+    app:cardBackgroundColor="@color/app_surface">
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -37,7 +37,7 @@
             android:paddingEnd="8dp"
             android:singleLine="true"
             android:text="Meja"
-            android:textColor="#FFFFFF"
+            android:textColor="@color/app_surface"
             android:textSize="13sp"
             android:textStyle="bold" />
 

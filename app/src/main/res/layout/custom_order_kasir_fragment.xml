@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F4F3F1"
+    android:background="@color/app_background"
     android:orientation="vertical"
     tools:context=".fragment.CustomOrderKasirFragment">
 
@@ -24,7 +24,7 @@
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardBackgroundColor="#3D5A4A"
+                app:cardBackgroundColor="@color/brand_green"
                 app:cardCornerRadius="18dp"
                 app:cardElevation="3dp">
 
@@ -38,7 +38,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Custom Order"
-                        android:textColor="#FFFFFF"
+                        android:textColor="@color/app_surface"
                         android:textSize="22sp"
                         android:textStyle="bold" />
 
@@ -47,7 +47,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="6dp"
                         android:text="Kelola custom order customer"
-                        android:textColor="#E8F0EA"
+                        android:textColor="@color/brand_green_soft"
                         android:textSize="13sp" />
 
                     <TextView
@@ -55,13 +55,13 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="14dp"
-                        android:background="#FFFFFF"
+                        android:background="@color/app_surface"
                         android:paddingStart="12dp"
                         android:paddingTop="6dp"
                         android:paddingEnd="12dp"
                         android:paddingBottom="6dp"
                         android:text="0 Order"
-                        android:textColor="#3D5A4A"
+                        android:textColor="@color/brand_green"
                         android:textSize="12sp"
                         android:textStyle="bold"
                         tools:text="5 Order" />
@@ -85,7 +85,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="220dp"
                 android:layout_marginTop="16dp"
-                android:background="#FFFFFF"
+                android:background="@color/app_surface"
                 android:gravity="center"
                 android:orientation="vertical"
                 android:padding="20dp"
@@ -102,7 +102,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:text="Belum ada custom order"
-                    android:textColor="#777777"
+                    android:textColor="@color/text_secondary"
                     android:textSize="15sp"
                     android:textStyle="bold" />
 
@@ -112,7 +112,7 @@
                     android:layout_marginTop="4dp"
                     android:gravity="center"
                     android:text="Pesanan custom dari customer akan tampil di sini."
-                    android:textColor="#AAAAAA"
+                    android:textColor="@color/text_muted"
                     android:textSize="12sp" />
 
             </LinearLayout>

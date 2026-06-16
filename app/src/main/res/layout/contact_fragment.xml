@@ -2,7 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F5F5F5">
+    android:background="@color/app_background">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -12,7 +12,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="260dp"
-            android:background="#3E5C45"
+            android:background="@color/brand_green"
             android:orientation="vertical"
             android:padding="20dp">
 
@@ -21,7 +21,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:text="Contact"
-                android:textColor="#FFFFFF"
+                android:textColor="@color/app_surface"
                 android:textSize="30sp"
                 android:textStyle="bold" />
 
@@ -30,7 +30,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="Kami menyediakan berbagai macam jenis meubel untuk kebutuhan rumah anda."
-                android:textColor="#D0D0D0" />
+                android:textColor="@color/brand_green_soft" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -42,10 +42,10 @@
                     android:id="@+id/btnShop"
                     android:layout_width="140dp"
                     android:layout_height="wrap_content"
-                    android:backgroundTint="#E6A826"
+                    android:backgroundTint="@color/brand_gold"
                     android:text="Shop Now"
                     android:textAllCaps="false"
-                    android:textColor="#000000" />
+                    android:textColor="@color/black" />
 
             </LinearLayout>
 
@@ -55,7 +55,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#FFFFFF"
+            android:background="@color/app_surface"
             android:orientation="vertical"
             android:padding="20dp">
 
@@ -63,7 +63,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="ALAMAT"
-                android:textColor="#999999"
+                android:textColor="@color/text_muted"
                 android:textStyle="bold" />
 
             <TextView
@@ -76,7 +76,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="EMAIL"
-                android:textColor="#999999"
+                android:textColor="@color/text_muted"
                 android:textStyle="bold" />
 
             <TextView
@@ -89,7 +89,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="TELEPON"
-                android:textColor="#999999"
+                android:textColor="@color/text_muted"
                 android:textStyle="bold" />
 
             <TextView
@@ -103,85 +103,20 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:backgroundTint="#E6A826"
+                android:backgroundTint="@color/brand_gold"
                 android:text="Lihat Map"
                 android:textAllCaps="false"
-                android:textColor="#000000" />
+                android:textColor="@color/black" />
 
             <Button
                 android:id="@+id/btnMaps"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
-                android:backgroundTint="#3F5F45"
+                android:backgroundTint="@color/brand_green"
                 android:text="Buka di Google Maps"
                 android:textAllCaps="false"
-                android:textColor="#FFFFFF" />
-
-        </LinearLayout>
-
-        <!-- Form Pesan -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="20dp"
-            android:orientation="vertical">
-
-            <TextView
-                android:text="Name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-            <EditText
-                android:id="@+id/etContactName"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:background="#EEEEEE"
-                android:layout_marginTop="6dp"
-                android:padding="12dp"
-                android:hint="Enter name"/>
-
-            <TextView
-                android:text="Email address"
-                android:layout_marginTop="12dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-            <EditText
-                android:id="@+id/etContactEmail"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:background="#EEEEEE"
-                android:layout_marginTop="6dp"
-                android:padding="12dp"
-                android:hint="Enter email"
-                android:inputType="textEmailAddress"/>
-
-            <TextView
-                android:text="Message"
-                android:layout_marginTop="12dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-            <EditText
-                android:id="@+id/etContactMessage"
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:background="#EEEEEE"
-                android:layout_marginTop="6dp"
-                android:padding="12dp"
-                android:gravity="top|start"
-                android:hint="Your message"
-                android:inputType="textMultiLine"/>
-
-            <Button
-                android:id="@+id/btnSendEmail"
-                android:text="Send"
-                android:layout_marginTop="16dp"
-                android:backgroundTint="#3F5F45"
-                android:textColor="#FFFFFF"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:textColor="@color/app_surface" />
 
         </LinearLayout>
 

@@ -5,29 +5,29 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#3E5C45"
+    android:background="@color/brand_green"
     android:fitsSystemWindows="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#F4F6F2">
+        android:background="@color/app_background">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar"
             android:layout_width="0dp"
             android:layout_height="64dp"
             android:minHeight="64dp"
-            android:background="#3E5C45"
+            android:background="@color/brand_green"
             android:elevation="6dp"
             android:gravity="center_vertical"
             android:paddingStart="0dp"
             android:paddingEnd="16dp"
             app:title="Dwijaya Meubel"
             app:titleCentered="false"
-            app:titleTextColor="#FFFFFF"
+            app:titleTextColor="@color/app_surface"
             app:titleTextAppearance="@style/ToolbarTitleStyle"
-            app:navigationIconTint="#FFFFFF"
+            app:navigationIconTint="@color/app_surface"
             app:contentInsetStart="0dp"
             app:contentInsetStartWithNavigation="0dp"
             app:contentInsetLeft="0dp"
@@ -58,7 +58,7 @@
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
             android:layout_marginBottom="18dp"
-            app:cardBackgroundColor="#FFFFFF"
+            app:cardBackgroundColor="@color/app_surface"
             app:cardCornerRadius="28dp"
             app:cardElevation="12dp"
             app:strokeWidth="0dp"
@@ -94,10 +94,10 @@
         android:layout_width="290dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:background="#FFFFFF"
-        app:itemIconTint="#3E5C45"
-        app:itemTextColor="#2F3A32"
-        app:itemRippleColor="#EAF1EA"
+        android:background="@color/app_surface"
+        app:itemIconTint="@color/brand_green"
+        app:itemTextColor="@color/brand_green_dark"
+        app:itemRippleColor="@color/brand_green_surface"
         app:menu="@menu/menu_home"
         app:headerLayout="@layout/nav_header_main" />
 

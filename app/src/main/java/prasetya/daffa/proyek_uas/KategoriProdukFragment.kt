@@ -398,13 +398,13 @@ class KategoriProdukFragment : Fragment() {
 
         if (stok > 0) {
             dialogBinding.tvDetailStok.text = "✔ Tersedia ($stok)"
-            dialogBinding.tvDetailStok.setTextColor(Color.parseColor("#1F7A1F"))
+            dialogBinding.tvDetailStok.setTextColor(Color.parseColor("#2E7D57"))
             dialogBinding.btnAddCartDialog.isEnabled = true
             dialogBinding.btnAddCartDialog.alpha = 1f
             dialogBinding.btnAddCartDialog.text = "ADD TO CART"
         } else {
             dialogBinding.tvDetailStok.text = "✘ Stok Habis"
-            dialogBinding.tvDetailStok.setTextColor(Color.parseColor("#C0392B"))
+            dialogBinding.tvDetailStok.setTextColor(Color.parseColor("#B94A48"))
             dialogBinding.btnAddCartDialog.isEnabled = false
             dialogBinding.btnAddCartDialog.alpha = 0.5f
             dialogBinding.btnAddCartDialog.text = "STOK HABIS"

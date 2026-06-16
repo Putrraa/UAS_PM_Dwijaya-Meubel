@@ -12,7 +12,7 @@
         android:layout_width="52dp"
         android:layout_height="52dp"
         android:scaleType="centerCrop"
-        android:background="#EEEEEE"
+        android:background="@color/app_input"
         android:layout_marginEnd="12dp" />
 
     <!-- Nama + qty x harga -->
@@ -27,7 +27,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="lemari"
-            android:textColor="#1A1A1A"
+            android:textColor="@color/text_primary"
             android:textSize="13sp"
             android:textStyle="bold"
             android:layout_marginBottom="2dp" />
@@ -37,7 +37,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="2x · Rp 2.000.000"
-            android:textColor="#888888"
+            android:textColor="@color/text_muted"
             android:textSize="12sp" />
     </LinearLayout>
 
@@ -47,7 +47,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Rp 4.000.000"
-        android:textColor="#C0392B"
+        android:textColor="@color/status_danger"
         android:textSize="13sp"
         android:textStyle="bold" />
 

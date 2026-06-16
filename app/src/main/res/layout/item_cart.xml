@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="2"
             android:text="Rp 0"
-            android:textColor="#2E7D32" />
+            android:textColor="@color/status_success" />
 
         <Button
             android:id="@+id/btnMinus"

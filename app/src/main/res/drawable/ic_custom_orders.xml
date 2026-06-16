@@ -6,12 +6,12 @@
 
     <!-- Document / order sheet -->
     <path
-        android:fillColor="#000000"
+        android:fillColor="@color/black"
         android:pathData="M6,2C4.9,2 4,2.9 4,4V20C4,21.1 4.9,22 6,22H18C19.1,22 20,21.1 20,20V8L14,2H6ZM13,3.5L18.5,9H13V3.5ZM6,4H11V11H18V20H6V4Z" />
 
     <!-- Custom pencil -->
     <path
-        android:fillColor="#000000"
+        android:fillColor="@color/black"
         android:pathData="M8,16.8V19H10.2L16.75,12.45L14.55,10.25L8,16.8ZM18.45,10.75C18.75,10.45 18.75,9.95 18.45,9.65L17.35,8.55C17.05,8.25 16.55,8.25 16.25,8.55L15.35,9.45L17.55,11.65L18.45,10.75Z" />
 
 </vector>

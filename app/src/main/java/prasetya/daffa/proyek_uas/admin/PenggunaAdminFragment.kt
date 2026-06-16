@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -29,8 +28,6 @@ class PenggunaAdminFragment : Fragment() {
     private lateinit var session: SessionManager
     private lateinit var penggunaAdapter: PenggunaAdapter
     private val listPengguna = mutableListOf<Pengguna>()
-
-    private val roleList = listOf("admin", "kasir", "customer")
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -133,23 +130,13 @@ class PenggunaAdminFragment : Fragment() {
         dialogBinding.tvTitleDialogPengguna.text =
             if (isEdit) "Edit Pengguna" else "Tambah Pengguna"
 
-        val adapterRole = ArrayAdapter(
-            requireContext(),
-            android.R.layout.simple_spinner_dropdown_item,
-            roleList
-        )
-
-        dialogBinding.spinnerRolePengguna.adapter = adapterRole
-
         if (isEdit && pengguna != null) {
             dialogBinding.etNamaPengguna.setText(pengguna.name ?: "")
             dialogBinding.etEmailPengguna.setText(pengguna.email ?: "")
             dialogBinding.etPasswordPengguna.hint = "Password baru (kosongkan jika tidak diganti)"
-
-            val indexRole = roleList.indexOf(pengguna.role ?: "customer")
-            dialogBinding.spinnerRolePengguna.setSelection(if (indexRole >= 0) indexRole else 2)
+            setSelectedRole(dialogBinding, pengguna.role ?: "customer")
         } else {
-            dialogBinding.spinnerRolePengguna.setSelection(2)
+            setSelectedRole(dialogBinding, "customer")
         }
 
         val dialog = AlertDialog.Builder(requireContext())
@@ -165,7 +152,7 @@ class PenggunaAdminFragment : Fragment() {
                 val name = dialogBinding.etNamaPengguna.text.toString().trim()
                 val email = dialogBinding.etEmailPengguna.text.toString().trim()
                 val password = dialogBinding.etPasswordPengguna.text.toString().trim()
-                val role = dialogBinding.spinnerRolePengguna.selectedItem.toString()
+                val role = getSelectedRole(dialogBinding)
 
                 if (name.isEmpty()) {
                     dialogBinding.etNamaPengguna.error = "Nama wajib diisi"
@@ -215,6 +202,24 @@ class PenggunaAdminFragment : Fragment() {
         }
 
         dialog.show()
+    }
+
+    private fun setSelectedRole(dialogBinding: DialogPenggunaBinding, role: String) {
+        val checkedId = when (role.trim().lowercase()) {
+            "admin" -> dialogBinding.rbRoleAdmin.id
+            "kasir" -> dialogBinding.rbRoleKasir.id
+            else -> dialogBinding.rbRoleCustomer.id
+        }
+
+        dialogBinding.rgRolePengguna.check(checkedId)
+    }
+
+    private fun getSelectedRole(dialogBinding: DialogPenggunaBinding): String {
+        return when (dialogBinding.rgRolePengguna.checkedRadioButtonId) {
+            dialogBinding.rbRoleAdmin.id -> "admin"
+            dialogBinding.rbRoleKasir.id -> "kasir"
+            else -> "customer"
+        }
     }
 
     private fun tambahPengguna(

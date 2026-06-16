@@ -3,7 +3,6 @@ package prasetya.daffa.proyek_uas
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Dialog
-import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -57,7 +56,6 @@ class ContactFragment : Fragment(), View.OnClickListener {
         b = ContactFragmentBinding.inflate(inflater, container, false)
 
         b.btnShop.setOnClickListener(this)
-        b.btnSendEmail.setOnClickListener { kirimEmail() }
         b.btnShowMap.setOnClickListener { tampilkanPopupMap() }
         b.btnMaps.setOnClickListener { bukaGoogleMaps() }
 
@@ -90,50 +88,6 @@ class ContactFragment : Fragment(), View.OnClickListener {
                 val mainAct = activity as? MainActivity
                 mainAct?.setSelectedNav(R.id.shop)
             }
-        }
-    }
-
-    private fun kirimEmail() {
-        val name = b.etContactName.text.toString().trim()
-        val email = b.etContactEmail.text.toString().trim()
-        val message = b.etContactMessage.text.toString().trim()
-
-        if (name.isEmpty()) {
-            b.etContactName.error = "Nama wajib diisi"
-            b.etContactName.requestFocus()
-            return
-        }
-
-        if (email.isEmpty()) {
-            b.etContactEmail.error = "Email wajib diisi"
-            b.etContactEmail.requestFocus()
-            return
-        }
-
-        if (message.isEmpty()) {
-            b.etContactMessage.error = "Pesan wajib diisi"
-            b.etContactMessage.requestFocus()
-            return
-        }
-
-        val body = """
-            Nama: $name
-            Email: $email
-
-            Pesan:
-            $message
-        """.trimIndent()
-
-        val intent = Intent(Intent.ACTION_SENDTO).apply {
-            data = "mailto:dwijayameubel@gmail.com".toUri()
-            putExtra(Intent.EXTRA_SUBJECT, "Pesan dari aplikasi Dwijaya Meubel")
-            putExtra(Intent.EXTRA_TEXT, body)
-        }
-
-        try {
-            startActivity(Intent.createChooser(intent, "Kirim email"))
-        } catch (_: ActivityNotFoundException) {
-            Toast.makeText(requireContext(), "Aplikasi email tidak ditemukan", Toast.LENGTH_SHORT).show()
         }
     }
 

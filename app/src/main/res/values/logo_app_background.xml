@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="logo_app_background">#3E5C45</color>
+    <color name="logo_app_background">@color/brand_green</color>
 </resources>

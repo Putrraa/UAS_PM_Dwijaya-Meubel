@@ -18,7 +18,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="58dp"
-            android:background="#3E5C45"
+            android:background="@color/brand_green"
             android:gravity="center_vertical"
             android:orientation="horizontal"
             android:paddingStart="18dp"
@@ -49,7 +49,7 @@
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="190dp"
-            android:background="#F8F3EF"
+            android:background="@color/app_surface_muted"
             android:padding="18dp">
 
             <ImageView
@@ -73,7 +73,7 @@
                 android:id="@+id/tvDetailNamaProduk"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="#2B1A12"
+                android:textColor="@color/text_primary"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 tools:text="MEJA KAYU JATI" />
@@ -83,7 +83,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
-                android:textColor="#C0392B"
+                android:textColor="@color/status_danger"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 tools:text="Rp 1.500.000" />
@@ -93,13 +93,13 @@
                 android:layout_height="1dp"
                 android:layout_marginTop="14dp"
                 android:layout_marginBottom="14dp"
-                android:background="#E8E8E8" />
+                android:background="@color/app_divider" />
 
             <TextView
                 android:id="@+id/tvDetailKategori"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="#555555"
+                android:textColor="@color/text_secondary"
                 android:textSize="14sp"
                 tools:text="Kategori: Meja" />
 
@@ -108,7 +108,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="7dp"
-                android:textColor="#555555"
+                android:textColor="@color/text_secondary"
                 android:textSize="14sp"
                 tools:text="Bahan: Kayu Jati" />
 
@@ -117,7 +117,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="7dp"
-                android:textColor="#555555"
+                android:textColor="@color/text_secondary"
                 android:textSize="14sp"
                 tools:text="Ukuran: 120 x 60 cm" />
 
@@ -126,7 +126,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="7dp"
-                android:textColor="#1F7A1F"
+                android:textColor="@color/status_success"
                 android:textSize="14sp"
                 android:textStyle="bold"
                 tools:text="✔ Tersedia (10)" />
@@ -136,7 +136,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="Deskripsi"
-                android:textColor="#777777"
+                android:textColor="@color/text_secondary"
                 android:textSize="12sp"
                 android:textStyle="bold" />
 
@@ -146,7 +146,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:lineSpacingExtra="3dp"
-                android:textColor="#2B1A12"
+                android:textColor="@color/text_primary"
                 android:textSize="14sp"
                 tools:text="Produk furniture berkualitas dengan bahan pilihan." />
 
@@ -179,7 +179,7 @@
                     android:gravity="center"
                     android:inputType="number"
                     android:text="1"
-                    android:textColor="#1A1A1A"
+                    android:textColor="@color/text_primary"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
@@ -202,7 +202,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
                 android:gravity="center"
-                android:textColor="#C0392B"
+                android:textColor="@color/status_danger"
                 android:textSize="14sp"
                 android:textStyle="bold"
                 tools:text="Total: Rp 1.500.000" />

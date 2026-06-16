@@ -4,8 +4,8 @@ import android.content.Context
 
 class SessionManager(context: Context) {
 
-    private val pref = context.getSharedPreferences("USER_SESSION", Context.MODE_PRIVATE)
-    private val editor = pref.edit()
+    val pref = context.getSharedPreferences("USER_SESSION", Context.MODE_PRIVATE)
+    val editor = pref.edit()
 
     fun saveUser(id: Int, name: String, email: String, role: String) {
         editor.putBoolean("is_login", true)

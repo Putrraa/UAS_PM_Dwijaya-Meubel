@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:padding="16dp"
-    android:background="#FFFFFF">
+    android:background="@color/app_surface">
 
     <TextView
         android:layout_width="match_parent"
@@ -12,7 +12,7 @@
         android:text="Pilih Sumber Gambar"
         android:textStyle="bold"
         android:textSize="16sp"
-        android:textColor="#000000"
+        android:textColor="@color/black"
         android:layout_marginBottom="12dp"/>
 
     <!-- CAMERA -->
@@ -28,7 +28,7 @@
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:src="@drawable/ic_camera"
-            android:tint="#2D5A3D"/>
+            android:tint="@color/brand_green_deep"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -51,7 +51,7 @@
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:src="@drawable/ic_gallery"
-            android:tint="#2D5A3D"/>
+            android:tint="@color/brand_green_deep"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -74,7 +74,7 @@
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:src="@drawable/ic_close"
-            android:tint="#D32F2F"/>
+            android:tint="@color/status_danger"/>
 
         <TextView
             android:layout_width="wrap_content"

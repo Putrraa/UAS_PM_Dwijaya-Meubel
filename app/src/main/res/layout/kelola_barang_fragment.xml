@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#EEF2EA"
+    android:background="@color/brand_green_surface"
     android:fillViewport="true">
 
     <LinearLayout
@@ -16,7 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Kelola Barang"
-            android:textColor="#2F4635"
+            android:textColor="@color/brand_green_dark"
             android:textSize="24sp"
             android:textStyle="bold" />
 
@@ -24,7 +24,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Data produk yang tampil di web dan aplikasi"
-            android:textColor="#666666"
+            android:textColor="@color/text_secondary"
             android:textSize="13sp"
             android:layout_marginBottom="12dp" />
 
@@ -33,7 +33,7 @@
             android:layout_height="wrap_content"
             app:cardCornerRadius="16dp"
             app:cardElevation="3dp"
-            app:cardBackgroundColor="#FFFFFF"
+            app:cardBackgroundColor="@color/app_surface"
             android:layout_marginBottom="12dp">
 
             <LinearLayout
@@ -47,26 +47,26 @@
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
                     android:text="+ Tambah Barang"
-                    android:textColor="#FFFFFF"
+                    android:textColor="@color/app_surface"
                     android:textStyle="bold"
-                    android:backgroundTint="#3E5C45" />
+                    android:backgroundTint="@color/brand_green" />
 
                 <Button
                     android:id="@+id/btnTambahKategori"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
-                    android:backgroundTint="#3E5C45"
+                    android:backgroundTint="@color/brand_green"
                     android:text="+ Tambah Kategori"
-                    android:textColor="#FFFFFF"
+                    android:textColor="@color/app_surface"
                     android:textStyle="bold" />
 
                 <Button
                     android:id="@+id/btnTambahBahan"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
-                    android:backgroundTint="#3E5C45"
+                    android:backgroundTint="@color/brand_green"
                     android:text="+ Tambah Bahan"
-                    android:textColor="#FFFFFF"
+                    android:textColor="@color/app_surface"
                     android:textStyle="bold" />
 
                 <LinearLayout
@@ -94,8 +94,8 @@
                         android:layout_height="56dp"
                         android:layout_marginStart="8dp"
                         android:text="Cari"
-                        android:textColor="#FFFFFF"
-                        android:backgroundTint="#3E5C45" />
+                        android:textColor="@color/app_surface"
+                        android:backgroundTint="@color/brand_green" />
 
                 </LinearLayout>
 
@@ -105,8 +105,8 @@
                     android:layout_height="44dp"
                     android:layout_marginTop="8dp"
                     android:text="Reset Pencarian"
-                    android:textColor="#3E5C45"
-                    android:backgroundTint="#DDE8DD" />
+                    android:textColor="@color/brand_green"
+                    android:backgroundTint="@color/brand_green_soft" />
 
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
@@ -123,7 +123,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Data barang kosong"
-            android:textColor="#777777"
+            android:textColor="@color/text_secondary"
             android:textSize="14sp"
             android:gravity="center"
             android:padding="18dp"
