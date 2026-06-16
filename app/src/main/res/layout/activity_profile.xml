@@ -215,31 +215,6 @@
                         android:textSize="11sp" />
                 </LinearLayout>
 
-                <LinearLayout
-                    android:id="@+id/navKeamananAkun"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="@drawable/bg_nav_item_inactive"
-                    android:gravity="center"
-                    android:orientation="vertical">
-
-                    <ImageView
-                        android:layout_width="16dp"
-                        android:layout_height="16dp"
-                        android:layout_marginBottom="2dp"
-                        android:contentDescription="Keamanan"
-                        android:src="@drawable/ic_shield"
-                        app:tint="#555555" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Keamanan"
-                        android:textColor="#555555"
-                        android:textSize="11sp" />
-                </LinearLayout>
-
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 

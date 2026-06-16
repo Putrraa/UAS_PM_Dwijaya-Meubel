@@ -67,17 +67,5 @@
         android:background="@drawable/bg_status_diproses" />
 
     <!-- Tombol Detail -->
-    <Button
-        android:id="@+id/btnDetail"
-        android:layout_width="0dp"
-        android:layout_height="32dp"
-        android:layout_weight="0.7"
-        android:text="Detail"
-        android:textColor="@android:color/white"
-        android:textSize="11sp"
-        android:background="@drawable/bg_btn_dark_green"
-        android:stateListAnimator="@null"
-        android:paddingStart="4dp"
-        android:paddingEnd="4dp" />
 
 </LinearLayout>

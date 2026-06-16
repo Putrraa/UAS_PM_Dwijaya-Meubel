@@ -2,14 +2,15 @@ package prasetya.daffa.proyek_uas
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import prasetya.daffa.proyek_uas.admin.AdminActivity
 import prasetya.daffa.proyek_uas.databinding.ActivityMainBinding
 import prasetya.daffa.proyek_uas.helper.SessionManager
-import prasetya.daffa.proyek_uas.admin.AdminActivity
 import prasetya.daffa.proyek_uas.kasir.KasirActivity
 
 class MainActivity : AppCompatActivity() {
@@ -19,6 +20,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         session = SessionManager(this)
 
         if (session.isLogin()) {
@@ -35,12 +37,11 @@ class MainActivity : AppCompatActivity() {
                 return
             }
         }
+
         enableEdgeToEdge()
 
         b = ActivityMainBinding.inflate(layoutInflater)
         setContentView(b.root)
-
-        session = SessionManager(this)
 
         setSupportActionBar(b.toolbar)
 
@@ -56,6 +57,7 @@ class MainActivity : AppCompatActivity() {
         toggle.syncState()
 
         updateMenuLogin()
+        updateNavHeader()
 
         b.navDrawer.setNavigationItemSelectedListener {
             when (it.itemId) {
@@ -88,7 +90,6 @@ class MainActivity : AppCompatActivity() {
             true
         }
 
-
         loadFragment(HomeFragment())
 
         b.bottomNav.setOnItemSelectedListener {
@@ -112,7 +113,11 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        updateMenuLogin()
+
+        if (::b.isInitialized && ::session.isInitialized) {
+            updateMenuLogin()
+            updateNavHeader()
+        }
     }
 
     private fun updateMenuLogin() {
@@ -125,6 +130,27 @@ class MainActivity : AppCompatActivity() {
         menu.findItem(R.id.menu_logout)?.isVisible = isLogin
     }
 
+    private fun updateNavHeader() {
+        val headerView = b.navDrawer.getHeaderView(0)
+
+        val tvInitialPengguna = headerView.findViewById<TextView>(R.id.tvInitialPengguna)
+        val tvProfileName = headerView.findViewById<TextView>(R.id.tvProfileName)
+        val tvEmailPengguna = headerView.findViewById<TextView>(R.id.tvEmailPengguna)
+
+        if (session.isLogin()) {
+            val nama = session.getName().ifEmpty { "Customer" }
+            val email = session.getEmail().ifEmpty { "customer@gmail.com" }
+
+            tvProfileName.text = nama
+            tvEmailPengguna.text = email
+            tvInitialPengguna.text = nama.trim().firstOrNull()?.uppercaseChar()?.toString() ?: "C"
+        } else {
+            tvProfileName.text = "Dwijaya Meubel"
+            tvEmailPengguna.text = "Silakan login terlebih dahulu"
+            tvInitialPengguna.text = "D"
+        }
+    }
+
     private fun loadFragment(fragment: Fragment) {
         supportFragmentManager.beginTransaction()
             .replace(R.id.frame_container, fragment)
@@ -134,6 +160,4 @@ class MainActivity : AppCompatActivity() {
     fun setSelectedNav(itemId: Int) {
         b.bottomNav.selectedItemId = itemId
     }
-
-
 }

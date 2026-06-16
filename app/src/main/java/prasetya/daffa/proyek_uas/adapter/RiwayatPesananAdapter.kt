@@ -27,7 +27,6 @@ class RiwayatPesananAdapter(
         val tvTotal: TextView = itemView.findViewById(R.id.tvTotal)
         val tvMetodePembayaran: TextView = itemView.findViewById(R.id.tvMetodePembayaran)
         val tvStatus: TextView = itemView.findViewById(R.id.tvStatus)
-        val btnDetail: Button = itemView.findViewById(R.id.btnDetail)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -43,7 +42,6 @@ class RiwayatPesananAdapter(
         holder.tvTotal.text = item.total
         holder.tvMetodePembayaran.text = item.metodePembayaran
         holder.tvStatus.text = item.status
-        holder.btnDetail.setOnClickListener { onDetailClick(item) }
     }
 
     override fun getItemCount() = list.size
