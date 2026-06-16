@@ -181,11 +181,24 @@
 
                     <androidx.appcompat.widget.AppCompatButton
                         android:id="@+id/btnSearchProduk"
-                        android:layout_width="88dp"
+                        android:layout_width="76dp"
                         android:layout_height="36dp"
                         android:background="@drawable/bg_button_green"
                         android:backgroundTint="@null"
                         android:text="Search"
+                        android:textAllCaps="false"
+                        android:textColor="#FFFFFF"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/btnScanQr"
+                        android:layout_width="48dp"
+                        android:layout_height="36dp"
+                        android:layout_marginStart="6dp"
+                        android:background="@drawable/bg_button_green"
+                        android:backgroundTint="@null"
+                        android:text="QR"
                         android:textAllCaps="false"
                         android:textColor="#FFFFFF"
                         android:textSize="12sp"

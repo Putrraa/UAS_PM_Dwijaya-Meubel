@@ -48,7 +48,7 @@
         <!-- GAMBAR -->
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="230dp"
+            android:layout_height="190dp"
             android:background="#F8F3EF"
             android:padding="18dp">
 

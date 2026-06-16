@@ -24,6 +24,8 @@ import com.android.volley.Request
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.google.gson.Gson
+import com.journeyapps.barcodescanner.ScanContract
+import com.journeyapps.barcodescanner.ScanOptions
 import prasetya.daffa.proyek_uas.adapter.KategoriAdapter
 import prasetya.daffa.proyek_uas.adapter.ProdukAdapter
 import prasetya.daffa.proyek_uas.api.ApiClient
@@ -68,6 +70,16 @@ class ShopFragment : Fragment() {
         "Nama Z-A",
         "Stok Terbanyak"
     )
+
+    private val qrScanLauncher = registerForActivityResult(ScanContract()) { result ->
+        val qrContent = result.contents
+
+        if (qrContent.isNullOrBlank()) {
+            showToast("Scan QR dibatalkan", Toast.LENGTH_SHORT)
+        } else {
+            handleQrResult(qrContent)
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -215,7 +227,6 @@ class ShopFragment : Fragment() {
             .create()
 
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
         val nama = barang.nama_barang ?: "-"
         val harga = parseHarga(barang.harga)
@@ -314,6 +325,17 @@ class ShopFragment : Fragment() {
         }
 
         dialog.show()
+        dialog.window?.apply {
+            val displayMetrics = resources.displayMetrics
+            val baseWidth = minOf(displayMetrics.widthPixels, displayMetrics.heightPixels)
+            val baseHeight = maxOf(displayMetrics.widthPixels, displayMetrics.heightPixels)
+
+            setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            setLayout(
+                (baseWidth * 0.88).toInt(),
+                (baseHeight * 0.82).toInt()
+            )
+        }
     }
 
     private fun tambahLangsungKeKeranjang(barang: Barang) {
@@ -381,6 +403,10 @@ class ShopFragment : Fragment() {
             applyFilterAndSort()
         }
 
+        b.btnScanQr.setOnClickListener {
+            startQrScanner()
+        }
+
         b.etSearchProduk.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 keywordSearch = s.toString().trim()
@@ -389,6 +415,52 @@ class ShopFragment : Fragment() {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
         })
+    }
+
+    private fun startQrScanner() {
+        val options = ScanOptions().apply {
+            setDesiredBarcodeFormats(ScanOptions.QR_CODE)
+            setPrompt("Scan QR produk")
+            setBeepEnabled(true)
+            setOrientationLocked(true)
+            setBarcodeImageEnabled(false)
+        }
+
+        qrScanLauncher.launch(options)
+    }
+
+    private fun handleQrResult(qrContent: String) {
+        val idProduk = extractProductIdFromQr(qrContent)
+
+        if (idProduk == null) {
+            showToast("QR produk tidak valid", Toast.LENGTH_LONG)
+            return
+        }
+
+        if (semuaBarang.isEmpty()) {
+            showToast("Data produk belum selesai dimuat", Toast.LENGTH_SHORT)
+            return
+        }
+
+        val barang = semuaBarang.find { it.id == idProduk }
+
+        if (barang == null) {
+            showToast("Produk dengan ID $idProduk tidak ditemukan", Toast.LENGTH_LONG)
+        } else {
+            showDialogDetailProduk(barang)
+        }
+    }
+
+    private fun extractProductIdFromQr(qrContent: String): Int? {
+        val text = qrContent.trim()
+
+        return text.toIntOrNull()
+            ?: Regex("(?:produk|product)\\s*[:=/\\-]\\s*(\\d+)", RegexOption.IGNORE_CASE)
+                .find(text)
+                ?.groupValues
+                ?.getOrNull(1)
+                ?.toIntOrNull()
+            ?: Regex("\\d+").find(text)?.value?.toIntOrNull()
     }
 
     private fun loadKategori() {
