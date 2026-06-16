@@ -6,6 +6,9 @@
     android:layout_height="match_parent"
     android:background="#F4F3F1"
     android:fillViewport="true"
+    android:fitsSystemWindows="true"
+    android:clipToPadding="false"
+    android:isScrollContainer="true"
     tools:context=".RegisterActivity">
 
     <LinearLayout
@@ -54,7 +57,7 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_gravity="center"
-                android:src="@drawable/home"
+                android:src="@drawable/erasebg_transformed__1_"
                 app:tint="#FFFFFF" />
         </FrameLayout>
 
@@ -192,6 +195,7 @@
                         android:textSize="14sp" />
                 </LinearLayout>
 
+                <!-- Label Password -->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

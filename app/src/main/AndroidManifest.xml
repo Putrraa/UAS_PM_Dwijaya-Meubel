@@ -16,7 +16,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Proyek_UAS">
         <activity android:name=".LoginActivity"></activity>
-        <activity android:name=".RegisterActivity"></activity>
+        <activity
+            android:name=".RegisterActivity"
+            android:windowSoftInputMode="adjustResize" />
         <activity android:name=".ProfileActivity"></activity>
         <activity android:name=".KeranjangActivity"></activity>
         <activity android:name=".kasir.KasirActivity"></activity>

@@ -58,7 +58,17 @@ interface ApiService {
         @Field("nama_bahan") namaBahan: String
     ): Call<ResponseDefault>
 
-
+    @FormUrlEncoded
+    @POST("api/orders/bayar")
+    fun bayarOrder(
+        @Field("user_id") userId: Int,
+        @Field("nama_penerima") namaPenerima: String,
+        @Field("no_telepon") noTelepon: String,
+        @Field("alamat") alamat: String,
+        @Field("kota") kota: String,
+        @Field("kode_pos") kodePos: String,
+        @Field("catatan") catatan: String
+    ): Call<PaymentResponse>
     // =========================
     // BARANG
     // =========================
@@ -212,10 +222,17 @@ interface ApiService {
         @Path("id") id: Int
     ): Call<ResponseDefault>
 
-    @POST("api/keranjang/bayar/{userId}")
+    @FormUrlEncoded
+    @POST("api/checkout/bayar")
     fun bayarKeranjang(
-        @Path("userId") userId: Int
-    ): Call<ResponseDefault>
+        @Field("user_id") userId: Int,
+        @Field("nama_penerima") namaPenerima: String,
+        @Field("no_telepon") noTelepon: String,
+        @Field("alamat") alamat: String,
+        @Field("kota") kota: String,
+        @Field("kode_pos") kodePos: String,
+        @Field("catatan") catatan: String
+    ): Call<PaymentResponse>
 
 
     // =========================

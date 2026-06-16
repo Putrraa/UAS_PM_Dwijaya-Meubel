@@ -93,7 +93,13 @@ data class Pengguna(
     @com.google.gson.annotations.SerializedName("created_at")
     val createdAt: String?
 )
-
+data class PaymentResponse(
+    val status: Boolean? = false,
+    val message: String? = null,
+    val order_id: String? = null,
+    val snap_token: String? = null,
+    val redirect_url: String? = null
+)
 data class KeranjangResponse(
     val status: Boolean = false,
     val message: String? = null,

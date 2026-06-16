@@ -47,16 +47,6 @@
                     android:textAllCaps="false"
                     android:textColor="#000000" />
 
-                <Button
-                    android:id="@+id/btnExplore"
-                    android:layout_width="140dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
-                    android:background="@drawable/btn_outline_white"
-                    android:backgroundTint="@null"
-                    android:text="Explore"
-                    android:textAllCaps="false"
-                    android:textColor="#FFFFFF" />
             </LinearLayout>
 
         </LinearLayout>

@@ -13,6 +13,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
 import prasetya.daffa.proyek_uas.api.ApiClient
@@ -40,7 +41,7 @@ class RegisterActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
-
+        enableEdgeToEdge()
         btnBack             = findViewById(R.id.btnBack)
         etNama              = findViewById(R.id.etNama)
         etEmail             = findViewById(R.id.etEmail)
