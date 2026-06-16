@@ -56,59 +56,58 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#FFFFFF"
-            android:padding="20dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="20dp">
 
             <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text="ALAMAT"
                 android:textColor="#999999"
-                android:textStyle="bold"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:textStyle="bold" />
 
             <TextView
-                android:text="Combong, Wanengpaten, Kec. Gampengrejo, Kabupaten Kediri"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:text="Combong, Wanengpaten, Kec. Gampengrejo, Kabupaten Kediri" />
 
             <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text="EMAIL"
                 android:textColor="#999999"
-                android:textStyle="bold"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:textStyle="bold" />
 
             <TextView
-                android:text="dwijayameubel@gmail.com"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:text="dwijayameubel@gmail.com" />
 
             <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text="TELEPON"
                 android:textColor="#999999"
-                android:textStyle="bold"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:textStyle="bold" />
 
             <TextView
-                android:text="+62 812 390 756 37"
-                android:layout_marginBottom="16dp"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:text="+62 812 390 756 37" />
 
-            <!-- ✅ MAP dipindahkan ke sini -->
-            <org.osmdroid.views.MapView
-                android:id="@+id/map"
+            <Button
+                android:id="@+id/btnShowMap"
                 android:layout_width="match_parent"
-                android:layout_height="300dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:clickable="true"
-                android:focusable="true"
-                android:focusableInTouchMode="true" />
+                android:backgroundTint="#E6A826"
+                android:text="Lihat Map"
+                android:textAllCaps="false"
+                android:textColor="#000000" />
 
-            <!-- ✅ Tombol Google Maps dipindahkan ke sini -->
             <Button
                 android:id="@+id/btnMaps"
                 android:layout_width="match_parent"
@@ -134,6 +133,7 @@
                 android:layout_height="wrap_content"/>
 
             <EditText
+                android:id="@+id/etContactName"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:background="#EEEEEE"
@@ -148,12 +148,14 @@
                 android:layout_height="wrap_content"/>
 
             <EditText
+                android:id="@+id/etContactEmail"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:background="#EEEEEE"
                 android:layout_marginTop="6dp"
                 android:padding="12dp"
-                android:hint="Enter email"/>
+                android:hint="Enter email"
+                android:inputType="textEmailAddress"/>
 
             <TextView
                 android:text="Message"
@@ -162,14 +164,18 @@
                 android:layout_height="wrap_content"/>
 
             <EditText
+                android:id="@+id/etContactMessage"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
                 android:background="#EEEEEE"
                 android:layout_marginTop="6dp"
                 android:padding="12dp"
-                android:hint="Your message"/>
+                android:gravity="top|start"
+                android:hint="Your message"
+                android:inputType="textMultiLine"/>
 
             <Button
+                android:id="@+id/btnSendEmail"
                 android:text="Send"
                 android:layout_marginTop="16dp"
                 android:backgroundTint="#3F5F45"
