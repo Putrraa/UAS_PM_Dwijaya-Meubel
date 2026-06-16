@@ -60,10 +60,14 @@ class ProdukAdapter(
             onClickDetail(item)
         }
 
-        holder.b.cardProduk.setOnLongClickListener {
+        val showPopup = {
             showProdukPopup(holder, item, stok)
             true
         }
+
+        holder.itemView.setOnLongClickListener { showPopup() }
+        holder.b.cardProduk.setOnLongClickListener { showPopup() }
+        holder.b.layoutProduk.setOnLongClickListener { showPopup() }
 
         holder.b.btnAddCart.setOnClickListener {
             onAddCart(item)
