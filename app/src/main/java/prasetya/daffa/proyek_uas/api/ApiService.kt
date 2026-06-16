@@ -193,6 +193,11 @@ interface ApiService {
         @Part gambar: MultipartBody.Part?
     ): Call<ResponseDefault>
 
+    @POST("api/custom-orders/{id}/bayar")
+    fun bayarCustomOrder(
+        @Path("id") id: Int
+    ): Call<PaymentResponse>
+
 
     // =========================
     // KERANJANG
@@ -233,6 +238,11 @@ interface ApiService {
         @Field("kode_pos") kodePos: String,
         @Field("catatan") catatan: String
     ): Call<PaymentResponse>
+
+    @GET("api/payments/{orderId}/status")
+    fun cekStatusPembayaran(
+        @Path("orderId") orderId: String
+    ): Call<PaymentStatusResponse>
 
 
     // =========================

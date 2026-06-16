@@ -5,6 +5,8 @@ import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.text.method.HideReturnsTransformationMethod
@@ -19,6 +21,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -29,6 +32,8 @@ import prasetya.daffa.proyek_uas.adapter.RiwayatPesanan
 import prasetya.daffa.proyek_uas.adapter.RiwayatPesananAdapter
 import prasetya.daffa.proyek_uas.api.ApiClient
 import prasetya.daffa.proyek_uas.api.CustomOrderResponse
+import prasetya.daffa.proyek_uas.api.PaymentResponse
+import prasetya.daffa.proyek_uas.api.PaymentStatusResponse
 import prasetya.daffa.proyek_uas.api.ProfileResponse
 import prasetya.daffa.proyek_uas.api.RiwayatPesananResponse
 import prasetya.daffa.proyek_uas.databinding.ActivityProfileBinding
@@ -65,6 +70,19 @@ class ProfileActivity : AppCompatActivity(), View.OnClickListener {
     private var isPasswordLamaVisible = false
     private var isPasswordBaruVisible = false
     private var isKonfirmasiVisible   = false
+    private var pendingCustomPaymentOrderId: String? = null
+    private val customPaymentStatusHandler = Handler(Looper.getMainLooper())
+
+    private val customPaymentLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            val orderId = pendingCustomPaymentOrderId
+            if (!orderId.isNullOrEmpty()) {
+                cekStatusPembayaranCustom(orderId, 1)
+            } else {
+                loadCustomOrderFromDatabase()
+                loadRiwayatPesananFromDatabase()
+            }
+        }
 
     private val allNavItems: List<LinearLayout>
         get() = listOf(navProfilSaya, navRiwayatPesanan, navCustomOrder, navKeamananAkun)
@@ -102,6 +120,15 @@ class ProfileActivity : AppCompatActivity(), View.OnClickListener {
         loadProfileFromDatabase()
         loadRiwayatPesananFromDatabase()
         loadCustomOrderFromDatabase()
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        if (::session.isInitialized && session.isLogin()) {
+            loadRiwayatPesananFromDatabase()
+            loadCustomOrderFromDatabase()
+        }
     }
 
     private fun bindViews() {
@@ -381,7 +408,9 @@ class ProfileActivity : AppCompatActivity(), View.OnClickListener {
                                 noPesanan = item.noPesanan ?: "-",
                                 tanggal   = item.tanggal   ?: "-",
                                 total     = item.total     ?: "Rp 0",
-                                status    = item.status    ?: "-"
+                                status    = item.status    ?: "-",
+                                metodePembayaran = item.metodeLabel
+                                    ?: formatMetodePembayaran(item.metodePembayaran)
                             )
                         }
                         rvRiwayatPesanan.adapter =
@@ -414,18 +443,21 @@ class ProfileActivity : AppCompatActivity(), View.OnClickListener {
                     val data = body?.data.orEmpty()
                     if (response.isSuccessful && body?.status == true) {
                         val dataCustom = data.map { item ->
+                            val customPaymentStatus = resolveCustomPaymentStatus(item)
                             CustomOrder(
+                                id            = item.id,
                                 furnitureNama = item.furnitureNama ?: "-",
                                 kayu          = item.kayu          ?: "-",
                                 ukuran        = item.ukuran        ?: "-",
                                 harga         = item.harga         ?: "Rp 0",
-                                status        = item.status        ?: "-",
+                                status        = item.statusLabel ?: item.status ?: "-",
+                                paymentStatus = customPaymentStatus,
                                 imageUrl      = item.gambarUrl     ?: ""
                             )
                         }
                         rvCustomOrder.adapter =
                             CustomOrderAdapter(dataCustom) { order ->
-                                showToast("Custom Order: ${order.furnitureNama}", Toast.LENGTH_SHORT)
+                                bayarCustomOrder(order)
                             }
                     } else {
                         rvCustomOrder.adapter = CustomOrderAdapter(emptyList()) {}
@@ -438,6 +470,129 @@ class ProfileActivity : AppCompatActivity(), View.OnClickListener {
                     showToast("Gagal mengambil custom order: ${t.message}", Toast.LENGTH_LONG)
                 }
             })
+    }
+
+    private fun bayarCustomOrder(order: CustomOrder) {
+        if (order.id <= 0) {
+            showToast("ID custom order tidak valid", Toast.LENGTH_LONG)
+            return
+        }
+
+        ApiClient.instance.bayarCustomOrder(order.id)
+            .enqueue(object : Callback<PaymentResponse> {
+                override fun onResponse(
+                    call: Call<PaymentResponse>,
+                    response: Response<PaymentResponse>
+                ) {
+                    if (call.isCanceled || !isActivitySafe()) return
+
+                    val body = response.body()
+
+                    if (response.isSuccessful && body?.status == true) {
+                        val redirectUrl = body.redirect_url
+                        val orderId = body.order_id
+
+                        if (redirectUrl.isNullOrEmpty() || orderId.isNullOrEmpty()) {
+                            showToast("Data pembayaran custom tidak lengkap", Toast.LENGTH_LONG)
+                            return
+                        }
+
+                        pendingCustomPaymentOrderId = orderId
+                        val intent = Intent(this@ProfileActivity, PaymentWebViewActivity::class.java)
+                            .putExtra(PaymentWebViewActivity.EXTRA_PAYMENT_URL, redirectUrl)
+                        customPaymentLauncher.launch(intent)
+                    } else {
+                        showToast(
+                            body?.message ?: "Gagal membuat pembayaran custom. Code: ${response.code()}",
+                            Toast.LENGTH_LONG
+                        )
+                    }
+                }
+
+                override fun onFailure(call: Call<PaymentResponse>, t: Throwable) {
+                    if (call.isCanceled || !isActivitySafe()) return
+
+                    showToast("Koneksi pembayaran custom gagal: ${t.message}", Toast.LENGTH_LONG)
+                }
+            })
+    }
+
+    private fun cekStatusPembayaranCustom(orderId: String, percobaan: Int = 1) {
+        ApiClient.instance.cekStatusPembayaran(orderId)
+            .enqueue(object : Callback<PaymentStatusResponse> {
+                override fun onResponse(
+                    call: Call<PaymentStatusResponse>,
+                    response: Response<PaymentStatusResponse>
+                ) {
+                    if (call.isCanceled || !isActivitySafe()) return
+
+                    when (response.body()?.payment_status.orEmpty().lowercase()) {
+                        "paid", "settlement", "capture", "success" -> {
+                            pendingCustomPaymentOrderId = null
+                            customPaymentStatusHandler.removeCallbacksAndMessages(null)
+                            showToast("Pembayaran custom berhasil", Toast.LENGTH_LONG)
+                            loadCustomOrderFromDatabase()
+                            loadRiwayatPesananFromDatabase()
+                        }
+                        "deny", "expire", "cancel", "failed", "failure" -> {
+                            pendingCustomPaymentOrderId = null
+                            customPaymentStatusHandler.removeCallbacksAndMessages(null)
+                            showToast("Pembayaran custom gagal atau dibatalkan", Toast.LENGTH_LONG)
+                            loadCustomOrderFromDatabase()
+                            loadRiwayatPesananFromDatabase()
+                        }
+                        else -> {
+                            if (percobaan < MAX_CUSTOM_PAYMENT_STATUS_RETRY) {
+                                jadwalkanCekStatusCustomUlang(orderId, percobaan)
+                            } else {
+                                showToast("Pembayaran custom masih pending", Toast.LENGTH_LONG)
+                                loadCustomOrderFromDatabase()
+                                loadRiwayatPesananFromDatabase()
+                            }
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<PaymentStatusResponse>, t: Throwable) {
+                    if (call.isCanceled || !isActivitySafe()) return
+
+                    if (percobaan < MAX_CUSTOM_PAYMENT_STATUS_RETRY) {
+                        jadwalkanCekStatusCustomUlang(orderId, percobaan)
+                    } else {
+                        showToast("Gagal cek status pembayaran custom: ${t.message}", Toast.LENGTH_LONG)
+                        loadCustomOrderFromDatabase()
+                        loadRiwayatPesananFromDatabase()
+                    }
+                }
+            })
+    }
+
+    private fun jadwalkanCekStatusCustomUlang(orderId: String, percobaan: Int) {
+        customPaymentStatusHandler.postDelayed({
+            if (isActivitySafe()) {
+                cekStatusPembayaranCustom(orderId, percobaan + 1)
+            }
+        }, CUSTOM_PAYMENT_STATUS_RETRY_DELAY_MS)
+    }
+
+    private fun resolveCustomPaymentStatus(
+        item: prasetya.daffa.proyek_uas.api.CustomOrderApiItem
+    ): String {
+        val paymentStatus = item.paymentStatus.orEmpty()
+        val paymentLabel = item.paymentLabel.orEmpty()
+        val metode = item.metodePembayaran.orEmpty()
+
+        if (item.isPaid == true || !item.paidAt.isNullOrEmpty()) {
+            return "paid"
+        }
+
+        if (paymentStatus.isNotBlank()) return paymentStatus
+        if (paymentLabel.isNotBlank()) return paymentLabel
+        if (metode.isNotBlank() && item.status.orEmpty().equals("selesai", ignoreCase = true)) {
+            return "paid"
+        }
+
+        return "-"
     }
 
     private fun showSection(index: Int) {
@@ -463,5 +618,25 @@ class ProfileActivity : AppCompatActivity(), View.OnClickListener {
                 setTypeface(null, Typeface.BOLD)
             }
         }
+    }
+
+    private fun formatMetodePembayaran(value: String?): String {
+        return when (value.orEmpty().lowercase()) {
+            "midtrans" -> "Midtrans"
+            "transfer_bank" -> "Transfer Bank"
+            "cod" -> "COD"
+            "" -> "-"
+            else -> value.orEmpty().replace("_", " ").replaceFirstChar { it.uppercase() }
+        }
+    }
+
+    override fun onDestroy() {
+        customPaymentStatusHandler.removeCallbacksAndMessages(null)
+        super.onDestroy()
+    }
+
+    companion object {
+        private const val MAX_CUSTOM_PAYMENT_STATUS_RETRY = 4
+        private const val CUSTOM_PAYMENT_STATUS_RETRY_DELAY_MS = 1_200L
     }
 }

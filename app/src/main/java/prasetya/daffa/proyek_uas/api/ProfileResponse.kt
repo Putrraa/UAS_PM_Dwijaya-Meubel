@@ -29,7 +29,16 @@ data class RiwayatPesananApiItem(
 
     val tanggal: String? = null,
     val total: String? = null,
-    val status: String? = null
+    val status: String? = null,
+
+    @SerializedName("metode_pembayaran")
+    val metodePembayaran: String? = null,
+
+    @SerializedName("metode_label")
+    val metodeLabel: String? = null,
+
+    @SerializedName("payment_status")
+    val paymentStatus: String? = null
 )
 
 data class CustomOrderResponse(
@@ -48,6 +57,27 @@ data class CustomOrderApiItem(
     val ukuran: String? = null,
     val harga: String? = null,
     val status: String? = null,
+
+    @SerializedName("status_label")
+    val statusLabel: String? = null,
+
+    @SerializedName(value = "payment_status", alternate = ["status_pembayaran"])
+    val paymentStatus: String? = null,
+
+    @SerializedName(value = "payment_label", alternate = ["payment_status_label", "status_pembayaran_label"])
+    val paymentLabel: String? = null,
+
+    @SerializedName(value = "is_paid", alternate = ["sudah_dibayar"])
+    val isPaid: Boolean? = null,
+
+    @SerializedName("paid_at")
+    val paidAt: String? = null,
+
+    @SerializedName("metode_pembayaran")
+    val metodePembayaran: String? = null,
+
+    @SerializedName("metode_label")
+    val metodeLabel: String? = null,
 
     @SerializedName("gambar_url")
     val gambarUrl: String? = null

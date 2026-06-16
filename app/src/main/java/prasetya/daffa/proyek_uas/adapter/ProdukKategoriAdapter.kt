@@ -12,7 +12,8 @@ import java.util.Locale
 
 class ProdukKategoriAdapter(
     private val listProduk: MutableList<Barang>,
-    private val onClickProduk: (Barang) -> Unit
+    private val onClickDetail: (Barang) -> Unit,
+    private val onAddCart: (Barang) -> Unit
 ) : RecyclerView.Adapter<ProdukKategoriAdapter.ProdukViewHolder>() {
 
     inner class ProdukViewHolder(val b: ItemProdukBinding) :
@@ -48,7 +49,7 @@ class ProdukKategoriAdapter(
         } else {
             holder.b.tvStokProduk.text = "Habis"
             holder.b.btnAddCart.text = "STOK HABIS"
-            holder.b.btnAddCart.isEnabled = true
+            holder.b.btnAddCart.isEnabled = false
             holder.b.btnAddCart.alpha = 0.7f
         }
 
@@ -59,11 +60,11 @@ class ProdukKategoriAdapter(
             .into(holder.b.imgProduk)
 
         holder.b.layoutProduk.setOnClickListener {
-            onClickProduk(item)
+            onClickDetail(item)
         }
 
         holder.b.btnAddCart.setOnClickListener {
-            onClickProduk(item)
+            onAddCart(item)
         }
     }
 

@@ -1,7 +1,12 @@
 package prasetya.daffa.proyek_uas
 
+import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.view.WindowManager
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -10,9 +15,8 @@ import prasetya.daffa.proyek_uas.api.ApiClient
 import prasetya.daffa.proyek_uas.api.KeranjangItem
 import prasetya.daffa.proyek_uas.api.KeranjangResponse
 import prasetya.daffa.proyek_uas.api.ResponseDefault
-import android.content.Intent
-import android.net.Uri
 import prasetya.daffa.proyek_uas.api.PaymentResponse
+import prasetya.daffa.proyek_uas.api.PaymentStatusResponse
 import prasetya.daffa.proyek_uas.databinding.ActivityKeranjangBinding
 import prasetya.daffa.proyek_uas.helper.SessionManager
 import retrofit2.Call
@@ -31,6 +35,18 @@ class KeranjangActivity : AppCompatActivity() {
 
     private val listKeranjang = mutableListOf<KeranjangItem>()
     private var habisBukaMidtrans = false
+    private var pendingPaymentOrderId: String? = null
+    private val paymentStatusHandler = Handler(Looper.getMainLooper())
+    private val paymentLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            val orderId = pendingPaymentOrderId
+
+            if (!orderId.isNullOrEmpty()) {
+                cekStatusPembayaran(orderId, 1)
+            } else {
+                loadKeranjang()
+            }
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,8 +73,13 @@ class KeranjangActivity : AppCompatActivity() {
 
         if (habisBukaMidtrans) {
             habisBukaMidtrans = false
-            loadKeranjang()
-            showToast("Memperbarui status pembayaran...", Toast.LENGTH_SHORT)
+            val orderId = pendingPaymentOrderId
+            if (!orderId.isNullOrEmpty()) {
+                cekStatusPembayaran(orderId, 1)
+            } else {
+                loadKeranjang()
+                showToast("Memperbarui status pembayaran...", Toast.LENGTH_SHORT)
+            }
         }
     }
     private fun setupRecyclerView() {
@@ -251,9 +272,12 @@ class KeranjangActivity : AppCompatActivity() {
 
                 if (response.isSuccessful && body?.status == true) {
                     val redirectUrl = body.redirect_url
+                    android.util.Log.d("CEK_MIDTRANS", "order_id = ${body.order_id}")
+                    android.util.Log.d("CEK_MIDTRANS", "redirect_url = ${body.redirect_url}")
+                    android.util.Log.d("CEK_MIDTRANS", "message = ${body.message}")
 
                     if (!redirectUrl.isNullOrEmpty()) {
-                        habisBukaMidtrans = true
+                        pendingPaymentOrderId = body.order_id
                         bukaMidtrans(redirectUrl)
                     } else {
                         showToast("URL pembayaran kosong", Toast.LENGTH_LONG)
@@ -291,9 +315,119 @@ class KeranjangActivity : AppCompatActivity() {
         b.tvTotalPembayaran.text = formatRupiah(total)
     }
     private fun bukaMidtrans(url: String) {
-        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-        startActivity(intent)
+        val intent = Intent(this, PaymentWebViewActivity::class.java).apply {
+            putExtra(PaymentWebViewActivity.EXTRA_PAYMENT_URL, url)
+        }
+        paymentLauncher.launch(intent)
     }
+
+    private fun cekStatusPembayaran(orderId: String, percobaan: Int = 1) {
+        if (percobaan == 1) {
+            showToast("Memperbarui status pembayaran...", Toast.LENGTH_SHORT)
+        }
+
+        ApiClient.instance.cekStatusPembayaran(orderId)
+            .enqueue(object : Callback<PaymentStatusResponse> {
+                override fun onResponse(
+                    call: Call<PaymentStatusResponse>,
+                    response: Response<PaymentStatusResponse>
+                ) {
+                    if (call.isCanceled || !isActivitySafe()) return
+
+                    val paymentStatus = response.body()?.payment_status.orEmpty()
+
+                    when (paymentStatus.lowercase(Locale.getDefault())) {
+                        "paid", "settlement", "capture", "success" -> {
+                            pendingPaymentOrderId = null
+                            paymentStatusHandler.removeCallbacksAndMessages(null)
+                            showToast("Pembayaran berhasil", Toast.LENGTH_LONG)
+                            loadKeranjang()
+                        }
+                        "pending" -> {
+                            loadKeranjangSetelahPending()
+                        }
+                        "deny", "expire", "cancel", "failed", "failure" -> {
+                            pendingPaymentOrderId = null
+                            paymentStatusHandler.removeCallbacksAndMessages(null)
+                            showToast("Pembayaran gagal atau dibatalkan", Toast.LENGTH_LONG)
+                            loadKeranjang()
+                        }
+                        else -> {
+                            if (percobaan < MAX_PAYMENT_STATUS_RETRY) {
+                                jadwalkanCekStatusUlang(orderId, percobaan)
+                            } else {
+                                loadKeranjangSetelahPending()
+                            }
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<PaymentStatusResponse>, t: Throwable) {
+                    if (call.isCanceled || !isActivitySafe()) return
+
+                    if (percobaan < MAX_PAYMENT_STATUS_RETRY) {
+                        jadwalkanCekStatusUlang(orderId, percobaan)
+                    } else {
+                        showToast("Gagal cek status pembayaran: ${t.message}", Toast.LENGTH_LONG)
+                        loadKeranjang()
+                    }
+                }
+            })
+    }
+
+    private fun jadwalkanCekStatusUlang(orderId: String, percobaan: Int) {
+        paymentStatusHandler.postDelayed({
+            if (isActivitySafe()) {
+                cekStatusPembayaran(orderId, percobaan + 1)
+            }
+        }, PAYMENT_STATUS_RETRY_DELAY_MS)
+    }
+
+    private fun loadKeranjangSetelahPending() {
+        val userId = session.getUserId()
+
+        if (userId == 0) {
+            showToast("Pembayaran masih pending", Toast.LENGTH_LONG)
+            return
+        }
+
+        ApiClient.instance.getKeranjang(userId).enqueue(object : Callback<KeranjangResponse> {
+            override fun onResponse(
+                call: Call<KeranjangResponse>,
+                response: Response<KeranjangResponse>
+            ) {
+                if (call.isCanceled || !isActivitySafe()) return
+
+                val data = response.body()?.data.orEmpty()
+                listKeranjang.clear()
+                listKeranjang.addAll(data)
+                adapter.notifyDataSetChanged()
+                updateTotal()
+                updateEmptyState()
+
+                if (data.isEmpty()) {
+                    showToast("Pesanan berhasil dibuat", Toast.LENGTH_LONG)
+                } else {
+                    showToast("Pembayaran masih pending", Toast.LENGTH_LONG)
+                }
+            }
+
+            override fun onFailure(call: Call<KeranjangResponse>, t: Throwable) {
+                if (call.isCanceled || !isActivitySafe()) return
+
+                showToast("Pembayaran masih diproses", Toast.LENGTH_LONG)
+                loadKeranjang()
+            }
+        })
+    }
+
+    private fun kosongkanTampilanKeranjang() {
+        listKeranjang.clear()
+        adapter.notifyDataSetChanged()
+        updateTotal()
+        updateEmptyState()
+    }
+
     private fun updateEmptyState() {
         if (listKeranjang.isEmpty()) {
             b.layoutKeranjangKosong.visibility = android.view.View.VISIBLE
@@ -306,61 +440,73 @@ class KeranjangActivity : AppCompatActivity() {
     private fun tampilkanDialogCheckout() {
         val dialogBinding = DialogCheckoutBinding.inflate(layoutInflater)
 
-        AlertDialog.Builder(this)
+        val dialog = AlertDialog.Builder(this)
             .setView(dialogBinding.root)
-            .setPositiveButton("Bayar", null)
-            .setNegativeButton("Batal", null)
             .create()
-            .apply {
-                setOnShowListener {
-                    getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
-                        val namaPenerima = dialogBinding.edtNamaPenerima.text.toString().trim()
-                        val noTelepon = dialogBinding.edtNoTelepon.text.toString().trim()
-                        val alamat = dialogBinding.edtAlamat.text.toString().trim()
-                        val kota = dialogBinding.edtKota.text.toString().trim()
-                        val kodePos = dialogBinding.edtKodePos.text.toString().trim()
-                        val catatan = dialogBinding.edtCatatan.text.toString().trim()
 
-                        if (namaPenerima.isEmpty()) {
-                            dialogBinding.edtNamaPenerima.error = "Nama wajib diisi"
-                            return@setOnClickListener
-                        }
+        dialogBinding.btnBatalCheckout.setOnClickListener {
+            dialog.dismiss()
+        }
 
-                        if (noTelepon.isEmpty()) {
-                            dialogBinding.edtNoTelepon.error = "No telepon wajib diisi"
-                            return@setOnClickListener
-                        }
+        dialogBinding.btnBayarCheckout.setOnClickListener {
+            val namaPenerima = dialogBinding.edtNamaPenerima.text.toString().trim()
+            val noTelepon = dialogBinding.edtNoTelepon.text.toString().trim()
+            val alamat = dialogBinding.edtAlamat.text.toString().trim()
+            val kota = dialogBinding.edtKota.text.toString().trim()
+            val kodePos = dialogBinding.edtKodePos.text.toString().trim()
+            val catatan = dialogBinding.edtCatatan.text.toString().trim()
 
-                        if (alamat.isEmpty()) {
-                            dialogBinding.edtAlamat.error = "Alamat wajib diisi"
-                            return@setOnClickListener
-                        }
-
-                        if (kota.isEmpty()) {
-                            dialogBinding.edtKota.error = "Kota wajib diisi"
-                            return@setOnClickListener
-                        }
-
-                        if (kodePos.isEmpty()) {
-                            dialogBinding.edtKodePos.error = "Kode pos wajib diisi"
-                            return@setOnClickListener
-                        }
-
-                        dismiss()
-
-                        bayarSekarang(
-                            namaPenerima = namaPenerima,
-                            noTelepon = noTelepon,
-                            alamat = alamat,
-                            kota = kota,
-                            kodePos = kodePos,
-                            catatan = catatan
-                        )
-                    }
-                }
-
-                show()
+            if (namaPenerima.isEmpty()) {
+                dialogBinding.edtNamaPenerima.error = "Nama wajib diisi"
+                dialogBinding.edtNamaPenerima.requestFocus()
+                return@setOnClickListener
             }
+
+            if (noTelepon.isEmpty()) {
+                dialogBinding.edtNoTelepon.error = "No telepon wajib diisi"
+                dialogBinding.edtNoTelepon.requestFocus()
+                return@setOnClickListener
+            }
+
+            if (alamat.isEmpty()) {
+                dialogBinding.edtAlamat.error = "Alamat wajib diisi"
+                dialogBinding.edtAlamat.requestFocus()
+                return@setOnClickListener
+            }
+
+            if (kota.isEmpty()) {
+                dialogBinding.edtKota.error = "Kota wajib diisi"
+                dialogBinding.edtKota.requestFocus()
+                return@setOnClickListener
+            }
+
+            if (kodePos.isEmpty()) {
+                dialogBinding.edtKodePos.error = "Kode pos wajib diisi"
+                dialogBinding.edtKodePos.requestFocus()
+                return@setOnClickListener
+            }
+
+            dialog.dismiss()
+
+            bayarSekarang(
+                namaPenerima = namaPenerima,
+                noTelepon = noTelepon,
+                alamat = alamat,
+                kota = kota,
+                kodePos = kodePos,
+                catatan = catatan
+            )
+        }
+
+        dialog.setOnShowListener {
+            val width = (resources.displayMetrics.widthPixels * 0.92f).toInt()
+            val height = (resources.displayMetrics.heightPixels * 0.82f).toInt()
+
+            dialog.window?.setLayout(width, height)
+            dialog.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
+        }
+
+        dialog.show()
     }
     private fun String?.toHargaInt(): Int {
         return this
@@ -374,6 +520,11 @@ class KeranjangActivity : AppCompatActivity() {
         return !isFinishing && !isDestroyed
     }
 
+    override fun onDestroy() {
+        paymentStatusHandler.removeCallbacksAndMessages(null)
+        super.onDestroy()
+    }
+
     private fun showToast(message: String, duration: Int = Toast.LENGTH_SHORT) {
         if (!isActivitySafe()) return
         Toast.makeText(this, message, duration).show()
@@ -382,5 +533,10 @@ class KeranjangActivity : AppCompatActivity() {
         val localeId = Locale("id", "ID")
         val formatter = NumberFormat.getCurrencyInstance(localeId)
         return formatter.format(value).replace(",00", "")
+    }
+
+    companion object {
+        private const val MAX_PAYMENT_STATUS_RETRY = 2
+        private const val PAYMENT_STATUS_RETRY_DELAY_MS = 700L
     }
 }

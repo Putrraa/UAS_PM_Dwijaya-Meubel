@@ -99,7 +99,16 @@ data class PaymentResponse(
     val order_id: String? = null,
     val snap_token: String? = null,
     val redirect_url: String? = null
+
 )
+
+data class PaymentStatusResponse(
+    val order_id: String? = null,
+    val type: String? = null,
+    val payment_status: String? = null,
+    val message: String? = null
+)
+
 data class KeranjangResponse(
     val status: Boolean = false,
     val message: String? = null,

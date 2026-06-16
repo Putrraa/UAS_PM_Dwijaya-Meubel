@@ -33,11 +33,21 @@
         android:id="@+id/tvTotal"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1.2"
+        android:layout_weight="1.1"
         android:text="Rp 4.000.000"
         android:textColor="#1F7A1F"
         android:textSize="11sp"
         android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tvMetodePembayaran"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.9"
+        android:gravity="center"
+        android:text="Midtrans"
+        android:textColor="#555555"
+        android:textSize="10sp" />
 
     <!-- Status Badge -->
     <TextView

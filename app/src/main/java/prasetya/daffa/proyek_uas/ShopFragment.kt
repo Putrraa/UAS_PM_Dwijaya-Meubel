@@ -162,9 +162,11 @@ class ShopFragment : Fragment() {
                 .commit()
         }
 
-        produkAdapter = ProdukAdapter(mutableListOf()) { barang ->
-            showDialogDetailProduk(barang)
-        }
+        produkAdapter = ProdukAdapter(
+            mutableListOf(),
+            onClickDetail = { barang -> showDialogDetailProduk(barang) },
+            onAddCart = { barang -> tambahLangsungKeKeranjang(barang) }
+        )
 
         b.rvKategori.layoutManager = GridLayoutManager(requireContext(), 2)
         b.rvKategori.adapter = kategoriAdapter
@@ -310,7 +312,29 @@ class ShopFragment : Fragment() {
         dialog.show()
     }
 
-    private fun tambahKeKeranjang(barangId: Int, jumlah: Int, dialog: AlertDialog) {
+    private fun tambahLangsungKeKeranjang(barang: Barang) {
+        if (!session.isLogin()) {
+            showToast("Silakan login terlebih dahulu", Toast.LENGTH_SHORT)
+            return
+        }
+
+        val barangId = barang.id
+        val stok = barang.stok ?: 0
+
+        if (barangId == null) {
+            showToast("ID barang tidak valid", Toast.LENGTH_SHORT)
+            return
+        }
+
+        if (stok <= 0) {
+            showToast("Stok habis", Toast.LENGTH_SHORT)
+            return
+        }
+
+        tambahKeKeranjang(barangId, 1, null)
+    }
+
+    private fun tambahKeKeranjang(barangId: Int, jumlah: Int, dialog: AlertDialog?) {
         val userId = session.getUserId()
 
         if (userId == 0) {
@@ -330,7 +354,7 @@ class ShopFragment : Fragment() {
 
                     if (response.isSuccessful && body?.status == true) {
                         Toast.makeText(requireContext(), body.message, Toast.LENGTH_SHORT).show()
-                        dialog.dismiss()
+                        dialog?.dismiss()
                     } else {
                         Toast.makeText(
                             requireContext(),

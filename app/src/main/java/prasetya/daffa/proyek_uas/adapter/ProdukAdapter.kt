@@ -12,6 +12,7 @@ import java.util.Locale
 
 class ProdukAdapter(
     private val listProduk: MutableList<Barang>,
+    private val onClickDetail: (Barang) -> Unit,
     private val onAddCart: (Barang) -> Unit
 ) : RecyclerView.Adapter<ProdukAdapter.ProdukViewHolder>() {
 
@@ -34,7 +35,18 @@ class ProdukAdapter(
 
         holder.b.tvNamaProduk.text = item.nama_barang ?: "-"
         holder.b.tvHargaProduk.text = formatRupiah(item.harga)
-        holder.b.tvStokProduk.text = "Stok: ${item.stok ?: 0}"
+        val stok = item.stok ?: 0
+        holder.b.tvStokProduk.text = "Stok: $stok"
+
+        if (stok > 0) {
+            holder.b.btnAddCart.text = "ADD TO CART"
+            holder.b.btnAddCart.isEnabled = true
+            holder.b.btnAddCart.alpha = 1f
+        } else {
+            holder.b.btnAddCart.text = "STOK HABIS"
+            holder.b.btnAddCart.isEnabled = false
+            holder.b.btnAddCart.alpha = 0.6f
+        }
 
         Glide.with(holder.itemView.context)
             .load(item.gambar_url)
@@ -43,6 +55,10 @@ class ProdukAdapter(
             .into(holder.b.imgProduk)
 
         holder.b.layoutProduk.setOnClickListener {
+            onClickDetail(item)
+        }
+
+        holder.b.btnAddCart.setOnClickListener {
             onAddCart(item)
         }
     }

@@ -10,11 +10,13 @@ import prasetya.daffa.proyek_uas.R
 import com.bumptech.glide.Glide
 
 data class CustomOrder(
+    val id: Int,
     val furnitureNama: String,
     val kayu: String,
     val ukuran: String,
     val harga: String,
     val status: String,
+    val paymentStatus: String,
     val imageUrl: String = ""
 )
 
@@ -58,8 +60,7 @@ class CustomOrderAdapter(
             .error(R.drawable.home)
             .into(holder.ivThumbnail)
 
-        holder.btnBayar.visibility =
-            if (item.status.equals("Pending", ignoreCase = true)) View.VISIBLE else View.GONE
+        holder.btnBayar.visibility = if (item.bisaDibayar()) View.VISIBLE else View.GONE
 
         holder.btnBayar.setOnClickListener {
             onBayarClick(item)
@@ -80,5 +81,23 @@ class CustomOrderAdapter(
         } catch (e: Exception) {
             harga
         }
+    }
+
+    private fun CustomOrder.bisaDibayar(): Boolean {
+        val statusBayar = paymentStatus.lowercase()
+        val statusOrder = status.lowercase()
+        val hargaAngka = harga.replace("[^0-9]".toRegex(), "").toLongOrNull() ?: 0L
+
+        return id > 0 &&
+                hargaAngka > 0 &&
+                statusBayar !in listOf(
+                    "paid",
+                    "settlement",
+                    "capture",
+                    "success",
+                    "sudah dibayar",
+                    "lunas"
+                ) &&
+                statusOrder !in listOf("selesai", "dibatalkan", "cancel", "canceled")
     }
 }

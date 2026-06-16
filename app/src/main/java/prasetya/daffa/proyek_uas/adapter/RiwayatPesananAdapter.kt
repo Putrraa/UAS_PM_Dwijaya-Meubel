@@ -12,7 +12,8 @@ data class RiwayatPesanan(
     val noPesanan: String,
     val tanggal: String,
     val total: String,
-    val status: String
+    val status: String,
+    val metodePembayaran: String
 )
 
 class RiwayatPesananAdapter(
@@ -24,6 +25,7 @@ class RiwayatPesananAdapter(
         val tvNoPesanan: TextView = itemView.findViewById(R.id.tvNoPesanan)
         val tvTanggal: TextView = itemView.findViewById(R.id.tvTanggal)
         val tvTotal: TextView = itemView.findViewById(R.id.tvTotal)
+        val tvMetodePembayaran: TextView = itemView.findViewById(R.id.tvMetodePembayaran)
         val tvStatus: TextView = itemView.findViewById(R.id.tvStatus)
         val btnDetail: Button = itemView.findViewById(R.id.btnDetail)
     }
@@ -39,6 +41,7 @@ class RiwayatPesananAdapter(
         holder.tvNoPesanan.text = item.noPesanan
         holder.tvTanggal.text = item.tanggal
         holder.tvTotal.text = item.total
+        holder.tvMetodePembayaran.text = item.metodePembayaran
         holder.tvStatus.text = item.status
         holder.btnDetail.setOnClickListener { onDetailClick(item) }
     }

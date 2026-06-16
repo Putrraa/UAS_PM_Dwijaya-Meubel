@@ -125,9 +125,11 @@ class KategoriProdukFragment : Fragment() {
     }
 
     private fun setupProduk() {
-        produkAdapter = ProdukKategoriAdapter(listProdukTampil) { barang ->
-            showDialogDetailProduk(barang)
-        }
+        produkAdapter = ProdukKategoriAdapter(
+            listProdukTampil,
+            onClickDetail = { barang -> showDialogDetailProduk(barang) },
+            onAddCart = { barang -> tambahLangsungKeKeranjang(barang) }
+        )
 
         b.rvProdukKategori.layoutManager = GridLayoutManager(requireContext(), 2)
         b.rvProdukKategori.isNestedScrollingEnabled = false
@@ -473,7 +475,29 @@ class KategoriProdukFragment : Fragment() {
         dialog.show()
     }
 
-    private fun tambahKeKeranjang(barangId: Int, jumlah: Int, dialog: AlertDialog) {
+    private fun tambahLangsungKeKeranjang(barang: Barang) {
+        if (!session.isLogin()) {
+            showToast("Silakan login terlebih dahulu", Toast.LENGTH_SHORT)
+            return
+        }
+
+        val barangId = barang.id
+        val stok = barang.stok ?: 0
+
+        if (barangId == null) {
+            showToast("ID barang tidak valid", Toast.LENGTH_SHORT)
+            return
+        }
+
+        if (stok <= 0) {
+            showToast("Stok habis", Toast.LENGTH_SHORT)
+            return
+        }
+
+        tambahKeKeranjang(barangId, 1, null)
+    }
+
+    private fun tambahKeKeranjang(barangId: Int, jumlah: Int, dialog: AlertDialog?) {
         val userId = session.getUserId()
 
         if (userId == 0) {
@@ -493,7 +517,7 @@ class KategoriProdukFragment : Fragment() {
 
                     if (response.isSuccessful && body?.status == true) {
                         showToast(body.message, Toast.LENGTH_SHORT)
-                        dialog.dismiss()
+                        dialog?.dismiss()
                     } else {
                         showToast(
                             body?.message ?: "Gagal menambahkan ke keranjang",
