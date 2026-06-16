@@ -14,7 +14,7 @@
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="0dp"
-            android:layout_height="80dp"
+            android:layout_height="84dp"
             android:background="#3E5C45"
             android:paddingTop="24dp"
             app:title="Dwijaya Meubel"
@@ -36,18 +36,22 @@
             app:layout_constraintEnd_toEndOf="parent" />
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:paddingTop="0dp"
+            android:paddingBottom="0dp"
             android:id="@+id/bottom_nav"
             android:layout_width="0dp"
-            android:layout_height="72dp"
+            android:layout_height="76dp"
+
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
-            android:layout_marginBottom="24dp"
-            android:background="@drawable/bg_floating_nav"
-            android:elevation="20dp"
+            android:layout_marginBottom="16dp"
 
-            app:itemBackground="@drawable/bg_nav_item_selected"
+            android:background="@drawable/bg_floating_nav"
+            android:elevation="8dp"
+
+            app:itemActiveIndicatorStyle="@style/NavIndicator"
             app:itemIconTint="@color/nav_icon_tint"
-            app:itemIconSize="26dp"
+            app:itemIconSize="24dp"
             app:itemRippleColor="@android:color/transparent"
             app:labelVisibilityMode="unlabeled"
 
