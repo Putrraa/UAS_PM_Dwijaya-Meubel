@@ -4,6 +4,8 @@ import android.app.AlertDialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
@@ -12,13 +14,14 @@ import android.view.ViewGroup
 import android.view.Window
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import prasetya.daffa.proyek_uas.adapter.KategoriAdapter
 import prasetya.daffa.proyek_uas.adapter.ProdukAdapter
-import prasetya.daffa.proyek_uas.adapter.SliderAdapter
 import prasetya.daffa.proyek_uas.api.ApiClient
 import prasetya.daffa.proyek_uas.api.Barang
 import prasetya.daffa.proyek_uas.api.BarangListResponse
@@ -39,6 +42,10 @@ class ShopFragment : Fragment() {
     private var _b: ShopFragmentBinding? = null
     private val b get() = _b!!
 
+    private var sliderHandler = Handler(Looper.getMainLooper())
+    private var sliderRunnable: Runnable? = null
+    private lateinit var sliderAdapter: SlideAdapter
+
     private lateinit var kategoriAdapter: KategoriAdapter
     private lateinit var session: SessionManager
     private lateinit var produkAdapter: ProdukAdapter
@@ -58,8 +65,6 @@ class ShopFragment : Fragment() {
         "Stok Terbanyak"
     )
 
-
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -76,7 +81,6 @@ class ShopFragment : Fragment() {
         setupRecyclerView()
         setupSort()
         setupSearch()
-
         loadKategori()
         loadBarang()
     }
@@ -90,7 +94,57 @@ class ShopFragment : Fragment() {
             R.drawable.slide5
         )
 
-        b.vpSlider.adapter = SliderAdapter(sliderImages)
+        sliderAdapter = SlideAdapter(sliderImages)
+        b.vpSlider.adapter = sliderAdapter
+
+        val startPos = sliderAdapter.getStartPosition()
+        b.vpSlider.setCurrentItem(startPos, false)
+
+        setupDots(sliderImages.size, 0)
+
+        b.vpSlider.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                val realPos = position % sliderAdapter.getRealCount()
+                setupDots(sliderImages.size, realPos)
+                resetAutoSlide()
+            }
+        })
+
+        startAutoSlide()
+    }
+
+    private fun setupDots(total: Int, activeIndex: Int) {
+        if (!isViewSafe()) return
+        b.layoutDots.removeAllViews()
+
+        for (i in 0 until total) {
+            val dot = android.widget.ImageView(requireContext())
+            dot.setImageResource(
+                if (i == activeIndex) R.drawable.dot_active
+                else R.drawable.dot_inactive
+            )
+            val params = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            ).apply { setMargins(6, 0, 6, 0) }
+            dot.layoutParams = params
+            b.layoutDots.addView(dot)
+        }
+    }
+
+    private fun startAutoSlide() {
+        sliderRunnable = Runnable {
+            if (!isViewSafe()) return@Runnable
+            val nextItem = b.vpSlider.currentItem + 1
+            b.vpSlider.setCurrentItem(nextItem, true)
+            sliderHandler.postDelayed(sliderRunnable!!, 3000L)
+        }
+        sliderHandler.postDelayed(sliderRunnable!!, 3000L)
+    }
+
+    private fun resetAutoSlide() {
+        sliderRunnable?.let { sliderHandler.removeCallbacks(it) }
+        sliderHandler.postDelayed(sliderRunnable!!, 3000L)
     }
 
     private fun setupRecyclerView() {
@@ -199,13 +253,10 @@ class ShopFragment : Fragment() {
 
         updateTotal()
 
-        dialogBinding.btnCloseDialog.setOnClickListener {
-            dialog.dismiss()
-        }
+        dialogBinding.btnCloseDialog.setOnClickListener { dialog.dismiss() }
 
         dialogBinding.btnMinusQty.setOnClickListener {
             if (stok <= 0) return@setOnClickListener
-
             if (qty > 1) {
                 qty--
                 updateTotal()
@@ -214,7 +265,6 @@ class ShopFragment : Fragment() {
 
         dialogBinding.btnPlusQty.setOnClickListener {
             if (stok <= 0) return@setOnClickListener
-
             if (qty < stok) {
                 qty++
                 updateTotal()
@@ -279,12 +329,7 @@ class ShopFragment : Fragment() {
                     val body = response.body()
 
                     if (response.isSuccessful && body?.status == true) {
-                        Toast.makeText(
-                            requireContext(),
-                            body.message,
-                            Toast.LENGTH_SHORT
-                        ).show()
-
+                        Toast.makeText(requireContext(), body.message, Toast.LENGTH_SHORT).show()
                         dialog.dismiss()
                     } else {
                         Toast.makeText(
@@ -297,15 +342,11 @@ class ShopFragment : Fragment() {
 
                 override fun onFailure(call: Call<ResponseDefault>, t: Throwable) {
                     if (_b == null || !isAdded) return
-
-                    Toast.makeText(
-                        requireContext(),
-                        "Koneksi gagal: ${t.message}",
-                        Toast.LENGTH_LONG
-                    ).show()
+                    Toast.makeText(requireContext(), "Koneksi gagal: ${t.message}", Toast.LENGTH_LONG).show()
                 }
             })
     }
+
     private fun setupSearch() {
         b.btnSearchProduk.setOnClickListener {
             keywordSearch = b.etSearchProduk.text.toString().trim()
@@ -317,25 +358,18 @@ class ShopFragment : Fragment() {
                 keywordSearch = s.toString().trim()
                 applyFilterAndSort()
             }
-
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
         })
     }
 
     private fun loadKategori() {
         if (!isViewSafe()) return
-
         showLoading(true)
 
         ApiClient.instance.getKategori().enqueue(object : Callback<KategoriResponse> {
-            override fun onResponse(
-                call: Call<KategoriResponse>,
-                response: Response<KategoriResponse>
-            ) {
+            override fun onResponse(call: Call<KategoriResponse>, response: Response<KategoriResponse>) {
                 if (call.isCanceled || !isViewSafe()) return
-
                 showLoading(false)
 
                 val body = response.body()
@@ -344,16 +378,12 @@ class ShopFragment : Fragment() {
                 if (response.isSuccessful && body?.status == true) {
                     kategoriAdapter.setData(data)
                 } else {
-                    showToast(
-                        body?.message ?: "Gagal mengambil data kategori",
-                        Toast.LENGTH_SHORT
-                    )
+                    showToast(body?.message ?: "Gagal mengambil data kategori", Toast.LENGTH_SHORT)
                 }
             }
 
             override fun onFailure(call: Call<KategoriResponse>, t: Throwable) {
                 if (call.isCanceled || !isViewSafe()) return
-
                 showLoading(false)
                 showToast("Koneksi kategori gagal: ${t.message}", Toast.LENGTH_LONG)
             }
@@ -362,16 +392,11 @@ class ShopFragment : Fragment() {
 
     private fun loadBarang() {
         if (!isViewSafe()) return
-
         showLoading(true)
 
         ApiClient.instance.getBarang().enqueue(object : Callback<BarangListResponse> {
-            override fun onResponse(
-                call: Call<BarangListResponse>,
-                response: Response<BarangListResponse>
-            ) {
+            override fun onResponse(call: Call<BarangListResponse>, response: Response<BarangListResponse>) {
                 if (call.isCanceled || !isViewSafe()) return
-
                 showLoading(false)
 
                 val body = response.body()
@@ -382,16 +407,12 @@ class ShopFragment : Fragment() {
                     semuaBarang.addAll(data)
                     applyFilterAndSort()
                 } else {
-                    showToast(
-                        body?.message ?: "Gagal mengambil data barang",
-                        Toast.LENGTH_SHORT
-                    )
+                    showToast(body?.message ?: "Gagal mengambil data barang", Toast.LENGTH_SHORT)
                 }
             }
 
             override fun onFailure(call: Call<BarangListResponse>, t: Throwable) {
                 if (call.isCanceled || !isViewSafe()) return
-
                 showLoading(false)
                 showToast("Koneksi barang gagal: ${t.message}", Toast.LENGTH_LONG)
             }
@@ -404,9 +425,7 @@ class ShopFragment : Fragment() {
         var hasil = semuaBarang.toList()
 
         kategoriTerpilih?.let { kategori ->
-            hasil = hasil.filter { barang ->
-                barang.kategori?.id == kategori.id
-            }
+            hasil = hasil.filter { barang -> barang.kategori?.id == kategori.id }
         }
 
         if (keywordSearch.isNotEmpty()) {
@@ -429,6 +448,7 @@ class ShopFragment : Fragment() {
         produkAdapter.setData(hasil)
         updateInfo(hasil.size)
     }
+
     private fun String?.toHargaInt(): Int {
         return this
             ?.replace("Rp", "")
@@ -440,7 +460,6 @@ class ShopFragment : Fragment() {
 
     private fun updateInfo(total: Int) {
         if (!isViewSafe()) return
-
         b.tvResultInfo.text = "Showing $total products"
 
         if (total == 0) {
@@ -456,7 +475,6 @@ class ShopFragment : Fragment() {
         _b?.progressProduk?.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 
-
     private fun isViewSafe(): Boolean {
         return _b != null && isAdded
     }
@@ -468,19 +486,16 @@ class ShopFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        sliderRunnable?.let { sliderHandler.removeCallbacks(it) }
         _b = null
     }
 
     private fun String.toSlug(): String {
-        return this
-            .lowercase()
-            .trim()
-            .replace(Regex("\\s+"), "-")
+        return this.lowercase().trim().replace(Regex("\\s+"), "-")
     }
 
     private fun parseHarga(value: String?): Int {
         if (value.isNullOrEmpty()) return 0
-
         return value
             .replace("Rp", "")
             .replace(".", "")

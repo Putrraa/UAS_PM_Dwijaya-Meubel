@@ -17,4 +17,10 @@
     <string name="support_title">24/7 Support</string>
     <string name="support_desc">Layanan kami tersedia 24 jam untuk anda.</string>
     <string name="video_toko">Video Toko Kami</string>
+    <string name="showing_all_products">Showing all products</string>
+    <string name="search_results_for">Results for &quot;%1$s&quot;</string>
+    <string name="sort_default">Default</string>
+    <string name="sort_price_low">Price: Low–High</string>
+    <string name="sort_price_high">Price: High–Low</string>
+    <string name="sort_newest">Newest</string>
 </resources>
