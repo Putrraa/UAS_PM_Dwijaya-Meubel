@@ -10,6 +10,9 @@ import prasetya.daffa.proyek_uas.api.ApiClient
 import prasetya.daffa.proyek_uas.api.KeranjangItem
 import prasetya.daffa.proyek_uas.api.KeranjangResponse
 import prasetya.daffa.proyek_uas.api.ResponseDefault
+import android.content.Intent
+import android.net.Uri
+import prasetya.daffa.proyek_uas.api.PaymentResponse
 import prasetya.daffa.proyek_uas.databinding.ActivityKeranjangBinding
 import prasetya.daffa.proyek_uas.helper.SessionManager
 import retrofit2.Call
@@ -17,6 +20,8 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.text.NumberFormat
 import java.util.Locale
+import androidx.appcompat.app.AlertDialog
+import prasetya.daffa.proyek_uas.databinding.DialogCheckoutBinding
 
 class KeranjangActivity : AppCompatActivity() {
 
@@ -25,6 +30,7 @@ class KeranjangActivity : AppCompatActivity() {
     private lateinit var adapter: KeranjangAdapter
 
     private val listKeranjang = mutableListOf<KeranjangItem>()
+    private var habisBukaMidtrans = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,7 +52,15 @@ class KeranjangActivity : AppCompatActivity() {
 
         loadKeranjang()
     }
+    override fun onResume() {
+        super.onResume()
 
+        if (habisBukaMidtrans) {
+            habisBukaMidtrans = false
+            loadKeranjang()
+            showToast("Memperbarui status pembayaran...", Toast.LENGTH_SHORT)
+        }
+    }
     private fun setupRecyclerView() {
         adapter = KeranjangAdapter(
             listKeranjang,
@@ -83,7 +97,7 @@ class KeranjangActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            bayarSekarang()
+            tampilkanDialogCheckout()
         }
     }
 
@@ -197,45 +211,74 @@ class KeranjangActivity : AppCompatActivity() {
             })
     }
 
-    private fun bayarSekarang() {
+    private fun bayarSekarang(
+        namaPenerima: String,
+        noTelepon: String,
+        alamat: String,
+        kota: String,
+        kodePos: String,
+        catatan: String
+    ) {
         val userId = session.getUserId()
+
+        if (userId == 0) {
+            showToast("User belum login atau ID user tidak ditemukan", Toast.LENGTH_LONG)
+            return
+        }
 
         b.btnBayarSekarang.isEnabled = false
         b.btnBayarSekarang.text = "MEMPROSES..."
 
-        ApiClient.instance.bayarKeranjang(userId)
-            .enqueue(object : Callback<ResponseDefault> {
-                override fun onResponse(
-                    call: Call<ResponseDefault>,
-                    response: Response<ResponseDefault>
-                ) {
-                    if (call.isCanceled || !isActivitySafe()) return
+        ApiClient.instance.bayarKeranjang(
+            userId = userId,
+            namaPenerima = namaPenerima,
+            noTelepon = noTelepon,
+            alamat = alamat,
+            kota = kota,
+            kodePos = kodePos,
+            catatan = catatan
+        ).enqueue(object : Callback<PaymentResponse> {
+            override fun onResponse(
+                call: Call<PaymentResponse>,
+                response: Response<PaymentResponse>
+            ) {
+                if (call.isCanceled || !isActivitySafe()) return
 
-                    b.btnBayarSekarang.isEnabled = true
-                    b.btnBayarSekarang.text = "BAYAR SEKARANG"
+                b.btnBayarSekarang.isEnabled = true
+                b.btnBayarSekarang.text = "BAYAR SEKARANG"
 
-                    val body = response.body()
+                val body = response.body()
 
-                    if (response.isSuccessful && body?.status == true) {
-                        showToast(body.message, Toast.LENGTH_LONG)
-                        loadKeranjang()
+                if (response.isSuccessful && body?.status == true) {
+                    val redirectUrl = body.redirect_url
+
+                    if (!redirectUrl.isNullOrEmpty()) {
+                        habisBukaMidtrans = true
+                        bukaMidtrans(redirectUrl)
                     } else {
-                        showToast(
-                            body?.message ?: "Gagal memproses pembayaran",
-                            Toast.LENGTH_LONG
-                        )
+                        showToast("URL pembayaran kosong", Toast.LENGTH_LONG)
                     }
+                } else {
+                    val errorBody = response.errorBody()?.string()
+                    android.util.Log.e("MIDTRANS_API", "Code: ${response.code()}")
+                    android.util.Log.e("MIDTRANS_API", "Error: $errorBody")
+
+                    showToast(
+                        body?.message ?: "Gagal membuat pembayaran. Code: ${response.code()}",
+                        Toast.LENGTH_LONG
+                    )
                 }
+            }
 
-                override fun onFailure(call: Call<ResponseDefault>, t: Throwable) {
-                    if (call.isCanceled || !isActivitySafe()) return
+            override fun onFailure(call: Call<PaymentResponse>, t: Throwable) {
+                if (call.isCanceled || !isActivitySafe()) return
 
-                    b.btnBayarSekarang.isEnabled = true
-                    b.btnBayarSekarang.text = "BAYAR SEKARANG"
+                b.btnBayarSekarang.isEnabled = true
+                b.btnBayarSekarang.text = "BAYAR SEKARANG"
 
-                    showToast("Koneksi gagal: ${t.message}", Toast.LENGTH_LONG)
-                }
-            })
+                showToast("Koneksi gagal: ${t.message}", Toast.LENGTH_LONG)
+            }
+        })
     }
 
     private fun updateTotal() {
@@ -247,7 +290,10 @@ class KeranjangActivity : AppCompatActivity() {
 
         b.tvTotalPembayaran.text = formatRupiah(total)
     }
-
+    private fun bukaMidtrans(url: String) {
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+        startActivity(intent)
+    }
     private fun updateEmptyState() {
         if (listKeranjang.isEmpty()) {
             b.layoutKeranjangKosong.visibility = android.view.View.VISIBLE
@@ -257,7 +303,65 @@ class KeranjangActivity : AppCompatActivity() {
             b.recyclerViewKeranjang.visibility = android.view.View.VISIBLE
         }
     }
+    private fun tampilkanDialogCheckout() {
+        val dialogBinding = DialogCheckoutBinding.inflate(layoutInflater)
 
+        AlertDialog.Builder(this)
+            .setView(dialogBinding.root)
+            .setPositiveButton("Bayar", null)
+            .setNegativeButton("Batal", null)
+            .create()
+            .apply {
+                setOnShowListener {
+                    getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
+                        val namaPenerima = dialogBinding.edtNamaPenerima.text.toString().trim()
+                        val noTelepon = dialogBinding.edtNoTelepon.text.toString().trim()
+                        val alamat = dialogBinding.edtAlamat.text.toString().trim()
+                        val kota = dialogBinding.edtKota.text.toString().trim()
+                        val kodePos = dialogBinding.edtKodePos.text.toString().trim()
+                        val catatan = dialogBinding.edtCatatan.text.toString().trim()
+
+                        if (namaPenerima.isEmpty()) {
+                            dialogBinding.edtNamaPenerima.error = "Nama wajib diisi"
+                            return@setOnClickListener
+                        }
+
+                        if (noTelepon.isEmpty()) {
+                            dialogBinding.edtNoTelepon.error = "No telepon wajib diisi"
+                            return@setOnClickListener
+                        }
+
+                        if (alamat.isEmpty()) {
+                            dialogBinding.edtAlamat.error = "Alamat wajib diisi"
+                            return@setOnClickListener
+                        }
+
+                        if (kota.isEmpty()) {
+                            dialogBinding.edtKota.error = "Kota wajib diisi"
+                            return@setOnClickListener
+                        }
+
+                        if (kodePos.isEmpty()) {
+                            dialogBinding.edtKodePos.error = "Kode pos wajib diisi"
+                            return@setOnClickListener
+                        }
+
+                        dismiss()
+
+                        bayarSekarang(
+                            namaPenerima = namaPenerima,
+                            noTelepon = noTelepon,
+                            alamat = alamat,
+                            kota = kota,
+                            kodePos = kodePos,
+                            catatan = catatan
+                        )
+                    }
+                }
+
+                show()
+            }
+    }
     private fun String?.toHargaInt(): Int {
         return this
             ?.replace("Rp", "")

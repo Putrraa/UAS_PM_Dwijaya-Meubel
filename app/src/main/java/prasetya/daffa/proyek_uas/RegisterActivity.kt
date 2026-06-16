@@ -42,7 +42,6 @@ class RegisterActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
         enableEdgeToEdge()
-
         btnBack             = findViewById(R.id.btnBack)
         etNama              = findViewById(R.id.etNama)
         etEmail             = findViewById(R.id.etEmail)
