@@ -29,14 +29,6 @@ class ContactFragment : Fragment(), View.OnClickListener {
         b = ContactFragmentBinding.inflate(inflater, container, false)
 
 
-        b.btnExplore.setOnClickListener {
-            val intent = Intent(
-                Intent.ACTION_VIEW,
-                "https://www.dwijayameubel.my.id/".toUri()
-            )
-            startActivity(intent)
-        }
-
         b.btnShop.setOnClickListener(this)
 
         // ✅ Tombol buka Google Maps

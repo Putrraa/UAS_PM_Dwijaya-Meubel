@@ -6,6 +6,9 @@
     android:layout_height="match_parent"
     android:background="#F4F3F1"
     android:fillViewport="true"
+    android:fitsSystemWindows="true"
+    android:clipToPadding="false"
+    android:isScrollContainer="true"
     tools:context=".RegisterActivity">
 
     <LinearLayout
@@ -192,6 +195,7 @@
                         android:textSize="14sp" />
                 </LinearLayout>
 
+                <!-- Label Password -->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
