@@ -75,14 +75,7 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 R.id.menu_logout -> {
-                    session.logout()
-
-                    Toast.makeText(this, "Logout berhasil", Toast.LENGTH_SHORT).show()
-
-                    val intent = Intent(this, MainActivity::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                    startActivity(intent)
-                    finish()
+                    logoutUser()
                 }
             }
 
@@ -149,6 +142,17 @@ class MainActivity : AppCompatActivity() {
             tvEmailPengguna.text = "Silakan login terlebih dahulu"
             tvInitialPengguna.text = "D"
         }
+    }
+
+    private fun logoutUser() {
+        session.logout()
+
+        Toast.makeText(this, "Logout berhasil", Toast.LENGTH_SHORT).show()
+
+        val intent = Intent(this, MainActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
+        finish()
     }
 
     private fun loadFragment(fragment: Fragment) {

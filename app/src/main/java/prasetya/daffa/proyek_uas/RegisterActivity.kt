@@ -16,11 +16,10 @@ import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
-import prasetya.daffa.proyek_uas.api.ApiClient
-import prasetya.daffa.proyek_uas.api.AuthResponse
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import com.android.volley.Request
+import com.android.volley.toolbox.StringRequest
+import com.android.volley.toolbox.Volley
+import org.json.JSONObject
 
 class RegisterActivity : AppCompatActivity() {
 
@@ -179,14 +178,20 @@ class RegisterActivity : AppCompatActivity() {
         btnRegister.isEnabled = false
         btnRegister.text      = "Memproses..."
 
-        ApiClient.instance.register(nama, email, password).enqueue(object : Callback<AuthResponse> {
-            override fun onResponse(call: Call<AuthResponse>, response: Response<AuthResponse>) {
+        val url = "https://www.dwijayameubel.my.id/api/register"
+
+        val request = object : StringRequest(
+            Request.Method.POST,
+            url,
+            { response ->
                 btnRegister.isEnabled = true
                 btnRegister.text      = "Daftar"
 
-                val body = response.body()
+                val json = JSONObject(response)
+                val status = json.optBoolean("status")
+                val message = json.optString("message", "Register gagal. Email mungkin sudah digunakan.")
 
-                if (response.isSuccessful && body?.status == true) {
+                if (status) {
                     Toast.makeText(
                         this@RegisterActivity,
                         "Register berhasil, silakan masuk",
@@ -199,21 +204,42 @@ class RegisterActivity : AppCompatActivity() {
                 } else {
                     Toast.makeText(
                         this@RegisterActivity,
-                        body?.message ?: "Register gagal. Email mungkin sudah digunakan.",
+                        message,
                         Toast.LENGTH_LONG
                     ).show()
                 }
-            }
-
-            override fun onFailure(call: Call<AuthResponse>, t: Throwable) {
+            },
+            { error ->
                 btnRegister.isEnabled = true
                 btnRegister.text      = "Daftar"
+
+                val errorMessage = error.networkResponse?.data?.let {
+                    try {
+                        JSONObject(String(it)).optString(
+                            "message",
+                            "Register gagal. Email mungkin sudah digunakan."
+                        )
+                    } catch (e: Exception) {
+                        "Koneksi gagal"
+                    }
+                } ?: "Koneksi gagal: ${error.message}"
+
                 Toast.makeText(
                     this@RegisterActivity,
-                    "Koneksi gagal: ${t.message}",
+                    errorMessage,
                     Toast.LENGTH_LONG
                 ).show()
             }
-        })
+        ) {
+            override fun getParams(): MutableMap<String, String> {
+                return hashMapOf(
+                    "name" to nama,
+                    "email" to email,
+                    "password" to password
+                )
+            }
+        }
+
+        Volley.newRequestQueue(this).add(request)
     }
 }

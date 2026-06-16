@@ -13,14 +13,13 @@ import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
+import com.android.volley.Request
+import com.android.volley.toolbox.StringRequest
+import com.android.volley.toolbox.Volley
+import org.json.JSONObject
 import prasetya.daffa.proyek_uas.admin.AdminActivity
 import prasetya.daffa.proyek_uas.kasir.KasirActivity
-import prasetya.daffa.proyek_uas.api.ApiClient
-import prasetya.daffa.proyek_uas.api.AuthResponse
 import prasetya.daffa.proyek_uas.helper.SessionManager
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 
 class LoginActivity : AppCompatActivity() {
@@ -126,66 +125,102 @@ class LoginActivity : AppCompatActivity() {
         btnLogin.isEnabled = false
         btnLogin.text      = "Memproses..."
 
-        ApiClient.instance.login(email, password).enqueue(object : Callback<AuthResponse> {
+        val url = "https://www.dwijayameubel.my.id/api/login"
 
-            override fun onResponse(call: Call<AuthResponse>, response: Response<AuthResponse>) {
+        val request = object : StringRequest(
+            Request.Method.POST,
+            url,
+            { response ->
                 btnLogin.isEnabled = true
                 btnLogin.text      = "Masuk"
 
-                val body = response.body()
+                val json = JSONObject(response)
+                val status = json.optBoolean("status")
+                val message = json.optString("message", "Login gagal. Email atau password salah.")
 
-                if (response.isSuccessful && body?.status == true && body.user != null) {
-                    val user = body.user
+                if (status) {
+                    val userJson = json.optJSONObject("user")
 
-                    session.saveUser(
-                        id    = user.id,
-                        name  = user.name,
-                        email = user.email,
-                        role  = user.role
-                    )
+                    if (userJson == null) {
+                        Toast.makeText(
+                            this@LoginActivity,
+                            "Data user tidak ditemukan",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    } else {
+                        val id = userJson.optInt("id")
+                        val name = userJson.optString("name")
+                        val userEmail = userJson.optString("email")
+                        val role = userJson.optString("role")
 
-                    Toast.makeText(
-                        this@LoginActivity,
-                        "Login berhasil, selamat datang ${user.name}",
-                        Toast.LENGTH_LONG
-                    ).show()
+                        session.saveUser(
+                            id    = id,
+                            name  = name,
+                            email = userEmail,
+                            role  = role
+                        )
 
-                    val intent = when (user.role.trim().lowercase()) {
-                        "admin"    -> Intent(this@LoginActivity, AdminActivity::class.java)
-                        "customer" -> Intent(this@LoginActivity, MainActivity::class.java)
-                        "kasir"    -> Intent(this@LoginActivity, KasirActivity::class.java)
-                        else -> {
+                        Toast.makeText(
+                            this@LoginActivity,
+                            "Login berhasil, selamat datang $name",
+                            Toast.LENGTH_LONG
+                        ).show()
+
+                        val intent = when (role.trim().lowercase()) {
+                            "admin"    -> Intent(this@LoginActivity, AdminActivity::class.java)
+                            "customer" -> Intent(this@LoginActivity, MainActivity::class.java)
+                            "kasir"    -> Intent(this@LoginActivity, KasirActivity::class.java)
+                            else -> null
+                        }
+
+                        if (intent == null) {
                             Toast.makeText(
                                 this@LoginActivity,
-                                "Role tidak dikenali: ${user.role}",
+                                "Role tidak dikenali: $role",
                                 Toast.LENGTH_LONG
                             ).show()
-                            return
+                        } else {
+                            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                            startActivity(intent)
+                            finish()
                         }
                     }
-
-                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                    startActivity(intent)
-                    finish()
 
                 } else {
                     Toast.makeText(
                         this@LoginActivity,
-                        body?.message ?: "Login gagal. Email atau password salah.",
+                        message,
                         Toast.LENGTH_LONG
                     ).show()
                 }
-            }
-
-            override fun onFailure(call: Call<AuthResponse>, t: Throwable) {
+            },
+            { error ->
                 btnLogin.isEnabled = true
                 btnLogin.text      = "Masuk"
+
+                val errorMessage = error.networkResponse?.data?.let {
+                    try {
+                        JSONObject(String(it)).optString("message", "Login gagal")
+                    } catch (e: Exception) {
+                        "Koneksi gagal"
+                    }
+                } ?: "Koneksi gagal: ${error.message}"
+
                 Toast.makeText(
                     this@LoginActivity,
-                    "Koneksi gagal: ${t.message}",
+                    errorMessage,
                     Toast.LENGTH_LONG
                 ).show()
             }
-        })
+        ) {
+            override fun getParams(): MutableMap<String, String> {
+                return hashMapOf(
+                    "email" to email,
+                    "password" to password
+                )
+            }
+        }
+
+        Volley.newRequestQueue(this).add(request)
     }
 }

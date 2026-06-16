@@ -20,6 +20,10 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
+import com.android.volley.Request
+import com.android.volley.toolbox.StringRequest
+import com.android.volley.toolbox.Volley
+import com.google.gson.Gson
 import prasetya.daffa.proyek_uas.adapter.KategoriAdapter
 import prasetya.daffa.proyek_uas.adapter.ProdukAdapter
 import prasetya.daffa.proyek_uas.api.ApiClient
@@ -391,56 +395,78 @@ class ShopFragment : Fragment() {
         if (!isViewSafe()) return
         showLoading(true)
 
-        ApiClient.instance.getKategori().enqueue(object : Callback<KategoriResponse> {
-            override fun onResponse(call: Call<KategoriResponse>, response: Response<KategoriResponse>) {
-                if (call.isCanceled || !isViewSafe()) return
-                showLoading(false)
+        val url = "https://www.dwijayameubel.my.id/api/kategori"
 
-                val body = response.body()
-                val data = body?.data.orEmpty()
+        val request = StringRequest(
+            Request.Method.GET,
+            url,
+            { response ->
+                if (isViewSafe()) {
+                    showLoading(false)
 
-                if (response.isSuccessful && body?.status == true) {
-                    kategoriAdapter.setData(data)
-                } else {
-                    showToast(body?.message ?: "Gagal mengambil data kategori", Toast.LENGTH_SHORT)
+                    try {
+                        val body = Gson().fromJson(response, KategoriResponse::class.java)
+                        val data = body?.data.orEmpty()
+
+                        if (body?.status == true) {
+                            kategoriAdapter.setData(data)
+                        } else {
+                            showToast(body?.message ?: "Gagal mengambil data kategori", Toast.LENGTH_SHORT)
+                        }
+                    } catch (e: Exception) {
+                        showToast("Format data kategori tidak valid", Toast.LENGTH_LONG)
+                    }
+                }
+            },
+            { error ->
+                if (isViewSafe()) {
+                    showLoading(false)
+                    showToast("Koneksi kategori gagal: ${error.message}", Toast.LENGTH_LONG)
                 }
             }
+        )
 
-            override fun onFailure(call: Call<KategoriResponse>, t: Throwable) {
-                if (call.isCanceled || !isViewSafe()) return
-                showLoading(false)
-                showToast("Koneksi kategori gagal: ${t.message}", Toast.LENGTH_LONG)
-            }
-        })
+        Volley.newRequestQueue(requireContext()).add(request)
     }
 
     private fun loadBarang() {
         if (!isViewSafe()) return
         showLoading(true)
 
-        ApiClient.instance.getBarang().enqueue(object : Callback<BarangListResponse> {
-            override fun onResponse(call: Call<BarangListResponse>, response: Response<BarangListResponse>) {
-                if (call.isCanceled || !isViewSafe()) return
-                showLoading(false)
+        val url = "https://www.dwijayameubel.my.id/api/barang"
 
-                val body = response.body()
-                val data = body?.data.orEmpty()
+        val request = StringRequest(
+            Request.Method.GET,
+            url,
+            { response ->
+                if (isViewSafe()) {
+                    showLoading(false)
 
-                if (response.isSuccessful && body?.status == true) {
-                    semuaBarang.clear()
-                    semuaBarang.addAll(data)
-                    applyFilterAndSort()
-                } else {
-                    showToast(body?.message ?: "Gagal mengambil data barang", Toast.LENGTH_SHORT)
+                    try {
+                        val body = Gson().fromJson(response, BarangListResponse::class.java)
+                        val data = body?.data.orEmpty()
+
+                        if (body?.status == true) {
+                            semuaBarang.clear()
+                            semuaBarang.addAll(data)
+                            applyFilterAndSort()
+                        } else {
+                            showToast(body?.message ?: "Gagal mengambil data barang", Toast.LENGTH_SHORT)
+                        }
+                    } catch (e: Exception) {
+                        showToast("Format data barang tidak valid", Toast.LENGTH_LONG)
+                    }
+                }
+            },
+            { error ->
+                if (isViewSafe()) {
+                    showLoading(false)
+                    showToast("Koneksi barang gagal: ${error.message}", Toast.LENGTH_LONG)
                 }
             }
+        )
 
-            override fun onFailure(call: Call<BarangListResponse>, t: Throwable) {
-                if (call.isCanceled || !isViewSafe()) return
-                showLoading(false)
-                showToast("Koneksi barang gagal: ${t.message}", Toast.LENGTH_LONG)
-            }
-        })
+        Volley.newRequestQueue(requireContext()).add(request)
     }
 
     private fun applyFilterAndSort() {

@@ -2,6 +2,8 @@ package prasetya.daffa.proyek_uas.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import prasetya.daffa.proyek_uas.R
@@ -58,9 +60,43 @@ class ProdukAdapter(
             onClickDetail(item)
         }
 
+        holder.b.cardProduk.setOnLongClickListener {
+            showProdukPopup(holder, item, stok)
+            true
+        }
+
         holder.b.btnAddCart.setOnClickListener {
             onAddCart(item)
         }
+    }
+
+    private fun showProdukPopup(holder: ProdukViewHolder, item: Barang, stok: Int) {
+        val context = holder.itemView.context
+        val popup = PopupMenu(context, holder.b.cardProduk)
+
+        popup.menuInflater.inflate(R.menu.menu_popup_produk, popup.menu)
+
+        popup.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.popup_detail_produk -> {
+                    onClickDetail(item)
+                    true
+                }
+
+                R.id.popup_tambah_keranjang -> {
+                    if (stok > 0) {
+                        onAddCart(item)
+                    } else {
+                        Toast.makeText(context, "Stok habis", Toast.LENGTH_SHORT).show()
+                    }
+                    true
+                }
+
+                else -> false
+            }
+        }
+
+        popup.show()
     }
 
     fun setData(data: List<Barang>) {

@@ -55,10 +55,9 @@ class AboutFragment : Fragment(), View.OnClickListener {
             mp.isLooping = true
             if (startPosition > 0) {
                 videoView.seekTo(startPosition)
-                videoView.start() // lanjut play jika dari fullscreen
+                videoView.start()
             } else {
-                videoView.seekTo(1) // tampilkan frame pertama sebagai thumbnail
-                // tidak start() agar tidak auto-play
+                videoView.seekTo(1)
             }
         }
     }
